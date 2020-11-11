@@ -1,5 +1,5 @@
 defaults:
-  # _posts
+  # _sites
   - scope:
       path: ""
       type: pages
