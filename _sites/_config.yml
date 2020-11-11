@@ -1,0 +1,8 @@
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
