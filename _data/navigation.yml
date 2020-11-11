@@ -3,7 +3,7 @@ main:
   - title: "Posts by Year"
     url: /year-archive/
   - title: "Posts by Tag"
-    url: /year-test/
+    url: /tags/
   - title: "Curriculum Vitae"
     url: /cv/
   - title: "Reference"
