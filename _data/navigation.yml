@@ -2,8 +2,8 @@
 main:
   - title: "Posts by Year"
     url: /year-archive/
-  - title: "Posts by Tag"
-    url: /tags/
+  - title: "Posts by Category"
+    url: /categories/
   - title: "Curriculum Vitae"
     url: /cv/
   - title: "Reference"
