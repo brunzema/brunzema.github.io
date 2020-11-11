@@ -101,7 +101,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      # url: "mailto:your.name@email.com"
+      url: "mailto:paul.brunzema@rwth-aachen.de"
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
@@ -145,6 +145,7 @@ footer:
 include:
   - .htaccess
   - _pages
+  - _sites
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
