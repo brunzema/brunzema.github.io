@@ -1,16 +1,17 @@
 ---
-title: "Sample Page"
+title: "Curriculum Vitae"
 permalink: /cv/
 toc: true
-date: 2016-02-24T03:02:20+00:00
----
-# Curriculum Vitae
+date: 2020-11-11T03:02:20+00:00
+--- 
 
-coole einführung
-
-## Education
+# Education
 
 coole uni
+
+# Work Experience
+
+coole jobs
 
 ## Was ich so kann
 
