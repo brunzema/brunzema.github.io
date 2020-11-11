@@ -106,7 +106,7 @@ author:
       icon: "fas fa-fw fa-link"
       url: "https://brunzema.github.io"
     - label: "LinkedIn"
-      icon: "fab fa-fw fa-linkedin-square"
+      icon: "fab fa-linkedin-square"
       url: "https://linkedin.com/"
     - label: "Facebook"
       icon: "fab fa-fw fa-facebook-square"
