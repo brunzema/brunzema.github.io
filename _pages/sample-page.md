@@ -7,10 +7,11 @@ date: 2020-11-11T03:02:20+00:00
 # Education
 
 ## Automation Engineering M.Sc. 
-: <cite>2019-today</cite>
-Current Average: 1.3
-Focus on Control
-@RWTH Aachen University
+:   <cite>2019-today</cite>
+
+Current Average: 1.3<br/>
+Focus on Control<br/>
+@RWTH Aachen University<br/>
 {: .notice}
 
 ## Mechanical Engineering B.Sc.
