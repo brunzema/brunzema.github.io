@@ -3,6 +3,7 @@ title: "Curriculum Vitae"
 permalink: /cv/
 date: 2020-11-11T03:02:20+00:00
 --- 
+# A different kind of CV
 
 ## Education
 
@@ -16,9 +17,9 @@ Focus on Control<br/>
 {: .notice--primary}
 
 
-Automation Engineering M.Sc.
-:   @RWTH Aachen University
-    :   <cite>2019-today</cite>
+**Automation Engineering M.Sc.**<br/>
+@RWTH Aachen University<br/>
+<cite>2019-today</cite>
 <br/>
 Current Grade Average: 1.3<br/>
 Focus on Control<br/>
