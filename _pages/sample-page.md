@@ -4,19 +4,20 @@ permalink: /cv/
 date: 2020-11-11T03:02:20+00:00
 --- 
 
-# Education
+## Education
 
-## Automation Engineering M.Sc. 
+### Automation Engineering M.Sc.
+
+@RWTH Aachen University
 :   <cite>2019-today</cite>
 
-Current Average: 1.3<br/>
+Current Grade Average: 1.3<br/>
 Focus on Control<br/>
-@RWTH Aachen University<br/>
-{: .notice}
+{: .notice--primary}
 
-## Mechanical Engineering B.Sc.
+### Mechanical Engineering B.Sc.
 
-# Work Experience
+## Work Experience
 
 coole jobs
 
