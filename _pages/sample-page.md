@@ -15,6 +15,16 @@ Current Grade Average: 1.3<br/>
 Focus on Control<br/>
 {: .notice--primary}
 
+
+Automation Engineering M.Sc.
+:   @RWTH Aachen University
+    :   <cite>2019-today</cite>
+<br/>
+Current Grade Average: 1.3<br/>
+Focus on Control<br/>
+{: .notice--primary}
+
+
 ### Mechanical Engineering B.Sc.
 
 ## Work Experience
