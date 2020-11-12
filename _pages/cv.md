@@ -9,7 +9,7 @@ date: 2020-11-11T03:02:20+00:00
 
 ### Automation Engineering M.Sc.
 
-RWTH Aachen University
+at RWTH Aachen University
 :   <cite>2019-today</cite>
 
 * Current Grade Average: 1.3
@@ -18,7 +18,7 @@ RWTH Aachen University
 
 ### Mechanical Engineering B.Sc.
 
-RWTH Aachen University
+at RWTH Aachen University
 :   <cite>2015-2019</cite>
 
 * Final grade: 2.2
