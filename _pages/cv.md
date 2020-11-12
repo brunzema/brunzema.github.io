@@ -12,11 +12,22 @@ date: 2020-11-11T03:02:20+00:00
 RWTH Aachen University
 :   <cite>2019-today</cite>
 
-Current Grade Average: 1.3<br/>
-Focus on Control<br/>
+>Current Grade Average: 1.3<br/>
+Specialization in control theory<br/>
 
 
 ### Mechanical Engineering B.Sc.
+
+RWTH Aachen University
+:   <cite>2015-2019</cite>
+
+>Final grade: 2.2<br/>
+Specialization in energy engineering<br/>
+
+**Bachelor thesis**<br/>
+Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
+<cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
+{: .notice--info}
 
 ## Work Experience
 
