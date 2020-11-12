@@ -16,8 +16,8 @@ minimal_mistakes_skin    : "air" # "air", "aqua", "contrast", "dark", "dirt", "n
 
 # Site Settings
 locale                   : "en-US"
-title                    : "A controls' engineers website"
-title_separator          : "-"
+title                    : "Take Control"
+title_separator          : "- A control engineers' website."
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Paul Brunzema"
 description              : "A controls engineers' nerd website who is passionate about teaching as well."
