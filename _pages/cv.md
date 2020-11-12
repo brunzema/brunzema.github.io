@@ -24,9 +24,15 @@ RWTH Aachen University
 >Final grade: 2.2<br/>
 Specialization in energy engineering<br/>
 
-**Bachelor thesis**<br/>
+**Bachelor thesis** *on CNN and Semantische Segmentierung*<br/>
 Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
 <cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
+{: .notice--info}
+
+**Project thesis**<br/>
+Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
+    Einkomponenten-Dieselersatzkraftstoffes<br/>
+<cite>ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
 {: .notice--info}
 
 ## Work Experience
