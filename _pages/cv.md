@@ -12,7 +12,39 @@ date: 2020-11-11T03:02:20+00:00
 RWTH Aachen University
 :   <cite>2019-today</cite>
 
->Current Grade Average: 1.3<br/>
+* Current Grade Average: 1.3
+* Specialization in control theory<br/>
+
+
+### Mechanical Engineering B.Sc.
+
+RWTH Aachen University
+:   <cite>2015-2019</cite>
+
+* Final grade: 2.2
+* Specialization in energy engineering
+
+including:
+
+**Bachelor thesis** *on CNN and Semantische Segmentierung*<br/>
+Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
+<cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
+{: .notice--info}
+
+and
+
+**Project thesis** *on LES simulation*<br/>
+Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
+    Einkomponenten-Dieselersatzkraftstoffes<br/>
+<cite>@ ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
+{: .notice--info}
+
+### Automation Engineering M.Sc.
+
+RWTH Aachen University
+:   <cite>2019-today</cite>
+
+Current Grade Average: 1.3<br/>
 Specialization in control theory<br/>
 
 
@@ -29,10 +61,10 @@ Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kr
 <cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
 {: .notice--info}
 
-**Project thesis**<br/>
+**Project thesis** *on LES simulation*<br/>
 Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
     Einkomponenten-Dieselersatzkraftstoffes<br/>
-<cite>ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
+<cite>@ ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
 {: .notice--info}
 
 ## Work Experience
