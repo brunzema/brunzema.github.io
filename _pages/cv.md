@@ -1,15 +1,14 @@
 ---
 title: "Curriculum Vitae"
 permalink: /cv/
+toc: true
 date: 2020-11-11T03:02:20+00:00
 --- 
-# A different kind of CV
 
 ## Education
 
 ### Automation Engineering M.Sc.
 
-Automation Engineering M.Sc.<br/>
 RWTH Aachen University
 :   <cite>2019-today</cite>
 
