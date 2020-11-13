@@ -42,7 +42,7 @@ Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkompone
 
 coole jobs
 
-\\[ dot{x}$$ \\]
+\\[ x^2 + 3 \\]
 
 ## Was ich so kann
 
