@@ -1,5 +1,5 @@
 ---
-title: "Curriculum Vitae"
+title: "A different kind of Curriculum Vitae"
 permalink: /cv/
 toc: true
 date: 2020-11-11T03:02:20+00:00
@@ -12,7 +12,6 @@ date: 2020-11-11T03:02:20+00:00
 at RWTH Aachen University
 :   <cite>2019-today</cite>
 
-* Current Grade Average: 1.3
 * Specialization in control theory<br/>
 
 
@@ -21,7 +20,6 @@ at RWTH Aachen University
 at RWTH Aachen University
 :   <cite>2015-2019</cite>
 
-* Final grade: 2.2
 * Specialization in energy engineering
 
 including:
