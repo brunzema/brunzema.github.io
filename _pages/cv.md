@@ -26,9 +26,9 @@ at RWTH Aachen University
 
 including:
 
-**Bachelor thesis** *on CNN and Semantische Segmentierung*<br/>
+**Bachelor thesis** *on CNN and Semantische Segmentierung contributing to [rounD](https://www.levelxdata.com/drone-datasets.html "rounD")*<br/>
 Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
-*contributing to [rounD](https://www.levelxdata.com/drone-datasets.html)*<br/>
+<br/>
 <cite>@ [ika](https://www.ika.rwth-aachen.de/en/ "Institute for Automotive Engineering") (Institute for Automotive Engineering, RWTH Aachen University)</cite>
 {: .notice--info}
 
@@ -42,7 +42,7 @@ Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkompone
 
 coole jobs
 
-$$\dot{x}$$
+\\[ dot{x}$$ \\]
 
 ## Was ich so kann
 
