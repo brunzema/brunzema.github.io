@@ -26,18 +26,15 @@ at RWTH Aachen University
 
 including:
 
-**Bachelor thesis**<br/>
-*on CNN and Semantische Segmentierung contributing to [rounD](https://www.levelxdata.com/drone-datasets.html "rounD")*<br/>
-Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
+**Bachelor thesis** *(CNN's and semantic segmentation)*<br/>
 <br/>
+Creation of a Naturalistic Trajectory Dataset of Traffic at Roundabouts Utilizing Active Learning for Image Augmentation<br/>
 <cite>@ [ika](https://www.ika.rwth-aachen.de/en/ "Institute for Automotive Engineering") (Institute for Automotive Engineering, RWTH Aachen University)</cite>
 {: .notice--info}
 
-**Project thesis** <br/>
-*on LES simulation*<br/>
-Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
-    Einkomponenten-Dieselersatzkraftstoffes<br/>
+**Project thesis** *(LES simulation)* <br/>
 <br/>
+Analysis on Spray and Mixture Formation Behavior of Multicomponent and Single Component Diesel Surrogate Fuel<br/>
 <cite>@ [itv](https://www.itv.rwth-aachen.de/en/ "Institute for Combustion Technology") (Institute for Combustion Technology, RWTH Aachen University)</cite>
 {: .notice--info}
 
