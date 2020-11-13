@@ -28,43 +28,14 @@ including:
 
 **Bachelor thesis** *on CNN and Semantische Segmentierung*<br/>
 Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
-<cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
-{: .notice--info}
-
-and
-
-**Project thesis** *on LES simulation*<br/>
-Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
-    Einkomponenten-Dieselersatzkraftstoffes<br/>
-<cite>@ ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
-{: .notice--info}
-
-### Automation Engineering M.Sc.
-
-RWTH Aachen University
-:   <cite>2019-today</cite>
-
-Current Grade Average: 1.3<br/>
-Specialization in control theory<br/>
-
-
-### Mechanical Engineering B.Sc.
-
-RWTH Aachen University
-:   <cite>2015-2019</cite>
-
->Final grade: 2.2<br/>
-Specialization in energy engineering<br/>
-
-**Bachelor thesis** *on CNN and Semantische Segmentierung*<br/>
-Erzeugung eines Naturalistischen Verkehrsteilnehmertrajektoriendatensatzes an Kreisverkehren unter Verwendung von Active Learning zur Bilddatenaugmentierung<br/>
-<cite>@ ika (Institut für Kraftfahrzeuge, RWTH Aachen University)</cite>
+*contributing to [rounD](https://www.levelxdata.com/drone-datasets.html)*<br/>
+<cite>@ [ika](https://www.ika.rwth-aachen.de/en/ "Institute for Automotive Engineering") (Institute for Automotive Engineering, RWTH Aachen University)</cite>
 {: .notice--info}
 
 **Project thesis** *on LES simulation*<br/>
 Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkomponenten- und eines 
     Einkomponenten-Dieselersatzkraftstoffes<br/>
-<cite>@ ITV (Institut für technische Verbrennung, RWTH Aachen University)</cite>
+<cite>@ [itv](https://www.itv.rwth-aachen.de/en/ "Institute for Combustion Technology") (Institute for Combustion Technology, RWTH Aachen University)</cite>
 {: .notice--info}
 
 ## Work Experience
