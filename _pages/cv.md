@@ -40,9 +40,9 @@ Analyse der Auswirkung auf Sprayausbreitung und Gemischbildung eines Mehrkompone
 
 ## Work Experience
 
-coole jobs
+coole jobs sind \$ x^2 + 3 \$
 
-\\[ x^2 + 3 \\]
+$$ \begin{equation} \label{label} \frac{12}{3} = \sum_i M_i \end{equation} $$
 
 ## Was ich so kann
 
