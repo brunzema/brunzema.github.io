@@ -40,18 +40,18 @@ Analysis on Spray and Mixture Formation Behavior of Multicomponent and Single Co
 
 ### Institute of Automatic Control (irt)
 
-RWTH Aachen University
+Academic Assistant
 :   <cite>May 2019 - today</cite>
 
 
 ### Porsche Engineering Services GmbH
 
-<br/>
+Internship
 :   <cite>December 2017 - July 2018</cite>
 
 ### Institute for Mechanism Theory, Machine Dynamics and Robotics (IGMR)
 
-RWTH Aachen University
+Student Assistant
 :   <cite>December 2017 - July 2018</cite>
 
 
