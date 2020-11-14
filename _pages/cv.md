@@ -52,7 +52,7 @@ Academic Assistant
 Student Assistant
 :   <cite>May 2019 - today</cite>
 
-| Tasks *(Support Course: Automatic Control)* |
+| Tasks *(Support Course "Automatic Control")* |
 | --------  |
 | Hilfestellung für die Studierenden beim Lösen der gestellten Aufgaben |
 | Präsentation des Lösungsweges im Plenum vor bis zu 500 Studierenden |
@@ -67,13 +67,16 @@ Internship
 Student Assistant
 :   <cite>December 2017 - July 2018</cite>
 
+## Computer Skills
 
+* Blabla
 
-coole jobs sind \$ x^2 + 3 \$
+## Languages
 
-$$ \begin{equation} \label{label} \frac{12}{3} = \sum_i M_i \end{equation} $$
+* German *(mother-tongue)*
+* English *(fluent)*
 
-## Was ich so kann
+## Voluntary Activities
 
 This is an example page. It's different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:
 
