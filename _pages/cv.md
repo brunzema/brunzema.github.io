@@ -38,7 +38,7 @@ Analysis on Spray and Mixture Formation Behavior of Multicomponent and Single Co
 
 ## Work Experience
 
-### Institute of Automatic Control (irt)
+### Institute of Automatic Control ([irt](https://www.irt.rwth-aachen.de/cms/~iung/IRT/?lidx=1 "Institute of Automatic Control"))
 
 Academic Assistant
 :   <cite>May 2019 - today</cite>
@@ -47,22 +47,22 @@ Academic Assistant
 | --------  |
 | Erweiterung des Luftpfad-Reglermodells der unterlagerten Folgeregelung einernichtlinearen MPR im Brennstoffzellen-Hybridfahrzeug |
 | Anpassung der Optimierung eines Targetselectors für den Kompressor-betriebspunkt innerhalb der MPR zur Online- und Offlinenutzung |
-| Implementierung einesMATLABLive-Skriptes zur entwicklungsbegleitendenDokumentation und für Parameteriterationen in Regelung und Strecke |
+| Implementierung eines MATLAB Live-Skriptes zur entwicklungsbegleitendenDokumentation und für Parameteriterationen in Regelung und Strecke |
 
-Teaching Assistant
+Student Assistant
 :   <cite>May 2019 - today</cite>
 
-| Tasks *(Course: Automatic Control)* |
+| Tasks *(Support Course: Automatic Control)* |
 | --------  |
 | Hilfestellung für die Studierenden beim Lösen der gestellten Aufgaben |
 | Präsentation des Lösungsweges im Plenum vor bis zu 500 Studierenden |
 
-### Porsche Engineering Services GmbH
+### Porsche Engineering Services GmbH ([PES](https://www.porscheengineering.com/peg/en/ "Porsche Engineering"))
 
 Internship
 :   <cite>December 2017 - July 2018</cite>
 
-### Institute for Mechanism Theory, Machine Dynamics and Robotics (IGMR)
+### Institute for Mechanism Theory, Machine Dynamics and Robotics ([IGMR](https://www.igmr.rwth-aachen.de/index.php/en/ "Institute for Mechanism Theory, Machine Dynamics and Robotics"))
 
 Student Assistant
 :   <cite>December 2017 - July 2018</cite>
