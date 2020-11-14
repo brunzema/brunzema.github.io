@@ -10,7 +10,7 @@ date: 2020-11-11T03:02:20+00:00
 ### Automation Engineering M.Sc.
 
 at RWTH Aachen University
-:   <cite>2019-today</cite>
+:   <cite>2019 - today</cite>
 
 * Specialization in control theory<br/>
 
@@ -18,7 +18,7 @@ at RWTH Aachen University
 ### Mechanical Engineering B.Sc.
 
 at RWTH Aachen University
-:   <cite>2015-2019</cite>
+:   <cite>2015 - 2019</cite>
 
 * Specialization in energy engineering
 
@@ -35,10 +35,26 @@ Creation of a Naturalistic Trajectory Dataset of Traffic at Roundabouts Utilizin
 Analysis on Spray and Mixture Formation Behavior of Multicomponent and Single Component Diesel Surrogate Fuel<br/>
 <cite>@ [itv](https://www.itv.rwth-aachen.de/en/ "Institute for Combustion Technology") (Institute for Combustion Technology, RWTH Aachen University)</cite>
 {: .notice--info}
-<cite>@ [itv](https://www.itv.rwth-aachen.de/en/ "Institute for Combustion Technology") (Institute for Combustion Technology, RWTH Aachen University)</cite>
-
 
 ## Work Experience
+
+### Institute of Automatic Control (irt)
+
+RWTH Aachen University
+:   <cite>May 2019 - today</cite>
+
+
+### Porsche Engineering Services GmbH
+
+<br/>
+:   <cite>December 2017 - July 2018</cite>
+
+### Institute for Mechanism Theory, Machine Dynamics and Robotics (IGMR)
+
+RWTH Aachen University
+:   <cite>December 2017 - July 2018</cite>
+
+
 
 coole jobs sind \$ x^2 + 3 \$
 
