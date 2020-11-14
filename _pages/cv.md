@@ -43,12 +43,19 @@ Analysis on Spray and Mixture Formation Behavior of Multicomponent and Single Co
 Academic Assistant
 :   <cite>May 2019 - today</cite>
 
-| Aufgaben  |
+| Tasks *(Energy Process Engineering Group)*  |
 | --------  |
-| Aufgabe 1 |
-| Aufgabe 2 |
-| test|
-| Aufgabe 4 |
+| Erweiterung des Luftpfad-Reglermodells der unterlagerten Folgeregelung einernichtlinearen MPR im Brennstoffzellen-Hybridfahrzeug |
+| Anpassung der Optimierung eines Targetselectors für den Kompressor-betriebspunkt innerhalb der MPR zur Online- und Offlinenutzung |
+| Implementierung einesMATLABLive-Skriptes zur entwicklungsbegleitendenDokumentation und für Parameteriterationen in Regelung und Strecke |
+
+Teaching Assistant
+:   <cite>May 2019 - today</cite>
+
+| Tasks *(Course: Automatic Control)* |
+| --------  |
+| Hilfestellung für die Studierenden beim Lösen der gestellten Aufgaben |
+| Präsentation des Lösungsweges im Plenum vor bis zu 500 Studierenden |
 
 ### Porsche Engineering Services GmbH
 
