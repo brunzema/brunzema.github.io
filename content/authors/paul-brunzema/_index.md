@@ -29,7 +29,7 @@ education:
   courses:
   - course: Ph.D. in Learning-based Control
     institution: RWTH Aachen University
-    year: 2026
+    year: onging
   - course: M.Sc. in Automation Engineering
     institution: RWTH Aachen University
     year: 2021
