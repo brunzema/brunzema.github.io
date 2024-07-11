@@ -2,91 +2,85 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/home-unused/slider/</loc>
+    <loc>//localhost:1313/publication-type/1/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/hero/</loc>
+    <loc>//localhost:1313/author/antonia-holzapfel/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/demo/</loc>
+    <loc>//localhost:1313/authors/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/skills/</loc>
+    <loc>//localhost:1313/publication/l4dc2024a/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/experience/</loc>
+    <loc>//localhost:1313/publication/l4dc2024b/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/accomplishments/</loc>
+    <loc>//localhost:1313/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/projects/</loc>
+    <loc>//localhost:1313/author/paul-brunzema/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/people/</loc>
+    <loc>//localhost:1313/publication_types/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/talks/</loc>
+    <loc>//localhost:1313/publication/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/featured/</loc>
+    <loc>//localhost:1313/author/sebastian-trimpe/</loc>
+    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/home-unused/tags/</loc>
-  </url><url>
-    <loc>/publication-type/3/</loc>
+    <loc>//localhost:1313/publication-type/3/</loc>
     <lastmod>2022-12-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/alexander-von-rohr/</loc>
+    <loc>//localhost:1313/author/alexander-von-rohr/</loc>
     <lastmod>2022-12-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/authors/</loc>
+    <loc>//localhost:1313/publication/icml2023/</loc>
     <lastmod>2022-12-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/icml2023/</loc>
+    <loc>//localhost:1313/author/friedrich-solowjow/</loc>
     <lastmod>2022-12-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/friedrich-solowjow/</loc>
+    <loc>//localhost:1313/author/paul-brunzema/</loc>
     <lastmod>2022-12-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2022-12-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/author/paul-brunzema/</loc>
-    <lastmod>2022-12-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication_types/</loc>
-    <lastmod>2022-12-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication/</loc>
-    <lastmod>2022-12-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/author/sebastian-trimpe/</loc>
-    <lastmod>2022-12-31T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/publication-type/1/</loc>
+    <loc>//localhost:1313/author/alexander-von-rohr/</loc>
     <lastmod>2022-07-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication/cdc2022a/</loc>
+    <loc>//localhost:1313/publication/cdc2022a/</loc>
     <lastmod>2022-07-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/news/</loc>
+    <loc>//localhost:1313/post/</loc>
+    <lastmod>2020-12-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/news/</loc>
     <lastmod>2017-12-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/publication-type/2/</loc>
+    <loc>//localhost:1313/publication-type/2/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/template_backups/journal-article/</loc>
+    <loc>//localhost:1313/template_backups/journal-article/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/author/robert-ford/</loc>
+    <loc>//localhost:1313/author/robert-ford/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/tag/source-themes/</loc>
+    <loc>//localhost:1313/tag/source-themes/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/tags/</loc>
+    <loc>//localhost:1313/tags/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/template_backups/</loc>
+    <loc>//localhost:1313/template_backups/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
+    <loc>//localhost:1313/categories/</loc>
   </url><url>
-    <loc>/home-unused/</loc>
+    <loc>//localhost:1313/home-unused/</loc>
   </url><url>
-    <loc>/post/</loc>
-  </url><url>
-    <loc>/talk/</loc>
+    <loc>//localhost:1313/talk/</loc>
   </url>
 </urlset>

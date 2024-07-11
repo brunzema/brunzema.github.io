@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>3 | Paul Brunzema</title>
-    <link>/publication-type/3/</link>
-      <atom:link href="/publication-type/3/index.xml" rel="self" type="application/rss+xml" />
+    <link>//localhost:1313/publication-type/3/</link>
+      <atom:link href="//localhost:1313/publication-type/3/index.xml" rel="self" type="application/rss+xml" />
     <description>3</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 31 Dec 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
+      <url>//localhost:1313/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
       <title>3</title>
-      <link>/publication-type/3/</link>
+      <link>//localhost:1313/publication-type/3/</link>
     </image>
     
     <item>
       <title>Event-Triggered Time-Varying Bayesian Optimization</title>
-      <link>/publication/icml2023/</link>
+      <link>//localhost:1313/publication/icml2023/</link>
       <pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate>
-      <guid>/publication/icml2023/</guid>
+      <guid>//localhost:1313/publication/icml2023/</guid>
       <description>&lt;!-- 
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;

@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts | Paul Brunzema</title>
-    <link>/post/</link>
-      <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <link>//localhost:1313/post/</link>
+      <atom:link href="//localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
     <description>Posts</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 13 Dec 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
+      <url>//localhost:1313/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
       <title>Posts</title>
-      <link>/post/</link>
+      <link>//localhost:1313/post/</link>
     </image>
     
   </channel>

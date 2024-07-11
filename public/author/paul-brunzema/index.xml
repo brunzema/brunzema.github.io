@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Paul Brunzema</title>
-    <link>/author/paul-brunzema/</link>
-      <atom:link href="/author/paul-brunzema/index.xml" rel="self" type="application/rss+xml" />
+    <link>//localhost:1313/author/paul-brunzema/</link>
+      <atom:link href="//localhost:1313/author/paul-brunzema/index.xml" rel="self" type="application/rss+xml" />
     <description>Paul Brunzema</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 31 Dec 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
+      <url>//localhost:1313/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
       <title>Paul Brunzema</title>
-      <link>/author/paul-brunzema/</link>
+      <link>//localhost:1313/author/paul-brunzema/</link>
     </image>
     
     <item>
       <title>Event-Triggered Time-Varying Bayesian Optimization</title>
-      <link>/publication/icml2023/</link>
+      <link>//localhost:1313/publication/icml2023/</link>
       <pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate>
-      <guid>/publication/icml2023/</guid>
+      <guid>//localhost:1313/publication/icml2023/</guid>
       <description>&lt;!-- 
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
@@ -30,33 +30,34 @@ Supplementary notes can be added here, including [code, math, and images](https:
     </item>
     
     <item>
-      <title>On Controller Tuning Using Time-Varying Bayesian Optimization</title>
-      <link>/publication/cdc2022a/</link>
-      <pubDate>Fri, 01 Jul 2022 00:00:00 +0000</pubDate>
-      <guid>/publication/cdc2022a/</guid>
-      <description>&lt;!-- &lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.
-  &lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Create your slides in Markdown - click the &lt;em&gt;Slides&lt;/em&gt; button to check out the example.
-  &lt;/div&gt;
-&lt;/div&gt;
-
-
-Supplementary notes can be added here, including [code, math, and images](https://wowchemy.com/docs/writing-markdown-latex/). --&gt;
+      <title>Paul Brunzema</title>
+      <link>//localhost:1313/author/paul-brunzema/</link>
+      <pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/author/paul-brunzema/</guid>
+      <description>&lt;p&gt;Hi there! Since March 2022, I am a PhD student at the 
+&lt;a href=&#34;https://www.dsme.rwth-aachen.de/cms/~ibtrg/DSME/lidx/1/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Institute for Data Science in Mechanical Engineering&lt;/a&gt; at 
+&lt;a href=&#34;https://www.rwth-aachen.de/go/id/a/?lidx=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RWTH Aachen University&lt;/a&gt; under the supervision of 
+&lt;a href=&#34;https://www.dsme.rwth-aachen.de/cms/DSME/Das-Institut/Team/~jlolt/Prof-Sebastian-Trimpe/?allou=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Sebastian Trimpe&lt;/a&gt;, and since September 2023 I am an associate doctoral researcher at the 
+&lt;a href=&#34;https://www.unravel.rwth-aachen.de/go/id/ofgh/?lidx=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;UnRAVel Research Training Group&lt;/a&gt; funded by the 
+&lt;a href=&#34;https://www.dfg.de/en/index.jsp&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;DFG&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Prior to that, I completed a bachelor&amp;rsquo;s degree in &lt;strong&gt;mechanical engineering&lt;/strong&gt; and a subsequent master&amp;rsquo;s degree in &lt;strong&gt;automation engineering&lt;/strong&gt; with a focus on machine learning and control, both at the 
+&lt;a href=&#34;https://www.rwth-aachen.de/go/id/a/?lidx=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RWTH Aachen University&lt;/a&gt;.
+During my studies, I received the 
+&lt;a href=&#34;https://www.rwth-aachen.de/cms/root/Wirtschaft/Fundraising/~elu/Bildungsfonds/?lidx=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Germany Scholarship&lt;/a&gt;, a 
+&lt;a href=&#34;https://www.irt.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaavkdoz&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;MathWorks Fellowship&lt;/a&gt;, and was selected repeatedly for 
+&lt;a href=&#34;https://www.rwth-aachen.de/cms/root/Studium/Lehre/Exzellente-Lehre/~dhky/Dean-s-List/?lidx=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;RWTH Aachen University&amp;rsquo;s Dean&amp;rsquo;s List&lt;/a&gt;. For my master thesis under supervision from 
+&lt;a href=&#34;https://thisisalex.de/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Alexander von Rohr&lt;/a&gt; and 
+&lt;a href=&#34;https://www.dsme.rwth-aachen.de/cms/DSME/Das-Institut/Team/~jlolt/Prof-Sebastian-Trimpe/?allou=1&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Sebastian Trimpe&lt;/a&gt; on parameter search in time-varying environments using Bayesian optimization I received the 
+&lt;a href=&#34;https://www.sew-eurodrive-stiftung.de/en/#student-award&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SEW-EURODRIVE Student Award&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;My current research evolves around uncertainty quanitifaction when learning system dynamics and detecting changes in system dynamics with probabilistic quarantees. Furthermore, I am interested in Bayesian optimization&amp;ndash;specifically in high-dimensional and time-varying approaches.&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>An example journal article</title>
-      <link>/template_backups/journal-article/</link>
+      <link>//localhost:1313/template_backups/journal-article/</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>/template_backups/journal-article/</guid>
+      <guid>//localhost:1313/template_backups/journal-article/</guid>
       <description>&lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
     Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.

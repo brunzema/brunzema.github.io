@@ -2,21 +2,55 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Publications | Paul Brunzema</title>
-    <link>/publication/</link>
-      <atom:link href="/publication/index.xml" rel="self" type="application/rss+xml" />
+    <link>//localhost:1313/publication/</link>
+      <atom:link href="//localhost:1313/publication/index.xml" rel="self" type="application/rss+xml" />
     <description>Publications</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 31 Dec 2022 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 10 Dec 2023 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
+      <url>//localhost:1313/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
       <title>Publications</title>
-      <link>/publication/</link>
+      <link>//localhost:1313/publication/</link>
     </image>
     
     <item>
+      <title>Event-Triggered Safe Bayesian Optimization on Quadcopters</title>
+      <link>//localhost:1313/publication/l4dc2024a/</link>
+      <pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/publication/l4dc2024a/</guid>
+      <description>&lt;!-- 
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Create your slides in Markdown - click the &lt;em&gt;Slides&lt;/em&gt; button to check out the example.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+Supplementary notes can be added here, including [code, math, and images](https://wowchemy.com/docs/writing-markdown-latex/). --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Event-Triggered Safe Bayesian Optimization on Quadcopters</title>
+      <link>//localhost:1313/publication/l4dc2024b/</link>
+      <pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/publication/l4dc2024b/</guid>
+      <description>&lt;!-- 
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Create your slides in Markdown - click the &lt;em&gt;Slides&lt;/em&gt; button to check out the example.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+Supplementary notes can be added here, including [code, math, and images](https://wowchemy.com/docs/writing-markdown-latex/). --&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Event-Triggered Time-Varying Bayesian Optimization</title>
-      <link>/publication/icml2023/</link>
+      <link>//localhost:1313/publication/icml2023/</link>
       <pubDate>Sat, 31 Dec 2022 00:00:00 +0000</pubDate>
-      <guid>/publication/icml2023/</guid>
+      <guid>//localhost:1313/publication/icml2023/</guid>
       <description>&lt;!-- 
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
@@ -31,9 +65,9 @@ Supplementary notes can be added here, including [code, math, and images](https:
     
     <item>
       <title>On Controller Tuning Using Time-Varying Bayesian Optimization</title>
-      <link>/publication/cdc2022a/</link>
+      <link>//localhost:1313/publication/cdc2022a/</link>
       <pubDate>Fri, 01 Jul 2022 00:00:00 +0000</pubDate>
-      <guid>/publication/cdc2022a/</guid>
+      <guid>//localhost:1313/publication/cdc2022a/</guid>
       <description>&lt;!-- &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
     Click the &lt;em&gt;Cite&lt;/em&gt; button above to demo the feature to enable visitors to import publication metadata into their reference management software.
