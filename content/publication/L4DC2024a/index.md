@@ -23,7 +23,7 @@ publication_short: ""
 abstract: Bayesian optimization (BO) has proven to be a powerful tool for automatically tuning control parameters without requiring knowledge of the underlying system dynamics. Safe BO methods, in addition, guarantee safety during the optimization process, assuming that the underlying objective function does not change. However, in real-world scenarios, time-variations frequently occur, for example, due to wear in the system or changes in operation. Utilizing standard safe BO strategies that do not address time-variations can result in failure as previous safe decisions may become unsafe over time, which we demonstrate herein. To address this, we introduce a new algorithm, Event-Triggered SafeOpt (ETSO), which adapts to changes online solely relying on the observed costs. At its core, ETSO uses an event trigger to detect significant deviations between observations and the current surrogate of the objective function. When such change is detected, the algorithm reverts to a safe backup controller, and exploration is restarted. In this way, safety is recovered and maintained across changes. We evaluate ETSO on quadcopter controller tuning, both in simulation and hardware experiments. ETSO outperforms state-of-the-art safe BO, achieving superior control performance over time while maintaining safety.
 
 # Summary. An optional shortened abstract.
-summary: arXiv 2022
+summary: 6th Annual Learning for Dynamics & Control Conference
 
 tags: []
 featured: false

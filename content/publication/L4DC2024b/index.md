@@ -23,7 +23,7 @@ publication_short: ""
 abstract: Traditionally, first-principle models are used to monitor and control dynamical systems. However, modeling complex systems using first principles can be challenging. Learning the dynamics from data using neural networks has emerged as a viable alternative. In practice, some parameters of a system may vary across different system instances, but training separate neural networks for all possible parameter combinations can be infeasible. Therefore, meta-learning using, e.g., conditional neural processes (CNPs), aims to learn a prior model over the system dynamics for various parameters. These models can then adapt on deployment to the parameters of a system instance using a context set composed of past observations. However, changes in parameters can also occur online during operation and naively adding past observations across parameter variations to the context set can distort the model’s latent representation, leading to inaccurate predictions over time. This paper introduces an adaptation scheme to enable CNPs to cope with such online variations. We combine a sliding window to accommodate gradual variations with the use of event triggers to detect sudden changes. The event triggers are based on concentration inequalities, they reset the context set of the CNP once observations deviate significantly from the CNP’s predictions. We validate our concepts on two nonlinear dynamical systems under parameter variations and demonstrate that our approaches decrease the prediction error over time as well as their efficacy for control.
 # Summary. An optional shortened abstract.
 
-summary: arXiv 2022
+summary: 6th Annual Learning for Dynamics & Control Conference
 
 tags: []
 featured: false
