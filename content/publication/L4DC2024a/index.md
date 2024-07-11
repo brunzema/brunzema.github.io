@@ -1,5 +1,5 @@
 ---
-title: "Event-Triggered Safe Bayesian Optimization on Quadcopters"
+title: "Event-triggered safe Bayesian optimization on quadcopters"
 authors:
   - Antonia Holzapfel*
   - Paul Brunzema*
