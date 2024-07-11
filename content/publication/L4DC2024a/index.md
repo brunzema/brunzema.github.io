@@ -29,8 +29,8 @@ tags: []
 featured: false
 
 links:
-- name: arXiv
-  url: https://arxiv.org/abs/2312.08058
+- name: Proceedings
+  url: https://proceedings.mlr.press/v242/holzapfel24a.html
 # url_pdf: http://arxiv.org/pdf/1512.04133v1
 # url_code: 'https://github.com/wowchemy/wowchemy-hugo-themes'
 # url_dataset: '#'

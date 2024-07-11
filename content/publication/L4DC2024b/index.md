@@ -1,10 +1,10 @@
 ---
-title: "Event-Triggered Safe Bayesian Optimization on Quadcopters"
+title: "Neural processes with event triggers for fast adaptation to changes"
 authors:
-  - Antonia Holzapfel*
   - Paul Brunzema*
+  - Paul Kruse*
   - Sebastian Trimpe
-date: "2023-12-10T00:00:00Z"
+date: "2024-07-10T00:00:00Z"
 doi: ""
 
 # Schedule page publish date (NOT publication's date).
