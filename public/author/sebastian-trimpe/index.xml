@@ -5,18 +5,18 @@
     <link>//localhost:1313/author/sebastian-trimpe/</link>
       <atom:link href="//localhost:1313/author/sebastian-trimpe/index.xml" rel="self" type="application/rss+xml" />
     <description>Sebastian Trimpe</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 10 Dec 2023 00:00:00 +0000</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 10 Jul 2024 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>//localhost:1313/images/icon_hu6e809ca584bd0f384468343fcaff2114_5856_512x512_fill_lanczos_center_3.png</url>
+      <url>//localhost:1313/images/icon_hu9647870550597799599.png</url>
       <title>Sebastian Trimpe</title>
       <link>//localhost:1313/author/sebastian-trimpe/</link>
     </image>
     
     <item>
-      <title>Event-Triggered Safe Bayesian Optimization on Quadcopters</title>
-      <link>//localhost:1313/publication/l4dc2024a/</link>
-      <pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/publication/l4dc2024a/</guid>
+      <title>Neural processes with event triggers for fast adaptation to changes</title>
+      <link>//localhost:1313/publication/l4dc2024b/</link>
+      <pubDate>Wed, 10 Jul 2024 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/publication/l4dc2024b/</guid>
       <description>&lt;!-- 
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;
@@ -30,10 +30,10 @@ Supplementary notes can be added here, including [code, math, and images](https:
     </item>
     
     <item>
-      <title>Event-Triggered Safe Bayesian Optimization on Quadcopters</title>
-      <link>//localhost:1313/publication/l4dc2024b/</link>
+      <title>Event-triggered safe Bayesian optimization on quadcopters</title>
+      <link>//localhost:1313/publication/l4dc2024a/</link>
       <pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/publication/l4dc2024b/</guid>
+      <guid>//localhost:1313/publication/l4dc2024a/</guid>
       <description>&lt;!-- 
 &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;

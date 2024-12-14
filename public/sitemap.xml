@@ -3,33 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>//localhost:1313/publication-type/1/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/authors/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/publication/l4dc2024b/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/author/paul-brunzema/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/author/paul-kruse/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/publication_types/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/publication/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>//localhost:1313/author/sebastian-trimpe/</loc>
+    <lastmod>2024-07-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>//localhost:1313/author/antonia-holzapfel/</loc>
     <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>//localhost:1313/authors/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>//localhost:1313/publication/l4dc2024a/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/publication/l4dc2024b/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/author/paul-brunzema/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/publication_types/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/publication/</loc>
-    <lastmod>2023-12-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>//localhost:1313/author/sebastian-trimpe/</loc>
     <lastmod>2023-12-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>//localhost:1313/publication-type/3/</loc>
