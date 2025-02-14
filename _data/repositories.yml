@@ -6,3 +6,7 @@ repo_description_lines_max: 2
 github_repos:
   - brunzema/truncated-mvn-sampler
   - brunzema/uitvbo
+  - pytorch/botorch
+  - cornellius-gp/gpytorch
+  - VectorInstitute/vbll
+  - garrettj403/SciencePlots
