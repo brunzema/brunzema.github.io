@@ -32,5 +32,3 @@ Prior to that, I completed a bachelor's degree in **mechanical engineering** and
 During my studies, I received the [Germany Scholarship](https://www.rwth-aachen.de/cms/root/Wirtschaft/Fundraising/~elu/Bildungsfonds/?lidx=1), a [MathWorks Fellowship](https://www.irt.rwth-aachen.de/global/show_document.asp?id=aaaaaaaaaavkdoz), and was selected repeatedly for [RWTH Aachen University's Dean's List](https://www.rwth-aachen.de/cms/root/Studium/Lehre/Exzellente-Lehre/~dhky/Dean-s-List/?lidx=1). For my master thesis under supervision from [Alexander von Rohr](https://thisisalex.de/) on parameter search in time-varying environments using Bayesian optimization I received the [SEW-EURODRIVE Student Award](https://www.sew-eurodrive-stiftung.de/en/#student-award).
 
 My current research evolves around uncertainty quanitifaction when learning system dynamics and detecting changes in system dynamics with probabilistic quarantees. Furthermore, I am interested in Bayesian optimization--specifically in high-dimensional and time-varying approaches.
-
-**NOTE: I am currently in the process of reformatting this page!**
