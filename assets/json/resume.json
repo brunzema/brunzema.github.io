@@ -17,12 +17,12 @@
       "institution": "RWTH Aachen University, Germany",
       "location": "Aachen, Germany",
       "url": "https://www.rwth-aachen.de/",
-      "area": "Machine Learning / Learning-based Control",
-      "studyType": "PhD, (Dr.-Ing. in Faculty of Mechanical Engineering)",
+      "area": "Bayesian Optimization and Bayesian Deep Learning for Dynamical Systems and Control",
+      "studyType": "PhD (Dr.-Ing.) in Machine Learning / Learning-based Control",
       "startDate": "2022-04-01",
       "endDate": "now",
       "score": "10",
-      "courses": ["Bayesian Optimization", "Bayesian Deep Learning", "Controller Tuning"]
+      "courses": ["Associated Doctoral Researcher at the Research Group UnRAVeL (since 2023)", "Cambridge Ellis Unit Summer School on Probabilistic Machine Learning, Cambridge, UK (2023)"]
     },
     {
       "institution": "RWTH Aachen University, Germany",
@@ -52,8 +52,30 @@
       "url": "https://dsme.rwth-aachen.de/",
       "startDate": "2022-04-01",
       "endDate": "now",
-      "summary": "Nonlinear event-triggered learning and (time-varying) Bayesian optimization; ongoing research also focuses on improving model accuracy in model-based reinforcement learning",
-      "highlights": ["Teaching: Creation of a massive open online course (MOOC) on “Reinforcement Learning” and a MOOC for “Learning-based Control” (in preparation); supervision of Bachelor and Master theses"]
+      "summary": "Research on nonlinear event-triggered learning and (time-varying) Bayesian optimization. Teaching: Creation of a massive open online course (MOOC) on “Reinforcement Learning” and a MOOC for “Learning-based Control” (in preparation); supervision of Bachelor and Master theses"
+    },
+    {
+      "name": "Institute of Automatic Control, RWTH Aachen University",
+      "position": "Student Teaching Assistant",
+      "url": "https://dsme.rwth-aachen.de/",
+      "startDate": "2019-05",
+      "endDate": "2022-03-31",
+      "summary": "Assist students in the Tutorial Control Engineering (fundamentals of control theory); present solutions to approximately 700 students"
+    },
+    {
+      "name": "Institute of Automatic Control, RWTH Aachen University",
+      "position": "Student Teaching Assistant",
+      "url": "https://irt.rwth-aachen.de/",
+      "startDate": "2019-05",
+      "endDate": "2021-03-31",
+      "summary": "Development of a nonlinear model predictive controller for the power train of fuel cell hybrid  vehicles; comparison of tracking and economic nonlinear model predictive control"
+    },
+    {
+      "name": "Porsche Engineering Services GmbH",
+      "position": "Internship",
+      "url": "https://www.porscheengineering.com/de/peg",
+      "startDate": "2018-10",
+      "endDate": "2019-03-31"
     }
   ],
   "volunteer": [
@@ -70,11 +92,29 @@
   ],
   "awards": [
     {
-      "title": "Nobel Prize in Physics",
-      "date": "1921-11-01",
-      "awarder": "Royal Swedish Academy of Sciences",
-      "url": "https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/",
-      "summary": "The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'"
+      "title": "Student Award",
+      "date": "2023",
+      "awarder": "SEW-EURODRIVE Foundation",
+      "url": "https://www.sew-eurodrive-stiftung.de/",
+      "summary": "Award for the best Master's thesis at the faculty."
+    },
+    {
+      "title": "Dean's List",
+      "date": "2021, 2022",
+      "awarder": "RWTH Aachen University",
+      "url": "https://www.rwth-aachen.de/cms/root/studium/lehre/exzellente-lehre/~dhky/dean-s-list/?lidx=1",
+      "summary": "Top 5% of students in the course of study."
+    },
+    {
+      "title": "MathWorks Fellowship for Graduate Students",
+      "date": "2021",
+      "awarder": "The MathWorks GmbH"
+    },
+    {
+      "title": "Germany Scholarship",
+      "date": "2021",
+      "awarder": "RWTH Education Fund",
+      "url": "https://www.rwth-aachen.de/cms/root/wirtschaft/fundraising/~elu/bildungsfonds/?lidx=1"
     }
   ],
   "publications": [
@@ -129,15 +169,20 @@
   ],
   "interests": [
     {
-      "name": "Physics",
+      "name": "Bayesian Methods",
       "icon": "fa-solid fa-tag",
       "keywords": [
-        "Quantum Mechanics",
-        "Quantum Computing",
-        "Quantum Information",
-        "Quantum Cryptography",
-        "Quantum Communication",
-        "Quantum Teleportation"
+        "Bayesian Optimization",
+        "Bayesian Deep Learning",
+        "Gaussian Processes"
+      ]
+    },
+    {
+      "name": "Control Theory",
+      "icon": "fa-solid fa-tag",
+      "keywords": [
+        "Model Predictive Control",
+        "Event-Triggered Learning"
       ]
     }
   ],

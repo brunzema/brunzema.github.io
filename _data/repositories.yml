@@ -9,4 +9,5 @@ github_repos:
   - pytorch/botorch
   - cornellius-gp/gpytorch
   - VectorInstitute/vbll
+  - astral-sh/uv
   - garrettj403/SciencePlots
