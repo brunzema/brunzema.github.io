@@ -2,7 +2,7 @@
   "basics": {
     "name": "Paul Brunzema",
     "label": "PhD Student",
-    "image": "",
+    "image": "/assets/images/avatar.jpeg",
     "email": "brunzema [at] dsme.rwth-aachen.de",
     "location": {
       "address": "Theaterstrasse 35-39",
