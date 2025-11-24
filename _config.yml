@@ -1,10 +1,4 @@
-# Jekyll configuration snippet (add this block)
-
-# SCSS Configuration
-sass:
-  style: compressed
-  # Set the input directory for Sass files
-  sass_dir: _sass
+# Jekyll configuration snippet
 # -----------------------------------------------------------------------------
 # Site settings
 # -----------------------------------------------------------------------------
