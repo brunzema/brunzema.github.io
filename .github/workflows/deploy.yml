@@ -88,10 +88,13 @@ jobs:
           value: ${{ github.repository }}
       - name: Install and Build 🔧
         run: |
+          # The system-level ImageMagick dependency for jekyll-imagemagick
           sudo apt-get update && sudo apt-get install -y imagemagick
+          # Installing nbconvert for jekyll-jupyter-notebook
           pip3 install --upgrade nbconvert
           export JEKYLL_ENV=production
-          bundle exec jekyll build
+          # *** MODIFIED: Added --trace for better debugging ***
+          bundle exec jekyll build --trace
       - name: Purge unused CSS 🧹
         run: |
           npm install -g purgecss
