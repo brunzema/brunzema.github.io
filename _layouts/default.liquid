@@ -50,6 +50,17 @@
     <!-- Footer -->
     {% include footer.liquid %}
 
+    <!-- 
+      START LIGHTBOX ADDITION 
+      Insert the modal HTML structure here, before the scripts.
+    -->
+    <div id="imageModal" class="lightbox-overlay">
+      <div class="lightbox-content">
+        <img id="modalImage" src="" alt="Zoomed Review Image" loading="lazy">
+      </div>
+    </div>
+    <!-- END LIGHTBOX ADDITION -->
+
     <!-- JavaScripts -->
     {% include scripts.liquid %}
   </body>

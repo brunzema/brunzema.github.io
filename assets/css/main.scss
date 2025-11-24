@@ -23,3 +23,64 @@ $max-content-width: {{ site.max_width }};
   "tabler-icons/tabler-icons-filled.scss",
   "tabler-icons/tabler-icons-outline.scss"
 ;
+
+
+/* -------------------------------------- */
+/* Image Lightbox/Modal Styles */
+/* -------------------------------------- */
+
+.lightbox-overlay {
+    /* Hidden by default */
+    display: none;
+    
+    /* Position and size to cover the entire viewport */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Dark semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.9);
+    
+    /* Ensure it is always on top */
+    z-index: 9999;
+    
+    /* Center content (the image) */
+    align-items: center;
+    justify-content: center;
+    
+    /* Smoother transition when active */
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    cursor: zoom-out;
+}
+
+/* State when the modal is visible */
+.lightbox-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-content {
+    /* Prevents the image from being clipped by padding/margin */
+    display: contents; 
+}
+
+.lightbox-overlay img {
+    /* Constrain image size within the modal */
+    max-width: 90vw;
+    max-height: 90vh;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0.5rem; /* Soft rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    /* Transition for smoother image load/change */
+    transition: transform 0.3s ease;
+}
+
+/* Hide scrollbar when modal is active (done in JS as well, but good practice) */
+body.lightbox-active {
+    overflow: hidden !important;
+}
