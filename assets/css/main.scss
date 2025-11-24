@@ -19,9 +19,9 @@ $max-content-width: {{ site.max_width }};
   "font-awesome/brands",
   "font-awesome/solid",
   "font-awesome/regular",
-  "tabler-icons/tabler-icons.scss",
-  "tabler-icons/tabler-icons-filled.scss",
-  "tabler-icons/tabler-icons-outline.scss"
+  "tabler-icons/tabler-icons",
+  "tabler-icons/tabler-icons-filled",
+  "tabler-icons/tabler-icons-outline"
 ;
 
 
@@ -67,11 +67,13 @@ $max-content-width: {{ site.max_width }};
     display: contents; 
 }
 
-.lightbox-overlay img {
-    /* Constrain image size within the modal */
-    max-width: 90vw;
-    max-height: 90vh;
-    height: auto;
+/* FIX: Increased specificity using the #imageModal ID */
+#imageModal img {
+    /* ADJUSTMENT: Constrain image size to 80% of viewport width/height */
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto !important; /* Force width override against other rules */
+    height: auto !important; /* Force height override against other rules */
     object-fit: contain;
     border-radius: 0.5rem; /* Soft rounded corners */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);

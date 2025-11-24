@@ -1,3 +1,10 @@
+# Jekyll configuration snippet (add this block)
+
+# SCSS Configuration
+sass:
+  style: compressed
+  # Set the input directory for Sass files
+  sass_dir: _sass
 # -----------------------------------------------------------------------------
 # Site settings
 # -----------------------------------------------------------------------------
@@ -73,7 +80,7 @@ og_image: # The site-wide (default for all links) Open Graph preview image
 # -----------------------------------------------------------------------------
 
 # For Google Analytics, see https://support.google.com/analytics/answer/10447272?hl=en&ref_topic=14088998&sjid=5129943941510317771-SA#zippy=%2Cgoogle-sites
-# and follow the instructions for Google Sites. You will need to create a Google Analytics property and copy the Google tag ID.
+# and follow the instructions for Google Analytics property and copy the Google tag ID.
 google_analytics: # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
 cronitor_analytics: # cronitor RUM analytics site ID (format: XXXXXXXXX)
 pirsch_analytics: # your Pirsch analytics site ID (length 32 characters)
@@ -224,8 +231,10 @@ defaults:
     values:
       sitemap: false
 
+# SCSS Configuration
 sass:
   style: compressed
+  sass_dir: _sass
 
 # -----------------------------------------------------------------------------
 # Jekyll Minifier

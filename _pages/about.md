@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: I like machine learning and learning-based control.
+# subtitle: I like machine learning and learning-based control.
 
 profile:
   align: right
@@ -32,3 +32,5 @@ Prior to my PhD studies, I completed a bachelor's degree in **mechanical enginee
 During my studies, I received the [Germany Scholarship](https://www.rwth-aachen.de/cms/root/Wirtschaft/Fundraising/~elu/Bildungsfonds/?lidx=1), a MathWorks Fellowship, and was selected repeatedly for [RWTH Aachen University's Dean's List](https://www.rwth-aachen.de/cms/root/Studium/Lehre/Exzellente-Lehre/~dhky/Dean-s-List/?lidx=1). For my master thesis under supervision from [Alexander von Rohr](https://thisisalex.de/) on parameter search in time-varying environments using Bayesian optimization I received the [SEW-EURODRIVE Student Award](https://www.sew-eurodrive-stiftung.de/en/#student-award).
 
 My current research evolves around uncertainty quanitifaction when learning system dynamics and detecting changes in system dynamics with probabilistic quarantees. Furthermore, I am interested in Bayesian optimization--specifically in high-dimensional and time-varying approaches.
+
+_(all images next to the publications are generated with [Nano Banana Pro](https://blog.google/technology/ai/nano-banana-pro/))_
