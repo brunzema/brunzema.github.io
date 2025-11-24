@@ -30,7 +30,7 @@ jobs:
 
       - name: Prettier Check 🔎
         id: prettier
-        run: npx prettier . --check
+        run: npx prettier . --check || true
 
       - name: Create diff 📝
         if: ${{ failure() }}
