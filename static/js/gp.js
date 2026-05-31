@@ -20,9 +20,7 @@
 
   const css = getComputedStyle(document.documentElement);
   const accent = (css.getPropertyValue("--accent") || "#1f4e79").trim();
-  const ink = (css.getPropertyValue("--ink") || "#1c1a17").trim();
   const A = hexToRgb(accent);
-  const I = hexToRgb(ink);
 
   // ── geometry / world domain ──
   let W = 0, H = 0, dpr = 1, DX = 1;
@@ -81,11 +79,6 @@
   function newWalker() { return { x: Math.random() * DX, y: Math.random(), marks: [], acc: 0, life: Math.random() * 6 }; }
   function buildWalkers() { walkers = []; for (let i = 0; i < NW; i++) walkers.push(newWalker()); }
   let bestX = 0.5, bestY = 0.5;
-
-  // ── faint candidate samples ──
-  const NS = 7;
-  let samples = [];
-  function buildSamples() { samples = []; for (let i = 0; i < NS; i++) samples.push({ x: DX / 2, y: 0.5, age: Math.random() }); }
 
   let fmax = 1;
   function computeFields(t) {
@@ -160,7 +153,7 @@
   const WX = (x) => (x / DX) * W, WY = (y) => y * H;
 
   function drawWalkers(dt) {
-    const STEP = 0.2;                     // world units / second — slow
+    const STEP = 0.13;                    // world units / second — slow
     const GAP = 0.075;                    // spacing between query-point dots
     for (const w of walkers) {
       w.life += dt;
@@ -175,7 +168,7 @@
       // drop a discrete "evaluation" dot every GAP of arc length
       w.acc += Math.hypot(w.x - px0, w.y - py0);
       if (w.acc >= GAP) { w.acc = 0; w.marks.push([w.x, w.y]); if (w.marks.length > 16) w.marks.shift(); }
-      if (w.life > 10) { Object.assign(w, newWalker()); continue; }
+      if (w.life > 13) { Object.assign(w, newWalker()); continue; }
 
       const M = w.marks;
       // very faint connecting path
@@ -206,25 +199,6 @@
     ctx.beginPath(); ctx.arc(WX(bestX), WY(bestY), 5.5, 0, Math.PI * 2); ctx.stroke();
   }
 
-  function resampleOne(s) {
-    for (let tries = 0; tries < 40; tries++) {
-      const x = Math.random() * DX, y = Math.random();
-      if (density(x, y) / fmax > Math.random()) { s.x = x; s.y = y; return; }
-    }
-    s.x = DX / 2; s.y = 0.5;
-  }
-  function drawSamples(dt) {
-    for (const s of samples) {
-      s.age += dt * 0.06;
-      if (s.age >= 1) { s.age = 0; resampleOne(s); }
-      const fade = Math.sin(Math.min(s.age, 1) * Math.PI);
-      ctx.beginPath();
-      ctx.arc(WX(s.x), WY(s.y), 1.6, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${I.r},${I.g},${I.b},${0.32 * fade})`;
-      ctx.fill();
-    }
-  }
-
   const LEVELS_REL = [0.1, 0.22, 0.4, 0.62, 0.84];
   function render(t, dt) {
     computeFields(t);
@@ -232,7 +206,6 @@
     drawCloud();
     for (let i = 0; i < LEVELS_REL.length; i++)
       drawContour(LEVELS_REL[i] * fmax, 0.14 + i * 0.1, 1);
-    drawSamples(dt);
     drawWalkers(dt);
     drawBest();
   }
@@ -252,7 +225,7 @@
     cgrid = new Float32Array(Cx * Cy);
     off.width = Nx; off.height = Ny;
     img = octx.createImageData(Nx, Ny);
-    buildBumps(); buildWalkers(); buildSamples();
+    buildBumps(); buildWalkers();
   }
 
   let raf = null, t0 = null, last = null;
@@ -270,8 +243,6 @@
     ctx.clearRect(0, 0, W, H);
     drawCloud();
     for (let i = 0; i < LEVELS_REL.length; i++) drawContour(LEVELS_REL[i] * fmax, 0.14 + i * 0.1, 1);
-    for (const s of samples) resampleOne(s);
-    drawSamples(0);
     drawBest();
   }
   function start() {

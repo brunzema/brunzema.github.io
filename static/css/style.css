@@ -165,7 +165,7 @@ main { padding-top: var(--nav-h); }
 /* Bio ("abstract") + compact CV side by side */
 .hero-cols {
   display: grid;
-  grid-template-columns: 1fr 230px;
+  grid-template-columns: 1fr 250px;
   gap: 2.75rem;
   align-items: start;
 }
@@ -269,7 +269,7 @@ main { padding-top: var(--nav-h); }
   transform: translateY(-1px);
 }
 
-.social-link svg { opacity: 0.7; }
+.social-link svg { width: 15px; height: 15px; opacity: 0.7; }
 
 .social-link--cv:hover {
   color: var(--accent);
@@ -341,10 +341,10 @@ main { padding-top: var(--nav-h); }
 
 .exp-entry {
   display: grid;
-  grid-template-columns: 30px 1fr;
-  gap: 0.7rem;
+  grid-template-columns: 40px 1fr;
+  gap: 0.8rem;
   align-items: center;
-  padding: 0.65rem 0;
+  padding: 0.7rem 0;
   border-top: 1px solid var(--line);
   text-decoration: none;
 }
@@ -353,9 +353,9 @@ main { padding-top: var(--nav-h); }
 .exp-entry:hover .exp-role { color: var(--accent); }
 
 .exp-logo {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
   border: 1px solid var(--line);
   background: var(--bg-card);
   display: grid;
@@ -366,7 +366,7 @@ main { padding-top: var(--nav-h); }
 }
 
 .exp-logo-abbr {
-  font-size: 0.5rem;
+  font-size: 0.62rem;
   font-weight: 600;
   color: var(--subtle);
   letter-spacing: 0.02em;
@@ -379,65 +379,22 @@ main { padding-top: var(--nav-h); }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 4px;
+  padding: 6px;
   background: var(--bg-card);
 }
 
-.exp-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.32; }
+.exp-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.34; }
 
 .exp-role {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.86rem;
   color: var(--ink);
   transition: color var(--dur) var(--ease);
 }
 
-.exp-org {
-  font-size: 0.78rem;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.exp-org { font-size: 0.78rem; color: var(--muted); }
 
-.exp-period { font-size: 0.72rem; color: var(--subtle); margin-top: 0.05rem; }
-
-/* ══════════════════════
-   AWARDS  (compact inline chips)
-══════════════════════ */
-.section--tight { padding: 1.75rem 0; }
-
-.awards-row {
-  display: flex;
-  align-items: baseline;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.awards-heading {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 500;
-  color: var(--muted);
-  letter-spacing: -0.01em;
-  flex-shrink: 0;
-}
-
-.awards-chips {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.chip {
-  font-size: 0.82rem;
-  color: var(--ink);
-  background: var(--bg-card);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 0.32rem 0.85rem;
-}
+.exp-period { font-size: 0.72rem; color: var(--subtle); margin-top: 0.1rem; }
 
 /* ══════════════════════
    PUBLICATION CARDS
