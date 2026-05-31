@@ -157,13 +157,32 @@
 
   const WX = (x) => (x / DX) * W, WY = (y) => y * H;
 
+  // Smooth Catmull-Rom curve through world-space points. The curve interpolates
+  // every control point, so the equi-time query dots sit exactly on the line.
+  function strokeSmooth(pts) {
+    if (pts.length < 2) return;
+    const P = pts.map(([x, y]) => [WX(x), WY(y)]);
+    ctx.beginPath();
+    ctx.moveTo(P[0][0], P[0][1]);
+    if (P.length === 2) { ctx.lineTo(P[1][0], P[1][1]); ctx.stroke(); return; }
+    for (let i = 0; i < P.length - 1; i++) {
+      const p0 = P[i > 0 ? i - 1 : 0];
+      const p1 = P[i];
+      const p2 = P[i + 1];
+      const p3 = P[i + 2 < P.length ? i + 2 : P.length - 1];
+      const c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      const c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      ctx.bezierCurveTo(c1x, c1y, c2x, c2y, p2[0], p2[1]);
+    }
+    ctx.stroke();
+  }
+
   function drawWalkers(dt) {
     const STEP = 0.11;                    // world units / second — slow
-    const GAP = 0.085;                    // spacing between query-point dots
+    const TGAP = 0.6;                     // seconds between evaluations (one BO iteration)
     const LIFE = 14;
     for (const w of walkers) {
       w.life += dt;
-      const px0 = w.x, py0 = w.y;
       const [gx, gy] = grad(w.x, w.y);
       const mag = Math.hypot(gx, gy);
       const local = Math.min(1, density(w.x, w.y) / fmax);
@@ -183,26 +202,23 @@
       if (w.y < 0 || w.y > 1) w.vy = 0;
       w.x = Math.max(0, Math.min(DX, w.x)); w.y = Math.max(0, Math.min(1, w.y));
 
-      // drop a discrete "evaluation" dot every GAP of arc length
-      w.acc += Math.hypot(w.x - px0, w.y - py0);
-      if (w.acc >= GAP) { w.acc = 0; w.marks.push([w.x, w.y]); if (w.marks.length > 14) w.marks.shift(); }
+      // drop a discrete "evaluation" dot at fixed time steps (one BO iteration each)
+      w.acc += dt;
+      if (w.acc >= TGAP) { w.acc -= TGAP; w.marks.push([w.x, w.y]); if (w.marks.length > 14) w.marks.shift(); }
       if (w.life > LIFE) { Object.assign(w, newWalker()); continue; }
 
       const M = w.marks;
       const dying = Math.min(1, (LIFE - w.life) / 2.2);
       const fade = Math.max(0, dying);
 
-      // Continuous trace through past evaluations and the live candidate.
+      // Smooth, continuous trace through past evaluations and the live candidate.
       const trace = M.concat([[w.x, w.y]]);
       if (trace.length > 1) {
         ctx.strokeStyle = `rgba(${A.r},${A.g},${A.b},${0.2 * fade})`;
         ctx.lineWidth = 1.45;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
-        ctx.beginPath();
-        ctx.moveTo(WX(trace[0][0]), WY(trace[0][1]));
-        for (let i = 1; i < trace.length; i++) ctx.lineTo(WX(trace[i][0]), WY(trace[i][1]));
-        ctx.stroke();
+        strokeSmooth(trace);
       }
       // query dots along the trajectory, fading with age
       for (let i = 0; i < M.length; i++) {
