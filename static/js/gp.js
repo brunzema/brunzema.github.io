@@ -18,9 +18,14 @@
   const ctx = canvas.getContext("2d");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const css = getComputedStyle(document.documentElement);
-  const accent = (css.getPropertyValue("--accent") || "#1f4e79").trim();
-  const A = hexToRgb(accent);
+  let A = hexToRgb("#1f4e79");
+  let paper = { r: 251, g: 250, b: 247 };
+  function syncThemeColors() {
+    const css = getComputedStyle(document.documentElement);
+    A = hexToRgb((css.getPropertyValue("--accent") || "#1f4e79").trim());
+    paper = rgbVarToRgb(css.getPropertyValue("--bg-rgb") || "251,250,247");
+  }
+  syncThemeColors();
 
   // ── geometry / world domain ──
   let W = 0, H = 0, dpr = 1, DX = 1;
@@ -207,7 +212,7 @@
       }
       // current candidate
       ctx.beginPath(); ctx.arc(WX(w.x), WY(w.y), 3.4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(251,250,247,${0.42 * fade})`; ctx.fill();
+      ctx.fillStyle = `rgba(${paper.r},${paper.g},${paper.b},${0.42 * fade})`; ctx.fill();
       ctx.beginPath(); ctx.arc(WX(w.x), WY(w.y), 2.05, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${A.r},${A.g},${A.b},${0.52 * fade})`; ctx.fill();
     }
@@ -222,6 +227,7 @@
 
   const LEVELS_REL = [0.1, 0.22, 0.4, 0.62, 0.84];
   function render(t, dt) {
+    syncThemeColors();
     computeFields(t);
     ctx.clearRect(0, 0, W, H);
     drawCloud();
@@ -259,6 +265,7 @@
     raf = requestAnimationFrame(frame);
   }
   function staticFrame() {
+    syncThemeColors();
     computeFields(1.7);
     ctx.clearRect(0, 0, W, H);
     drawCloud();
@@ -275,6 +282,7 @@
 
   let rt;
   window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (reduced) staticFrame(); }, 150); });
+  window.addEventListener("themechange", () => { syncThemeColors(); if (reduced) staticFrame(); });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; t0 = null; }
     else if (!reduced && !raf) raf = requestAnimationFrame(frame);
@@ -287,5 +295,9 @@
     const s = m.length === 3 ? m.split("").map((c) => c + c).join("") : m;
     const num = parseInt(s, 16);
     return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+  }
+  function rgbVarToRgb(value) {
+    const [r, g, b] = value.split(",").map((n) => Number.parseInt(n.trim(), 10));
+    return { r: r || 0, g: g || 0, b: b || 0 };
   }
 })();

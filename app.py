@@ -33,7 +33,10 @@ SITE = {
             "since March 2022. Since September 2023, I am also an associate doctoral researcher in the "
             '<a href="https://unravel.rwth-aachen.de">UnRAVel Research Training Group</a>, funded by the DFG.'
         ),
-        (
+        (   
+            "I am currently a research scientist intern at "
+            '<a href="https://meta.com">Meta</a> '
+            "working on Bayesian optimization and AutoML. "
             "In summer 2025, I joined the "
             '<a href="https://www.tri.global/research/epic">EPIC group at Toyota Research Institute (TRI)</a> '
             "in Los Altos, CA as a research intern, working on autonomous racing in changing conditions."

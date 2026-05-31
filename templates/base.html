@@ -10,6 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <script>
+    (() => {
+      const saved = localStorage.getItem("theme");
+      const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
+    })();
+  </script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   {% block head %}{% endblock %}
 </head>
@@ -19,10 +26,16 @@
   <nav>
     <div class="nav-inner">
       <a href="/" class="nav-brand">{{ site.name }}</a>
-      <ul class="nav-links">
-        <li><a href="/"            class="{% if request.path == '/' %}active{% endif %}">About</a></li>
-        <li><a href="/publications" class="{% if request.path == '/publications' %}active{% endif %}">Publications</a></li>
-      </ul>
+      <div class="nav-actions">
+        <ul class="nav-links">
+          <li><a href="/"            class="{% if request.path == '/' %}active{% endif %}">About</a></li>
+          <li><a href="/publications" class="{% if request.path == '/publications' %}active{% endif %}">Publications</a></li>
+        </ul>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg class="theme-icon theme-icon--sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          <svg class="theme-icon theme-icon--moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.99 12.84A8.5 8.5 0 1 1 11.16 3a6.6 6.6 0 0 0 9.83 9.84Z"/></svg>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -42,5 +55,6 @@
   </footer>
 
   {% block scripts %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
 </body>
 </html>
