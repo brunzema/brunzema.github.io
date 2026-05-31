@@ -79,7 +79,7 @@
   }
 
   // ── optimization walkers + incumbent best ──
-  const NW = 3;
+  const NW = 5;
   let walkers = [];
   function newWalker() { return { x: Math.random() * DX, y: Math.random(), vx: 0, vy: 0, marks: [], acc: 0, life: Math.random() * 7 }; }
   function buildWalkers() { walkers = []; for (let i = 0; i < NW; i++) walkers.push(newWalker()); }
