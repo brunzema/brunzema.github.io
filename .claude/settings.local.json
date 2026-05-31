@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(python3 * there is a venv that you have to avtivate)",
+      "Bash(python3 *)",
+      "Bash(pip3 install * activate the venv)",
+      "Bash(python3.10 -m playwright install chromium)",
+      "Bash(python3.10 *)",
+      "Bash(lsof -ti:8080)",
+      "Bash(xargs kill -9)"
+    ]
+  }
+}

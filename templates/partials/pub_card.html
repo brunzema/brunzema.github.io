@@ -1,0 +1,60 @@
+<article class="pub-card">
+
+  <!-- Thumbnail -->
+  <div class="pub-thumb">
+    {% if pub.preview %}
+      <img
+        src="{{ url_for('static', filename='img/publication_preview/' + pub.preview) }}"
+        alt="{{ pub.title }} preview"
+        class="pub-img"
+        loading="lazy"
+      />
+    {% else %}
+      <div class="pub-img-placeholder">
+        <span>{{ pub.abbr or pub.year }}</span>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Content -->
+  <div class="pub-content">
+
+    <!-- Meta row: venue badge + year + award -->
+    <div class="pub-meta">
+      {% if pub.abbr %}
+        <span class="badge badge-venue">{{ pub.abbr }}</span>
+      {% endif %}
+      <span class="pub-year">{{ pub.year }}</span>
+      {% if pub.award_name %}
+        <span class="badge badge-award">{{ pub.award_name }}</span>
+      {% endif %}
+    </div>
+
+    <h3 class="pub-title">{{ pub.title }}</h3>
+
+    <!-- Authors -->
+    <p class="pub-authors">
+      {% for author in pub.authors %}
+        <span class="{% if is_me(author.name) %}author-me{% endif %}">{{ author.name }}{% if author.equal %}<sup>*</sup>{% endif %}</span>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+
+    {% if pub.venue %}
+      <p class="pub-venue">{{ pub.venue }}</p>
+    {% endif %}
+
+    <!-- Links -->
+    <div class="pub-links">
+      {% if pub.html %}
+        <a href="{{ pub.html }}" class="pub-link" target="_blank" rel="noopener">Paper</a>
+      {% endif %}
+      {% if pub.pdf %}
+        <a href="{{ pub.pdf }}" class="pub-link" target="_blank" rel="noopener">PDF</a>
+      {% endif %}
+      {% if pub.arxiv %}
+        <a href="{{ pub.arxiv }}" class="pub-link" target="_blank" rel="noopener">arXiv</a>
+      {% endif %}
+    </div>
+
+  </div>
+</article>
