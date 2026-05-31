@@ -25,7 +25,7 @@
   // ── geometry / world domain ──
   let W = 0, H = 0, dpr = 1, DX = 1;
   let Nx = 1, Ny = 70;
-  let Cx = 1, Cy = 44;
+  let Cx = 1, Cy = 80;
   let field, cgrid, img;
   const off = document.createElement("canvas");
   const octx = off.getContext("2d");
@@ -76,7 +76,7 @@
   // ── optimization walkers + incumbent best ──
   const NW = 2;
   let walkers = [];
-  function newWalker() { return { x: Math.random() * DX, y: Math.random(), marks: [], acc: 0, life: Math.random() * 6 }; }
+  function newWalker() { return { x: Math.random() * DX, y: Math.random(), vx: 0, vy: 0, marks: [], acc: 0, life: Math.random() * 6 }; }
   function buildWalkers() { walkers = []; for (let i = 0; i < NW; i++) walkers.push(newWalker()); }
   let bestX = 0.5, bestY = 0.5;
 
@@ -153,16 +153,25 @@
   const WX = (x) => (x / DX) * W, WY = (y) => y * H;
 
   function drawWalkers(dt) {
-    const STEP = 0.13;                    // world units / second — slow
+    const STEP = 0.11;                    // world units / second — slow
     const GAP = 0.075;                    // spacing between query-point dots
     for (const w of walkers) {
       w.life += dt;
       const px0 = w.x, py0 = w.y;
       const [gx, gy] = grad(w.x, w.y);
       const mag = Math.hypot(gx, gy);
-      const nx = (Math.random() - 0.5) * 0.05, ny = (Math.random() - 0.5) * 0.05; // exploration
-      if (mag > 1e-3) { w.x += (gx / mag * STEP + nx) * dt; w.y += (gy / mag * STEP + ny) * dt; }
-      else { w.x += nx * dt; w.y += ny * dt; }
+      const local = Math.min(1, density(w.x, w.y) / fmax);
+      const settle = Math.max(0, Math.min(1, (local - 0.72) / 0.24));
+      const speed = STEP * (1 - 0.55 * settle);
+      const explore = 0.018 * (1 - settle);
+      const nx = (Math.random() - 0.5) * explore, ny = (Math.random() - 0.5) * explore;
+      const tx = mag > 1e-3 ? gx / mag * speed + nx : nx;
+      const ty = mag > 1e-3 ? gy / mag * speed + ny : ny;
+      const follow = 1 - Math.exp(-dt * 5);
+      w.vx += (tx - w.vx) * follow;
+      w.vy += (ty - w.vy) * follow;
+      w.x += w.vx * dt;
+      w.y += w.vy * dt;
       w.x = Math.max(0, Math.min(DX, w.x)); w.y = Math.max(0, Math.min(1, w.y));
 
       // drop a discrete "evaluation" dot every GAP of arc length

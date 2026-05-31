@@ -68,12 +68,12 @@
         <div class="exp-list">
           {% for item in site.experience %}
           <a class="exp-entry" href="{{ item.url }}" target="_blank" rel="noopener">
-            <div class="exp-logo">
+            <div class="exp-logo{% if item.logo == 'rwth.svg' %} exp-logo--wide{% endif %}">
               <span class="exp-logo-abbr">{{ item.org_short }}</span>
               <img
                 src="{{ url_for('static', filename='img/logos/' + item.logo) }}"
                 alt="{{ item.org_short }}"
-                class="exp-logo-img"
+                class="exp-logo-img{% if item.logo == 'rwth.svg' %} exp-logo-img--wide{% endif %}"
                 onerror="this.remove()">
             </div>
             <div class="exp-body">
