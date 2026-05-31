@@ -30,7 +30,7 @@
   // ── geometry / world domain ──
   let W = 0, H = 0, dpr = 1, DX = 1;
   let Nx = 1, Ny = 70;
-  let Cx = 5, Cy = 80;
+  let Cx = 1, Cy = 80;
   let field, cgrid, img;
   const off = document.createElement("canvas");
   const octx = off.getContext("2d");
