@@ -7,10 +7,6 @@
 <section class="page-header">
   <div class="container">
     <h1 class="page-title">Publications</h1>
-    <p class="page-subtitle" style="margin-top:0.35rem">
-      {{ pubs_by_year.values() | sum(start=[]) | length }} publications across machine learning, control, and robotics.
-      <sup>*</sup> Equal contribution.
-    </p>
   </div>
 </section>
 
@@ -28,7 +24,9 @@
         </div>
       </div>
     {% endfor %}
-
+    <p class="page-subtitle" style="margin-top:0.35rem">
+      <sup>*</sup> Equal contribution.
+    </p>
   </div>
 </section>
 
