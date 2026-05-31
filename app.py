@@ -1,7 +1,7 @@
 """
 Paul Brunzema — Personal Website
 Run with: python app.py
-Then open: http://localhost:5000
+Then open: http://localhost:8080
 """
 
 import os
@@ -87,6 +87,17 @@ SITE = {
             "period": "Mar 2022 – present",
             "location": "Aachen, Germany",
             "note": "Supervised by Sebastian Trimpe. Associate doctoral researcher, UnRAVel Research Training Group (DFG) since Sep 2023.",
+        },
+        {
+            "role": "M.Sc. Automation Engineering",
+            "group": "",
+            "org": "RWTH Aachen University, Germany",
+            "org_short": "RWTH",
+            "url": "https://rwth-aachen.de",
+            "logo": "rwth.svg",
+            "period": "Oct 2015 – Dec 2021",
+            "location": "Aachen, Germany",
+            "note": "",
         },
     ],
     "social": {
@@ -211,7 +222,7 @@ def index():
     return render_template("index.html", site=SITE, selected_publications=selected, is_me=is_me)
 
 
-@app.route("/publications")
+@app.route("/publications/")
 def publications_page():
     pubs = parse_publications()
 
