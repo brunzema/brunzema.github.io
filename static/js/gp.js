@@ -254,10 +254,11 @@
     buildBumps(); buildWalkers();
   }
 
-  let raf = null, t0 = null, last = null;
+  let raf = null, t0 = null, last = null, pausedAt = null;
   const SPEED = 0.055;
   function frame(now) {
-    if (t0 === null) { t0 = now; last = now; }
+    if (t0 === null) t0 = now;
+    if (last === null) last = now;
     const t = ((now - t0) / 1000) * SPEED;
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
@@ -276,16 +277,38 @@
     if (W === 0) { requestAnimationFrame(start); return; }
     if (reduced) { staticFrame(); return; }
     if (raf) cancelAnimationFrame(raf);
-    t0 = null;
+    t0 = null; last = null;
     raf = requestAnimationFrame(frame);
   }
 
   let rt;
-  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { resize(); if (reduced) staticFrame(); }, 150); });
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {
+      // Mobile browsers fire `resize` when the URL bar shows/hides while
+      // scrolling, even though the canvas size is unchanged. resize() re-seeds
+      // every bump/walker, so reacting here makes the field visibly jump.
+      // Bail out unless the backing-store dimensions actually changed.
+      const r = canvas.getBoundingClientRect();
+      const d = Math.min(window.devicePixelRatio || 1, 2);
+      if (Math.round(r.width * d) === canvas.width && Math.round(r.height * d) === canvas.height) return;
+      resize();
+      if (reduced) staticFrame();
+    }, 150);
+  });
   window.addEventListener("themechange", () => { syncThemeColors(); if (reduced) staticFrame(); });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; t0 = null; }
-    else if (!reduced && !raf) raf = requestAnimationFrame(frame);
+    if (document.hidden) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+      pausedAt = performance.now();
+    } else if (!reduced && !raf) {
+      // Resume the clock where it paused instead of snapping the field back to t=0.
+      if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt;
+      pausedAt = null;
+      last = null;            // avoid a dt spike on the first resumed frame
+      raf = requestAnimationFrame(frame);
+    }
   });
 
   start();
