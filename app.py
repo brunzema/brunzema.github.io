@@ -241,6 +241,11 @@ def publications_page():
     )
 
 
+@app.route("/visualizations/")
+def visualizations_page():
+    return render_template("visualizations.html", site=SITE)
+
+
 # ─────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────

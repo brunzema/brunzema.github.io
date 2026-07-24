@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Visualizations — {{ site.name }}{% endblock %}
+
+{% block content %}
+
+<section class="viz-page-header animate-in">
+  <div class="container">
+    <h1 class="page-title">Visualizations</h1>
+  </div>
+</section>
+
+<section class="viz-feed">
+  <div class="viz-container">
+    <article class="viz-post animate-in">
+      <header class="viz-post-header">
+        <div class="viz-post-meta">
+          <time datetime="2026-07-24">24 July 2026</time>
+          <span aria-hidden="true">·</span>
+          <span>Interactive note 001</span>
+        </div>
+        <h2 class="viz-post-title">A Pareto front in motion</h2>
+      </header>
+
+      <figure class="pareto-demo" data-pareto-demo>
+        <div class="pareto-toolbar">
+          <div class="pareto-status" aria-label="Visualization status">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span data-time-step>t = 0.00</span>
+            <span class="status-separator" aria-hidden="true"></span>
+            <span data-front-count>— Pareto points</span>
+          </div>
+          <div class="pareto-actions">
+            <button class="viz-button" type="button" data-play-toggle>
+              <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+              <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+              <span data-play-label>Pause</span>
+            </button>
+            <button class="viz-button" type="button" data-new-paths>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+              New paths
+            </button>
+            <button class="viz-button viz-button--trace-reset" type="button" data-clear-trace disabled aria-label="Clear tracked point and trail" title="Clear tracked point and trail">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+              <span>Clear trace</span>
+            </button>
+            <button class="viz-button viz-button--info" type="button" data-info-toggle aria-label="About this visualization" aria-expanded="false" aria-controls="pareto-info">i</button>
+          </div>
+          <aside class="pareto-info-panel" id="pareto-info" data-info-panel hidden>
+            <div class="pareto-info-header">
+              <h3>What is happening?</h3>
+              <button type="button" data-info-close aria-label="Close information">×</button>
+            </div>
+            <p>
+              8,192 fixed Sobol sites cover a two-dimensional input space. Two independent, zero-mean
+              Gaussian-process fields map those sites into the y₁–y₂ plane.
+            </p>
+            <p>
+              Their shared spectral base samples follow smooth temporal trajectories: ε controls how quickly
+              each field drifts, while ℓ changes which spatial frequencies remain visible without redrawing the
+              underlying sample. The staircase is the maximization Pareto boundary relative to r = (0, 0); its
+              sites are ringed in both field maps.
+            </p>
+            <p>
+              Click either field map to track the nearest Sobol site. Its recent objective-space trajectory is
+              retained as a short sliding window and marked in both maps.
+            </p>
+            <p class="pareto-info-source">
+              Inspired by the time-varying GP model of
+              <a href="https://proceedings.mlr.press/v51/bogunovic16.html" target="_blank" rel="noopener">Bogunovic, Scarlett, and Cevher (2016)</a>.
+            </p>
+          </aside>
+        </div>
+
+        <div class="pareto-stage">
+          <div class="plot-heading">
+            <span class="plot-title">Objective space <span aria-hidden="true">·</span> maximize ↑</span>
+            <ul class="plot-legend" aria-label="Plot legend">
+              <li><span class="legend-mark legend-mark--sample" aria-hidden="true"></span>8,192 fixed Sobol evaluations</li>
+              <li><span class="legend-mark legend-mark--front" aria-hidden="true"></span>Pareto front</li>
+              <li><span class="legend-mark legend-mark--reference" aria-hidden="true"></span>Reference</li>
+              <li data-trace-legend hidden><span class="legend-mark legend-mark--trace" aria-hidden="true"></span>Tracked path</li>
+            </ul>
+          </div>
+          <div class="pareto-canvas-wrap">
+            <canvas
+              class="pareto-canvas"
+              data-pareto-canvas
+              role="img"
+              aria-label="Animated scatter plot of 8,192 evaluations in two-objective space. Non-dominated evaluations above the reference point zero, zero are highlighted as the Pareto front."
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="objective-grid">
+          <section class="objective-panel objective-panel--one" data-objective-panel="0" aria-labelledby="objective-one-title">
+            <header class="objective-header">
+              <h3 id="objective-one-title">Objective 01</h3>
+            </header>
+            <div class="objective-body">
+              <div class="objective-sliders">
+                <label class="range-control" for="change-rate-one">
+                  <span class="range-heading">
+                    <span>Change rate</span>
+                    <output for="change-rate-one" data-output="epsilon-0">ε₁ = 0.04</output>
+                  </span>
+                  <input class="range-input" id="change-rate-one" data-param="epsilon" data-objective="0" type="range" min="0" max="0.10" step="0.01" value="0.04" />
+                </label>
+                <label class="range-control" for="length-scale-one">
+                  <span class="range-heading">
+                    <span>Length scale</span>
+                    <output for="length-scale-one" data-output="lengthScale-0">ℓ₁ = 0.16</output>
+                  </span>
+                  <input class="range-input" id="length-scale-one" data-param="lengthScale" data-objective="0" type="range" min="0.06" max="0.40" step="0.01" value="0.16" />
+                </label>
+              </div>
+              <canvas
+                class="path-canvas"
+                data-path-canvas="0"
+                role="img"
+                aria-label="Current Gaussian-process field for objective one over the two-dimensional input square. Click to track the nearest Sobol site."
+              ></canvas>
+            </div>
+          </section>
+
+          <section class="objective-panel objective-panel--two" data-objective-panel="1" aria-labelledby="objective-two-title">
+            <header class="objective-header">
+              <h3 id="objective-two-title">Objective 02</h3>
+            </header>
+            <div class="objective-body">
+              <div class="objective-sliders">
+                <label class="range-control" for="change-rate-two">
+                  <span class="range-heading">
+                    <span>Change rate</span>
+                    <output for="change-rate-two" data-output="epsilon-1">ε₂ = 0.08</output>
+                  </span>
+                  <input class="range-input" id="change-rate-two" data-param="epsilon" data-objective="1" type="range" min="0" max="0.10" step="0.01" value="0.08" />
+                </label>
+                <label class="range-control" for="length-scale-two">
+                  <span class="range-heading">
+                    <span>Length scale</span>
+                    <output for="length-scale-two" data-output="lengthScale-1">ℓ₂ = 0.24</output>
+                  </span>
+                  <input class="range-input" id="length-scale-two" data-param="lengthScale" data-objective="1" type="range" min="0.06" max="0.40" step="0.01" value="0.24" />
+                </label>
+              </div>
+              <canvas
+                class="path-canvas"
+                data-path-canvas="1"
+                role="img"
+                aria-label="Current Gaussian-process field for objective two over the two-dimensional input square. Click to track the nearest Sobol site."
+              ></canvas>
+            </div>
+          </section>
+        </div>
+      </figure>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/pareto.js') }}" defer></script>
+{% endblock %}
