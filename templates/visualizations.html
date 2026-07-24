@@ -58,8 +58,8 @@
             <p>
               Their shared spectral base samples follow smooth temporal trajectories: ε controls how quickly
               each field drifts, while ℓ changes which spatial frequencies remain visible without redrawing the
-              underlying sample. The staircase is the maximization Pareto boundary relative to r = (0, 0); its
-              sites are ringed in both field maps.
+              underlying sample. The staircase is the Pareto boundary relative to r = (0, 0); the min/max
+              switches choose the preferred direction independently for each objective.
             </p>
             <p>
               Click either field map to track the nearest Sobol site. Its recent objective-space trajectory is
@@ -74,7 +74,7 @@
 
         <div class="pareto-stage">
           <div class="plot-heading">
-            <span class="plot-title">Objective space <span aria-hidden="true">·</span> maximize ↑</span>
+            <span class="plot-title" data-plot-title>Objective space · y₁ max ↑ · y₂ max ↑</span>
             <ul class="plot-legend" aria-label="Plot legend">
               <li><span class="legend-mark legend-mark--sample" aria-hidden="true"></span>8,192 fixed Sobol evaluations</li>
               <li><span class="legend-mark legend-mark--front" aria-hidden="true"></span>Pareto front</li>
@@ -87,7 +87,7 @@
               class="pareto-canvas"
               data-pareto-canvas
               role="img"
-              aria-label="Animated scatter plot of 8,192 evaluations in two-objective space. Non-dominated evaluations above the reference point zero, zero are highlighted as the Pareto front."
+              aria-label="Animated scatter plot of 8,192 evaluations in two-objective space. Reference-feasible non-dominated evaluations are highlighted as the Pareto front."
             ></canvas>
           </div>
         </div>
@@ -96,6 +96,10 @@
           <section class="objective-panel objective-panel--one" data-objective-panel="0" aria-labelledby="objective-one-title">
             <header class="objective-header">
               <h3 id="objective-one-title">Objective 01</h3>
+              <div class="direction-switch" role="group" aria-label="Optimization direction for objective one">
+                <button class="direction-option" type="button" data-direction-value="-1" data-objective="0" aria-pressed="false">min ↓</button>
+                <button class="direction-option is-active" type="button" data-direction-value="1" data-objective="0" aria-pressed="true">max ↑</button>
+              </div>
             </header>
             <div class="objective-body">
               <div class="objective-sliders">
@@ -126,6 +130,10 @@
           <section class="objective-panel objective-panel--two" data-objective-panel="1" aria-labelledby="objective-two-title">
             <header class="objective-header">
               <h3 id="objective-two-title">Objective 02</h3>
+              <div class="direction-switch" role="group" aria-label="Optimization direction for objective two">
+                <button class="direction-option" type="button" data-direction-value="-1" data-objective="1" aria-pressed="false">min ↓</button>
+                <button class="direction-option is-active" type="button" data-direction-value="1" data-objective="1" aria-pressed="true">max ↑</button>
+              </div>
             </header>
             <div class="objective-body">
               <div class="objective-sliders">

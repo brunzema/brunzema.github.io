@@ -18,6 +18,7 @@
     demo.querySelector('[data-path-canvas="0"]'),
     demo.querySelector('[data-path-canvas="1"]'),
   ];
+  const plotTitle = demo.querySelector("[data-plot-title]");
   const timeLabel = demo.querySelector("[data-time-step]");
   const frontCountLabel = demo.querySelector("[data-front-count]");
   const playButton = demo.querySelector("[data-play-toggle]");
@@ -38,6 +39,7 @@
   const VALUE_COUNT = SAMPLE_COUNT + FIELD_COUNT;
   const MIN_AXIS_LIMIT = 3;
   const REFERENCE = [0, 0];
+  const objectiveDirections = [1, 1];
   const RATE_SCALE = 5;
   const LENGTH_RESPONSE_TIME = 320;
   const RESET_BLEND_DURATION = 1100;
@@ -153,10 +155,17 @@
       paretoBlendMs: FRONT_BLEND_DURATION,
       featureCount: FEATURE_COUNT,
       referencePoint: REFERENCE.slice(),
+      objectiveDirections: objectiveDirections.map(
+        (direction) => (direction > 0 ? "maximize" : "minimize"),
+      ),
       sobolPreview: Array.from({ length: 4 }, (_, index) => [sobolInputs[0][index], sobolInputs[1][index]]),
       objectiveMeans: objectives.map((objective) => sampleMean(objective.display)),
       time: elapsedTime,
       paretoCount: currentFront.length,
+      paretoValues: currentFront.map((index) => [
+        objectives[0].display[index],
+        objectives[1].display[index],
+      ]),
       trackedIndex,
       trackedInput: trackedIndex >= 0
         ? [sobolInputs[0][trackedIndex], sobolInputs[1][trackedIndex]]
@@ -257,6 +266,15 @@
       });
     });
 
+    demo.querySelectorAll("[data-direction-value]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const objectiveIndex = Number.parseInt(button.dataset.objective, 10);
+        const direction = Number.parseInt(button.dataset.directionValue, 10);
+        setObjectiveDirection(objectiveIndex, direction);
+      });
+    });
+    updateDirectionControls();
+
     playButton.addEventListener("click", () => {
       setPlaying(!playing);
       requestDraw();
@@ -312,6 +330,38 @@
       objective.activeLengthScale = nextLengthScale;
     }
     requestDraw();
+  }
+
+  function setObjectiveDirection(objectiveIndex, direction) {
+    if (objectiveDirections[objectiveIndex] === direction) return;
+    objectiveDirections[objectiveIndex] = direction;
+    updateDirectionControls();
+
+    previousFront = currentFront;
+    currentFront = findParetoFront(objectives[0].display, objectives[1].display);
+    pendingFront = null;
+    frontBlendElapsed = 0;
+    frontRefreshElapsed = 0;
+    requestDraw();
+  }
+
+  function updateDirectionControls() {
+    demo.querySelectorAll("[data-direction-value]").forEach((button) => {
+      const objectiveIndex = Number.parseInt(button.dataset.objective, 10);
+      const direction = Number.parseInt(button.dataset.directionValue, 10);
+      const active = objectiveDirections[objectiveIndex] === direction;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+
+    const directionLabel = (direction) => (direction > 0 ? "max ↑" : "min ↓");
+    if (plotTitle) {
+      plotTitle.textContent = `Objective space · y₁ ${directionLabel(objectiveDirections[0])} · y₂ ${directionLabel(objectiveDirections[1])}`;
+    }
+    mainCanvas.setAttribute(
+      "aria-label",
+      `Animated scatter plot of 8,192 evaluations in two-objective space. Objective one is set to ${objectiveDirections[0] > 0 ? "maximize" : "minimize"}; objective two is set to ${objectiveDirections[1] > 0 ? "maximize" : "minimize"}. Reference-feasible non-dominated evaluations are highlighted as the Pareto front.`,
+    );
   }
 
   function setPlaying(nextPlaying) {
@@ -413,6 +463,7 @@
   function needsContinuousFrame() {
     return playing
       || Boolean(resetFrom)
+      || frontBlendElapsed < FRONT_BLEND_DURATION
       || objectives.some(
         (objective) => Math.abs(objective.lengthScale - objective.activeLengthScale) >= 1e-4,
       );
@@ -896,25 +947,30 @@
   }
 
   function findParetoFront(firstObjective, secondObjective) {
+    const firstDirection = objectiveDirections[0];
+    const secondDirection = objectiveDirections[1];
     const candidates = [];
     for (let index = 0; index < SAMPLE_COUNT; index += 1) {
-      if (firstObjective[index] >= REFERENCE[0] && secondObjective[index] >= REFERENCE[1]) {
+      const firstImprovement = firstDirection * (firstObjective[index] - REFERENCE[0]);
+      const secondImprovement = secondDirection * (secondObjective[index] - REFERENCE[1]);
+      if (firstImprovement >= 0 && secondImprovement >= 0) {
         candidates.push(index);
       }
     }
     candidates.sort((a, b) => {
-      const firstDifference = firstObjective[b] - firstObjective[a];
+      const firstDifference = firstDirection * (firstObjective[b] - firstObjective[a]);
       return Math.abs(firstDifference) > 1e-10
         ? firstDifference
-        : secondObjective[b] - secondObjective[a];
+        : secondDirection * (secondObjective[b] - secondObjective[a]);
     });
 
     const front = [];
     let bestSecondObjective = -Infinity;
     for (const index of candidates) {
-      if (secondObjective[index] > bestSecondObjective + 1e-7) {
+      const orientedSecondObjective = secondDirection * secondObjective[index];
+      if (orientedSecondObjective > bestSecondObjective + 1e-7) {
         front.push(index);
-        bestSecondObjective = secondObjective[index];
+        bestSecondObjective = orientedSecondObjective;
       }
     }
     front.reverse();

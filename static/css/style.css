@@ -935,7 +935,7 @@ main { padding-top: var(--nav-h); }
 
 .objective-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 0.35rem;
@@ -949,6 +949,43 @@ main { padding-top: var(--nav-h); }
   color: var(--control-color);
   text-transform: uppercase;
   letter-spacing: 0.12em;
+}
+
+.direction-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgba(var(--bg-rgb), 0.34);
+}
+
+.direction-option {
+  min-width: 49px;
+  padding: 0.24rem 0.42rem;
+  border: 0;
+  border-radius: 999px;
+  font: 600 0.61rem/1 var(--font-body);
+  color: var(--subtle);
+  background: transparent;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  transition: color var(--dur) var(--ease),
+              background var(--dur) var(--ease);
+}
+
+.direction-option:hover { color: var(--control-color); }
+
+.direction-option.is-active {
+  color: var(--control-color);
+  background: rgba(var(--control-rgb), 0.12);
+}
+
+.direction-option:focus-visible {
+  outline: 2px solid rgba(var(--control-rgb), 0.42);
+  outline-offset: 1px;
 }
 
 .objective-body {
