@@ -33,7 +33,7 @@
   if (!mainCanvas || pathCanvases.some((canvas) => !canvas)) return;
 
   const DESKTOP_SAMPLE_COUNT = 16384;
-  const MOBILE_SAMPLE_COUNT = 12288;
+  const MOBILE_SAMPLE_COUNT = 8192;
   const usesMobileSampleBudget = window.matchMedia(
     "(max-width: 680px), (hover: none) and (pointer: coarse)",
   ).matches;
@@ -713,7 +713,7 @@
   }
 
   function drawSamples(context, scaleX, scaleY) {
-    const pointSize = 2.7;
+    const pointSize = usesMobileSampleBudget ? 2 : 2.7;
     const pointOffset = pointSize / 2;
     context.beginPath();
     for (let index = 0; index < SAMPLE_COUNT; index += 1) {
@@ -805,7 +805,7 @@
 
   function drawFrontMarker(context, point, opacity) {
     context.beginPath();
-    context.arc(point[0], point[1], 2.8, 0, Math.PI * 2);
+    context.arc(point[0], point[1], usesMobileSampleBudget ? 2.3 : 2.8, 0, Math.PI * 2);
     context.fillStyle = rgba(palette.accent, 0.86 * opacity);
     context.fill();
   }
