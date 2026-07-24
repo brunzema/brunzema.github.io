@@ -962,7 +962,7 @@ main { padding-top: var(--nav-h); }
 }
 
 .direction-option {
-  min-width: 49px;
+  min-width: 43px;
   padding: 0.24rem 0.42rem;
   border: 0;
   border-radius: 999px;

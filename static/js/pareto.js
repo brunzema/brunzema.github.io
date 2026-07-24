@@ -1,7 +1,7 @@
 /* ───────────────────────────────────────────────────────────
    Smooth, time-varying two-objective GP visualization.
 
-   8,192 fixed 2-D Sobol sites are evaluated by two independent
+   Up to 16,384 fixed 2-D Sobol sites are evaluated by two independent
    squared-exponential GP fields. A shared spectral base draw keeps
    length-scale changes coupled, while latent Fourier weights move
    along continuous temporal trajectories. This preserves a GP draw
@@ -32,7 +32,13 @@
 
   if (!mainCanvas || pathCanvases.some((canvas) => !canvas)) return;
 
-  const SAMPLE_COUNT = 8192;
+  const DESKTOP_SAMPLE_COUNT = 16384;
+  const MOBILE_SAMPLE_COUNT = 12288;
+  const usesMobileSampleBudget = window.matchMedia(
+    "(max-width: 680px), (hover: none) and (pointer: coarse)",
+  ).matches;
+  const SAMPLE_COUNT = usesMobileSampleBudget ? MOBILE_SAMPLE_COUNT : DESKTOP_SAMPLE_COUNT;
+  const SAMPLE_COUNT_LABEL = SAMPLE_COUNT.toLocaleString("en-US");
   const FEATURE_COUNT = 40;
   const FIELD_RESOLUTION = 84;
   const FIELD_COUNT = FIELD_RESOLUTION * FIELD_RESOLUTION;
@@ -75,6 +81,7 @@
   let resetElapsed = RESET_BLEND_DURATION;
   let currentFront = [];
   let previousFront = [];
+  let previousFrontDirections = objectiveDirections.slice();
   let pendingFront = null;
   let frontRefreshElapsed = FRONT_REFRESH_INTERVAL;
   let frontBlendElapsed = FRONT_BLEND_DURATION;
@@ -91,6 +98,7 @@
     createObjective(0.08, 0.24),
   ];
 
+  updateSampleCountLabels();
   bindControls();
   setPlaying(playing);
   updateTraceControls();
@@ -145,6 +153,7 @@
   window.__paretoVisualization = {
     getState: () => ({
       sampleCount: SAMPLE_COUNT,
+      sampleBudget: usesMobileSampleBudget ? "mobile" : "desktop",
       inputDimension: 2,
       evolutionModel: "smooth-temporal-rff",
       lengthScaleCoupling: "shared-spectral-envelope",
@@ -152,9 +161,7 @@
       paretoBlendMs: FRONT_BLEND_DURATION,
       featureCount: FEATURE_COUNT,
       referencePoint: REFERENCE.slice(),
-      objectiveDirections: objectiveDirections.map(
-        (direction) => (direction > 0 ? "maximize" : "minimize"),
-      ),
+      objectiveDirections: objectiveDirections.map(directionName),
       sobolPreview: Array.from({ length: 4 }, (_, index) => [sobolInputs[0][index], sobolInputs[1][index]]),
       objectiveMeans: objectives.map((objective) => sampleMean(objective.display)),
       time: elapsedTime,
@@ -307,6 +314,12 @@
     }
   }
 
+  function updateSampleCountLabels() {
+    demo.querySelectorAll("[data-sample-count]").forEach((label) => {
+      label.textContent = SAMPLE_COUNT_LABEL;
+    });
+  }
+
   function updateRange(input) {
     const min = Number.parseFloat(input.min);
     const max = Number.parseFloat(input.max);
@@ -331,15 +344,29 @@
 
   function setObjectiveDirection(objectiveIndex, direction) {
     if (objectiveDirections[objectiveIndex] === direction) return;
+    const outgoingDirections = objectiveDirections.slice();
     objectiveDirections[objectiveIndex] = direction;
     updateDirectionControls();
 
     previousFront = currentFront;
+    previousFrontDirections = outgoingDirections;
     currentFront = findParetoFront(objectives[0].display, objectives[1].display);
     pendingFront = null;
     frontBlendElapsed = 0;
     frontRefreshElapsed = 0;
     requestDraw();
+  }
+
+  function directionName(direction) {
+    if (direction > 0) return "maximize";
+    if (direction < 0) return "minimize";
+    return "off";
+  }
+
+  function directionLabel(direction) {
+    if (direction > 0) return "max ↑";
+    if (direction < 0) return "min ↓";
+    return "off";
   }
 
   function updateDirectionControls() {
@@ -351,13 +378,12 @@
       button.setAttribute("aria-pressed", String(active));
     });
 
-    const directionLabel = (direction) => (direction > 0 ? "max ↑" : "min ↓");
     if (plotTitle) {
       plotTitle.textContent = `Objective space · y₁ ${directionLabel(objectiveDirections[0])} · y₂ ${directionLabel(objectiveDirections[1])}`;
     }
     mainCanvas.setAttribute(
       "aria-label",
-      `Animated scatter plot of 8,192 evaluations in two-objective space. Objective one is set to ${objectiveDirections[0] > 0 ? "maximize" : "minimize"}; objective two is set to ${objectiveDirections[1] > 0 ? "maximize" : "minimize"}. Reference-feasible non-dominated evaluations are highlighted as the Pareto front.`,
+      `Animated scatter plot of ${SAMPLE_COUNT_LABEL} evaluations in two-objective space. Objective one is set to ${directionName(objectiveDirections[0])}; objective two is set to ${directionName(objectiveDirections[1])}. Reference-feasible non-dominated evaluations are highlighted as the Pareto front.`,
     );
   }
 
@@ -482,8 +508,8 @@
     evaluateObjectives();
     updateTrackedTrail(deltaTime);
     updateAxisLimit(deltaTime);
-    if (frontRefreshElapsed >= FRONT_REFRESH_INTERVAL || currentFront.length === 0) {
-      refreshParetoFront(currentFront.length === 0);
+    if (frontRefreshElapsed >= FRONT_REFRESH_INTERVAL) {
+      refreshParetoFront(false);
     }
     startPendingFrontTransition();
     render();
@@ -496,6 +522,7 @@
     if (force || currentFront.length === 0) {
       currentFront = nextFront;
       previousFront = [];
+      previousFrontDirections = objectiveDirections.slice();
       pendingFront = null;
       frontBlendElapsed = FRONT_BLEND_DURATION;
     } else {
@@ -511,6 +538,7 @@
       return;
     }
     previousFront = currentFront;
+    previousFrontDirections = objectiveDirections.slice();
     currentFront = pendingFront;
     pendingFront = null;
     frontBlendElapsed = 0;
@@ -530,7 +558,9 @@
     drawInputField(pathCanvases[1], fieldSurfaces[1], objectives[1].display, palette.orange);
 
     timeLabel.textContent = `t = ${elapsedTime.toFixed(2)}`;
-    const countText = `${currentFront.length} Pareto point${currentFront.length === 1 ? "" : "s"}`;
+    const countText = objectiveDirections.every((direction) => direction === 0)
+      ? "Pareto front off"
+      : `${currentFront.length} Pareto point${currentFront.length === 1 ? "" : "s"}`;
     if (frontCountLabel.textContent !== countText) frontCountLabel.textContent = countText;
   }
 
@@ -562,14 +592,35 @@
     context.clip();
 
     if (previousFront.length && frontBlend < 1) {
-      drawDominatedRegion(context, previousFront, scaleX, scaleY, 1 - frontBlend);
+      drawDominatedRegion(
+        context,
+        previousFront,
+        scaleX,
+        scaleY,
+        1 - frontBlend,
+        previousFrontDirections,
+      );
     }
-    drawDominatedRegion(context, currentFront, scaleX, scaleY, frontBlend);
+    drawDominatedRegion(
+      context,
+      currentFront,
+      scaleX,
+      scaleY,
+      frontBlend,
+      objectiveDirections,
+    );
     drawSamples(context, scaleX, scaleY);
     if (previousFront.length && frontBlend < 1) {
-      drawFront(context, previousFront, scaleX, scaleY, 1 - frontBlend);
+      drawFront(
+        context,
+        previousFront,
+        scaleX,
+        scaleY,
+        1 - frontBlend,
+        previousFrontDirections,
+      );
     }
-    drawFront(context, currentFront, scaleX, scaleY, frontBlend);
+    drawFront(context, currentFront, scaleX, scaleY, frontBlend, objectiveDirections);
     drawTrackedTrail(context, scaleX, scaleY);
     context.restore();
 
@@ -639,8 +690,8 @@
     axisLimit += (target - axisLimit) * blend;
   }
 
-  function drawDominatedRegion(context, front, scaleX, scaleY, opacity) {
-    if (front.length === 0 || opacity <= 0) return;
+  function drawDominatedRegion(context, front, scaleX, scaleY, opacity, directions) {
+    if (front.length === 0 || opacity <= 0 || directions.includes(0)) return;
     context.beginPath();
     context.moveTo(scaleX(REFERENCE[0]), scaleY(REFERENCE[1]));
     const first = front[0];
@@ -717,12 +768,17 @@
     context.fill();
   }
 
-  function drawFront(context, front, scaleX, scaleY, opacity) {
+  function drawFront(context, front, scaleX, scaleY, opacity, directions) {
     if (front.length === 0 || opacity <= 0) return;
     const point = (index) => [
       scaleX(objectives[0].display[index]),
       scaleY(objectives[1].display[index]),
     ];
+
+    if (directions.includes(0)) {
+      for (const index of front) drawFrontMarker(context, point(index), opacity);
+      return;
+    }
 
     context.beginPath();
     const [firstX, firstY] = point(front[0]);
@@ -920,6 +976,31 @@
   function findParetoFront(firstObjective, secondObjective) {
     const firstDirection = objectiveDirections[0];
     const secondDirection = objectiveDirections[1];
+    const activeObjectives = objectiveDirections
+      .map((direction, index) => ({ direction, index }))
+      .filter(({ direction }) => direction !== 0);
+
+    if (activeObjectives.length === 0) return [];
+
+    if (activeObjectives.length === 1) {
+      const { direction, index: objectiveIndex } = activeObjectives[0];
+      const values = objectiveIndex === 0 ? firstObjective : secondObjective;
+      let bestImprovement = -Infinity;
+      const best = [];
+      for (let index = 0; index < SAMPLE_COUNT; index += 1) {
+        const improvement = direction * (values[index] - REFERENCE[objectiveIndex]);
+        if (improvement < 0) continue;
+        if (improvement > bestImprovement + 1e-7) {
+          bestImprovement = improvement;
+          best.length = 0;
+          best.push(index);
+        } else if (Math.abs(improvement - bestImprovement) <= 1e-7) {
+          best.push(index);
+        }
+      }
+      return best;
+    }
+
     const candidates = [];
     for (let index = 0; index < SAMPLE_COUNT; index += 1) {
       const firstImprovement = firstDirection * (firstObjective[index] - REFERENCE[0]);
