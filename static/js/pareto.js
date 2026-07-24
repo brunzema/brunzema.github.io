@@ -54,7 +54,6 @@
   const evaluationInputs = buildEvaluationInputs();
   const fieldSurfaces = pathCanvases.map(() => {
     const canvas = document.createElement("canvas");
-    const siteCanvas = document.createElement("canvas");
     canvas.width = FIELD_RESOLUTION;
     canvas.height = FIELD_RESOLUTION;
     const context = canvas.getContext("2d");
@@ -62,8 +61,6 @@
       canvas,
       context,
       image: context.createImageData(FIELD_RESOLUTION, FIELD_RESOLUTION),
-      siteCanvas,
-      siteTextureKey: "",
     };
   });
 
@@ -826,8 +823,6 @@
       );
     });
 
-    drawSobolSiteTexture(context, surface, width, height, canvas);
-
     const frontBlend = smootherStep(frontBlendElapsed / FRONT_BLEND_DURATION);
     if (previousFront.length && frontBlend < 1) {
       drawParetoSites(context, previousFront, width, height, lineColor, 1 - frontBlend);
@@ -836,30 +831,6 @@
     drawTrackedInputSite(context, width, height, lineColor);
 
   }
-
-  function drawSobolSiteTexture(context, surface, width, height, targetCanvas) {
-    const textureKey = `${targetCanvas.width}:${targetCanvas.height}:${palette.card.join(",")}`;
-    if (surface.siteTextureKey !== textureKey) {
-      surface.siteCanvas.width = targetCanvas.width;
-      surface.siteCanvas.height = targetCanvas.height;
-      const siteContext = surface.siteCanvas.getContext("2d");
-      const deviceScale = targetCanvas.width / width;
-      siteContext.setTransform(deviceScale, 0, 0, deviceScale, 0, 0);
-      siteContext.clearRect(0, 0, width, height);
-      const siteSize = Math.max(0.7, width * 0.0015);
-      siteContext.beginPath();
-      for (let index = 0; index < SAMPLE_COUNT; index += 1) {
-        const x = sobolInputs[0][index] * width;
-        const y = (1 - sobolInputs[1][index]) * height;
-        siteContext.rect(x - siteSize / 2, y - siteSize / 2, siteSize, siteSize);
-      }
-      siteContext.fillStyle = rgba(palette.card, 0.18);
-      siteContext.fill();
-      surface.siteTextureKey = textureKey;
-    }
-    context.drawImage(surface.siteCanvas, 0, 0, width, height);
-  }
-
   function drawParetoSites(context, front, width, height, lineColor, opacity) {
     if (opacity <= 0) return;
     const radius = Math.max(2.2, width * 0.0072);
