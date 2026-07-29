@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}A visual exploration of optimization — {{ site.name }}{% endblock %}
+
+{% block content %}
+
+<section class="viz-page-header viz-entry-nav animate-in">
+  <div class="container">
+    <a class="viz-back-link" href="{{ url_for('visualizations_page') }}">← All visualizations</a>
+  </div>
+</section>
+
+<section class="viz-feed">
+  <div class="viz-container">
+    <article class="viz-post viz-post--optimization animate-in">
+      <header class="viz-post-header">
+        <div class="viz-post-meta">
+          <time datetime="2026-07-28">28 July 2026</time>
+          <span aria-hidden="true">·</span>
+          <span>Interactive note 002</span>
+        </div>
+        <h1 class="viz-post-title">A visual exploration of optimization</h1>
+        <p class="viz-post-deck">
+          One landscape, four ways down. Begin with the gradient, add memory, learn a scale,
+          then learn the geometry itself.
+        </p>
+      </header>
+
+      <section class="optimizer-chapter" aria-labelledby="optimizer-overview-title">
+        <header class="optimizer-chapter-header">
+          <span class="optimizer-chapter-number">01</span>
+          <div>
+            <p class="optimizer-kicker">The overview</p>
+            <h2 id="optimizer-overview-title">Four ways to read a slope</h2>
+          </div>
+        </header>
+
+        <figure class="optimizer-demo" data-optimizer-demo>
+          <div class="optimizer-toolbar">
+            <div class="optimizer-status" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-optimizer-step>step 0 / 180</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-optimizer-loss>loss —</span>
+            </div>
+            <div class="pareto-actions">
+              <button class="viz-button" type="button" data-optimizer-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-optimizer-play-label>Pause</span>
+              </button>
+              <button class="viz-button" type="button" data-optimizer-restart>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Restart
+              </button>
+              <button class="viz-button" type="button" data-optimizer-compare aria-pressed="false">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 18 9 12l4 3 7-9"/><path d="M4 6v12h16"/></svg>
+                Compare all
+              </button>
+            </div>
+          </div>
+
+          <div class="optimizer-tabs" role="tablist" aria-label="Optimization method">
+            <button class="optimizer-tab is-active" id="optimizer-tab-sgd" type="button" role="tab" aria-selected="true" aria-controls="optimizer-panel-sgd" data-optimizer="sgd">
+              <span class="optimizer-tab-index">01</span><span>SGD</span>
+            </button>
+            <button class="optimizer-tab" id="optimizer-tab-momentum" type="button" role="tab" aria-selected="false" aria-controls="optimizer-panel-momentum" data-optimizer="momentum" tabindex="-1">
+              <span class="optimizer-tab-index">02</span><span>Momentum</span>
+            </button>
+            <button class="optimizer-tab" id="optimizer-tab-adam" type="button" role="tab" aria-selected="false" aria-controls="optimizer-panel-adam" data-optimizer="adam" tabindex="-1">
+              <span class="optimizer-tab-index">03</span><span>Adam</span>
+            </button>
+            <button class="optimizer-tab" id="optimizer-tab-shampoo" type="button" role="tab" aria-selected="false" aria-controls="optimizer-panel-shampoo" data-optimizer="shampoo" tabindex="-1">
+              <span class="optimizer-tab-index">04</span><span>Shampoo</span>
+            </button>
+          </div>
+
+          <div class="optimizer-workbench">
+            <div class="optimizer-stage">
+              <div class="plot-heading optimizer-plot-heading">
+                <span class="plot-title">A noisy, curved loss landscape</span>
+                <ul class="plot-legend" aria-label="Optimization plot legend">
+                  <li><span class="legend-mark legend-mark--gradient" aria-hidden="true"></span>gradient</li>
+                  <li><span class="legend-mark legend-mark--update" aria-hidden="true"></span>update</li>
+                  <li><span class="legend-mark legend-mark--optimum" aria-hidden="true"></span>minimum</li>
+                </ul>
+              </div>
+              <canvas class="optimizer-canvas" data-optimizer-canvas role="img" aria-label="Animated contour map showing the selected optimizer descending a curved, noisy loss landscape."></canvas>
+              <div class="optimizer-axis optimizer-axis--x">θ₁</div>
+              <div class="optimizer-axis optimizer-axis--y">θ₂</div>
+            </div>
+
+            <figcaption class="optimizer-notes">
+              <section class="optimizer-panel is-active" id="optimizer-panel-sgd" role="tabpanel" aria-labelledby="optimizer-tab-sgd" data-optimizer-panel="sgd">
+                <p class="optimizer-kicker">Start with the slope</p>
+                <h3>Stochastic gradient descent</h3>
+                <p>SGD trusts the current mini-batch gradient. It is cheap and honest—but one global learning rate must serve every direction.</p>
+                <div class="optimizer-equation">
+                  \[\begin{aligned}
+                  g_t&=\nabla_\theta\mathcal{L}(\theta_t;\mathcal{B}_t),\\
+                  \theta_{t+1}&=\theta_t-\eta g_t
+                  \end{aligned}\]
+                </div>
+                <p class="optimizer-reading"><span class="reading-mark reading-mark--orange"></span>The orange arrow is the raw gradient; the blue arrow is the step it produces.</p>
+              </section>
+
+              <section class="optimizer-panel" id="optimizer-panel-momentum" role="tabpanel" aria-labelledby="optimizer-tab-momentum" data-optimizer-panel="momentum" hidden>
+                <p class="optimizer-kicker">Add memory</p>
+                <h3>Momentum</h3>
+                <p>An exponential moving average keeps useful velocity along the valley and cancels oscillation across its steep walls.</p>
+                <div class="optimizer-equation">
+                  \[\begin{aligned}
+                  g_t&=\nabla_\theta\mathcal{L}(\theta_t;\mathcal{B}_t),\\
+                  m_t&=\beta m_{t-1}+(1-\beta)g_t,\\
+                  \theta_{t+1}&=\theta_t-\eta m_t
+                  \end{aligned}\]
+                </div>
+                <p class="optimizer-reading"><span class="reading-mark reading-mark--blue"></span>The blue update arrow carries memory: recent gradients vote on its direction, not only the current orange gradient.</p>
+              </section>
+
+              <section class="optimizer-panel" id="optimizer-panel-adam" role="tabpanel" aria-labelledby="optimizer-tab-adam" data-optimizer-panel="adam" hidden>
+                <p class="optimizer-kicker">Remember direction and scale</p>
+                <h3>Adam</h3>
+                <p>Adam combines momentum with a coordinate-wise second moment. Frequently large coordinates are divided down; quieter ones can move farther.</p>
+                <div class="optimizer-equation optimizer-equation--stacked">
+                  \[\begin{aligned}
+                  g_t&=\nabla_\theta\mathcal{L}(\theta_t;\mathcal{B}_t),\\
+                  m_t&=\beta_1m_{t-1}+(1-\beta_1)g_t,\\
+                  v_t&=\beta_2v_{t-1}+(1-\beta_2)(g_t\odot g_t),\\
+                  \hat m_t&=\frac{m_t}{1-\beta_1^t},\qquad
+                  \hat v_t=\frac{v_t}{1-\beta_2^t}
+                  \end{aligned}\]
+                  \[\theta_{t+1}=\theta_t-\eta\,\hat m_t\oslash(\sqrt{\hat v_t}+\varepsilon)\]
+                </div>
+                <p class="optimizer-reading"><span class="reading-mark reading-mark--ellipse"></span>The ellipse is Adam’s diagonal preconditioner: axis-aligned, adaptive, and unable to rotate.</p>
+              </section>
+
+              <section class="optimizer-panel" id="optimizer-panel-shampoo" role="tabpanel" aria-labelledby="optimizer-tab-shampoo" data-optimizer-panel="shampoo" hidden>
+                <p class="optimizer-kicker">Learn the geometry</p>
+                <h3>Shampoo</h3>
+                <p>Diagonal scaling cannot see that two coordinates move together. Shampoo reshapes the same parameter vector as \(W=\operatorname{reshape}(\theta)\), then learns a matrix statistic for each tensor axis. Here, \(W\in\mathbb{R}^{2\times1}\) makes the preconditioner visible on the plane.</p>
+                <div class="optimizer-equation optimizer-equation--stacked optimizer-equation--shampoo">
+                  \[\begin{aligned}
+                  W_t&=\operatorname{reshape}(\theta_t)\in\mathbb{R}^{m\times n},\\
+                  G_t&=\nabla_W\mathcal{L}(W_t;\mathcal{B}_t),\\
+                  L_t&=L_{t-1}+G_tG_t^\top,\\
+                  R_t&=R_{t-1}+G_t^\top G_t
+                  \end{aligned}\]
+                  \[W_{t+1}=W_t-\eta(L_t+\varepsilon I_m)^{-1/4}G_t(R_t+\varepsilon I_n)^{-1/4}\]
+                </div>
+                <p class="optimizer-reading"><span class="reading-mark reading-mark--ellipse"></span>The tilted ellipse is the learned matrix preconditioner. It turns the gradient toward the valley.</p>
+              </section>
+
+              <div class="optimizer-meters" aria-label="Live optimizer measurements">
+                <div class="optimizer-meter"><span>gradient norm</span><strong data-gradient-norm>—</strong><i><b data-gradient-meter></b></i></div>
+                <div class="optimizer-meter"><span>update norm</span><strong data-update-norm>—</strong><i><b data-update-meter></b></i></div>
+              </div>
+            </figcaption>
+          </div>
+
+          <div class="optimizer-takeaway">
+            <p class="optimizer-kicker">The through-line</p>
+            <p>
+              Each step adds structure: <strong>SGD</strong> reads the slope, <strong>Momentum</strong> remembers direction,
+              <strong>Adam</strong> rescales coordinates, and <strong>Shampoo</strong> learns rotations between them.
+              The destination is fixed; the geometry of getting there is not.
+            </p>
+            <div class="optimizer-sources">
+              <span>Primary notes</span>
+              <a href="https://arxiv.org/abs/1412.6980" target="_blank" rel="noopener">Adam</a>
+              <a href="https://arxiv.org/abs/1802.09568" target="_blank" rel="noopener">Shampoo</a>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="optimizer-chapter optimizer-chapter--deep" aria-labelledby="optimizer-highdim-title">
+        <header class="optimizer-chapter-header">
+          <span class="optimizer-chapter-number">02</span>
+          <div>
+            <p class="optimizer-kicker">Beyond the plane</p>
+            <h2 id="optimizer-highdim-title">What does 24-dimensional optimization look like?</h2>
+            <p>
+              Follow one \(6\times4\) tensor through its trajectory, loss, parameters, and learned geometry.
+            </p>
+          </div>
+        </header>
+
+        <div class="highdim-math">
+          <div>
+            <span>Correlated tensor loss</span>
+            \[\mathcal{L}(W)=\tfrac12\lVert AWB\rVert_F^2,\qquad W\in\mathbb{R}^{6\times4}\]
+            \[A\in\mathbb{R}^{6\times6},\qquad B\in\mathbb{R}^{4\times4}\]
+          </div>
+          <p>
+            The matrices \(A\) and \(B\) couple rows and columns. Adam can scale each of the 24 entries;
+            Shampoo can also learn which entries move together.
+          </p>
+        </div>
+
+        <figure class="highdim-demo" data-highdim-demo>
+          <div class="optimizer-toolbar highdim-toolbar">
+            <div class="optimizer-status" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-highdim-step>step 0 / 140</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-highdim-loss>loss —</span>
+            </div>
+            <div class="highdim-actions">
+              <div class="highdim-switch" role="group" aria-label="High-dimensional optimizer view">
+                <button type="button" data-highdim-mode="adam" aria-pressed="false">Adam</button>
+                <button type="button" data-highdim-mode="shampoo" aria-pressed="false">Shampoo</button>
+                <button class="is-active" type="button" data-highdim-mode="both" aria-pressed="true">Both</button>
+              </div>
+              <button class="viz-button" type="button" data-highdim-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-highdim-play-label>Pause</span>
+              </button>
+              <button class="viz-button" type="button" data-highdim-restart>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Restart
+              </button>
+            </div>
+          </div>
+
+          <div class="highdim-scoreboard" aria-label="Live convergence summary">
+            <div class="highdim-score highdim-score--adam">
+              <div><span>Adam loss</span><strong data-highdim-adam-loss>—</strong></div>
+              <i><b data-highdim-adam-bar></b></i>
+            </div>
+            <div class="highdim-score highdim-score--shampoo">
+              <div><span>Shampoo loss</span><strong data-highdim-shampoo-loss>—</strong></div>
+              <i><b data-highdim-shampoo-bar></b></i>
+            </div>
+          </div>
+
+          <canvas class="highdim-canvas" data-highdim-canvas role="img" aria-label="Linked visualization of Adam and Shampoo optimizing a 24-dimensional matrix parameter: a two-component PCA of the trajectories in loss space, a parameter heatmap, preconditioner matrices, and a loss curve."></canvas>
+
+          <figcaption class="highdim-guide">
+            <div><span>01</span><p><strong>PCA of the loss geometry.</strong> Each state becomes \(Z=AWB\), where \(\mathcal{L}=\tfrac12\lVert Z\rVert_F^2\), and the two most informative directions form the view.</p></div>
+            <div><span>02</span><p><strong>Every coordinate at once.</strong> The \(6\times4\) heatmap fades toward paper as the parameter tensor approaches zero.</p></div>
+            <div><span>03</span><p><strong>Structure becomes visible.</strong> Shampoo’s row and column statistics reveal correlations that a diagonal second moment cannot represent.</p></div>
+          </figcaption>
+        </figure>
+      </section>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <script src="{{ url_for('static', filename='js/optimization-model.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/optimization.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/highdim.js') }}" defer></script>
+{% endblock %}

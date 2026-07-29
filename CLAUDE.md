@@ -20,9 +20,12 @@ This is a minimal Flask personal academic website with these routes:
 
 - `/` — About page, shows bio, experience timeline, awards, social links, and selected publications
 - `/publications` — Full publications list grouped by year
+- `/visualizations/` — Gallery of interactive mathematical notes
+- `/visualizations/optimization/` — Optimization overview plus a linked 24-dimensional tensor experiment
+- `/visualizations/pareto/` — Time-varying two-objective Pareto-front experiment
 - `/cv.pdf` — Serves `data/cv.pdf` directly
 
-**Content is defined in two places only:**
+**Biographical and publication content is defined in two places:**
 
 1. `app.py` — The `SITE` dict at the top holds all personal info (name, bio paragraphs, `experience` timeline entries, awards, social links). Edit this to update any biographical content. Experience entries reference logo SVGs in `static/img/logos/`.
 2. `data/papers.bib` — All publications in BibTeX format. Custom fields beyond standard BibTeX:
@@ -33,10 +36,13 @@ This is a minimal Flask personal academic website with these routes:
    - `arxiv` — arXiv ID (just the number, e.g. `2207.11120`) or full URL
    - `html` / `pdf` — Link URLs for the card buttons
 
+Interactive-note copy and structure live in the visualization templates; their dependency-free canvas simulations live under `static/js/`.
+
 **Template structure:**
 
 - `templates/base.html` — Nav and footer wrapper; all pages extend this
 - `templates/index.html` / `templates/publications.html` — Page content
+- `templates/visualizations.html` — Visualization gallery; `optimization.html` and `pareto.html` are the individual entries
 - `templates/partials/pub_card.html` — Reusable publication card included in both pages
 
 The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first with selected ones prioritised within the same year.

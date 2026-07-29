@@ -246,6 +246,16 @@ def visualizations_page():
     return render_template("visualizations.html", site=SITE)
 
 
+@app.route("/visualizations/optimization/")
+def optimization_page():
+    return render_template("optimization.html", site=SITE)
+
+
+@app.route("/visualizations/pareto/")
+def pareto_page():
+    return render_template("pareto.html", site=SITE)
+
+
 # ─────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────
