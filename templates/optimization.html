@@ -244,6 +244,123 @@
           </figcaption>
         </figure>
       </section>
+
+      <section class="optimizer-chapter optimizer-chapter--components" aria-labelledby="optimizer-components-title">
+        <header class="optimizer-chapter-header">
+          <span class="optimizer-chapter-number">03</span>
+          <div>
+            <p class="optimizer-kicker">Inside the update</p>
+            <h2 id="optimizer-components-title">What changes between a gradient and a step?</h2>
+            <p>Compare four increasingly expressive views of gradient information: observation, memory, scale, and geometry.</p>
+          </div>
+        </header>
+
+        <figure class="component-lab" data-component-lab>
+          <div class="component-tabs" role="tablist" aria-label="Optimizer component">
+            <button class="component-tab is-active" id="component-tab-gradient" type="button" role="tab" aria-selected="true" aria-controls="component-panel-gradient" data-component="gradient">
+              <span>01</span><strong>Gradient</strong><small>observe</small>
+            </button>
+            <button class="component-tab" id="component-tab-memory" type="button" role="tab" aria-selected="false" aria-controls="component-panel-memory" data-component="memory" tabindex="-1">
+              <span>02</span><strong>Memory</strong><small>average</small>
+            </button>
+            <button class="component-tab" id="component-tab-scale" type="button" role="tab" aria-selected="false" aria-controls="component-panel-scale" data-component="scale" tabindex="-1">
+              <span>03</span><strong>Scale</strong><small>normalize</small>
+            </button>
+            <button class="component-tab" id="component-tab-geometry" type="button" role="tab" aria-selected="false" aria-controls="component-panel-geometry" data-component="geometry" tabindex="-1">
+              <span>04</span><strong>Geometry</strong><small>rotate</small>
+            </button>
+          </div>
+
+          <div class="component-workbench">
+            <div class="component-stage">
+              <div class="component-stage-heading">
+                <div class="component-stage-title">
+                  <span data-component-title>Mini-batch gradient</span>
+                  <button class="component-info-button" type="button" aria-expanded="false" aria-controls="component-info" aria-label="Explain the mini-batch gradient slide" data-component-info-button>
+                    <span aria-hidden="true">i</span>
+                  </button>
+                </div>
+                <span data-component-readout>batch 01 · 12 samples</span>
+              </div>
+              <aside class="component-info-popover" id="component-info" role="note" aria-labelledby="component-info-title" data-component-info hidden>
+                <div class="component-info-heading">
+                  <span>How to read this slide</span>
+                  <button type="button" aria-label="Close explanation" data-component-info-close>&times;</button>
+                </div>
+                <h4 id="component-info-title" data-component-info-title></h4>
+                <p data-component-info-copy></p>
+              </aside>
+              <canvas class="component-canvas" data-component-canvas role="img" aria-label="Animated view of noisy sample gradients and their mini-batch mean."></canvas>
+              <div class="component-controls">
+                <button class="viz-button" type="button" data-component-play>
+                  <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                  <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                  <span data-component-play-label>Pause</span>
+                </button>
+                <input type="range" min="0" max="95" value="0" step="1" data-component-progress aria-label="Gradient stream step">
+                <span data-component-step>01 / 96</span>
+              </div>
+            </div>
+
+            <div class="component-notes">
+              <section class="component-panel is-active" id="component-panel-gradient" role="tabpanel" aria-labelledby="component-tab-gradient" data-component-panel="gradient">
+                <p class="optimizer-kicker">Observe</p>
+                <h3>A batch estimates the slope</h3>
+                <p>Individual samples disagree. Their average reveals a useful direction without removing the noise entirely.</p>
+                <div class="component-equation">
+                  \[g_t=\frac{1}{|\mathcal B_t|}\sum_{i\in\mathcal B_t}\nabla_\theta\ell_i(\theta_t),
+                  \qquad \mathbb E[g_t]=\nabla_\theta\mathcal{L}(\theta_t)\]
+                </div>
+                <p class="component-reading"><i class="component-mark component-mark--cloud"></i>Samples form the cloud. <i class="component-mark component-mark--orange"></i>The batch mean becomes \(g_t\).</p>
+              </section>
+
+              <section class="component-panel" id="component-panel-memory" role="tabpanel" aria-labelledby="component-tab-memory" data-component-panel="memory" hidden>
+                <p class="optimizer-kicker">Average through time</p>
+                <h3>Momentum remembers a direction</h3>
+                <p>Recent gradients receive the largest vote; older ones fade geometrically. Noise cancels while persistent motion remains.</p>
+                <div class="component-equation">
+                  \[m_t=\beta m_{t-1}+(1-\beta)g_t
+                  =(1-\beta)\sum_{k=0}^{t}\beta^{t-k}g_k\]
+                </div>
+                <p class="component-reading"><i class="component-mark component-mark--faded"></i>Fading arrows are past gradients. <i class="component-mark component-mark--blue"></i>The blue resultant is \(m_t\).</p>
+              </section>
+
+              <section class="component-panel" id="component-panel-scale" role="tabpanel" aria-labelledby="component-tab-scale" data-component-panel="scale" hidden>
+                <p class="optimizer-kicker">Normalize coordinates</p>
+                <h3>Adam learns a diagonal metric</h3>
+                <p>The second moment measures the typical magnitude of each coordinate. Dividing by it gives quieter coordinates room to move.</p>
+                <div class="component-equation">
+                  \[D_t=\operatorname{diag}\!\left((\sqrt{\hat v_t}+\varepsilon)^{-1}\right),
+                  \qquad \Delta\theta_t=-\eta D_t\hat m_t\]
+                </div>
+                <p class="component-reading"><i class="component-mark component-mark--orange"></i>The raw vector is stretched independently along each axis. The metric stays axis-aligned.</p>
+              </section>
+
+              <section class="component-panel" id="component-panel-geometry" role="tabpanel" aria-labelledby="component-tab-geometry" data-component-panel="geometry" hidden>
+                <p class="optimizer-kicker">Precondition correlations</p>
+                <h3>Shampoo learns how axes interact</h3>
+                <p>For a \(2\times2\) gradient matrix, the left factor rebalances rows and the right factor rebalances columns. Together they turn a skewed matrix update toward an even one.</p>
+                <div class="component-equation component-equation--stacked">
+                  \[L_t=L_{t-1}+G_tG_t^\top,\qquad
+                  R_t=R_{t-1}+G_t^\top G_t\]
+                  \[P_t^L=(L_t+\varepsilon I_m)^{-1/4},\qquad
+                  P_t^R=(R_t+\varepsilon I_n)^{-1/4}\]
+                  \[G_t\ \longrightarrow\ P_t^L G_t\ \longrightarrow\
+                  -\Delta W_t/\eta=P_t^L G_t P_t^R\]
+                </div>
+                <p class="component-reading"><i class="component-mark component-mark--orange"></i>Orange and blue arrows are the two columns. \(P_t^L\) acts on rows; \(P_t^R\) then mixes columns. A condition number near \(1\) means their shape is balanced.</p>
+              </section>
+            </div>
+          </div>
+
+          <ol class="component-flow" aria-label="Four optimizer transformations compared">
+            <li class="is-active" data-component-flow="gradient"><span>01</span><strong>gradient</strong><small>signal</small></li>
+            <li data-component-flow="memory"><span>02</span><strong>memory</strong><small>time</small></li>
+            <li data-component-flow="scale"><span>03</span><strong>scale</strong><small>coordinates</small></li>
+            <li data-component-flow="geometry"><span>04</span><strong>geometry</strong><small>correlations</small></li>
+          </ol>
+        </figure>
+      </section>
     </article>
   </div>
 </section>
@@ -261,4 +378,5 @@
   <script src="{{ url_for('static', filename='js/optimization-model.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/optimization.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/highdim.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/optimizer-components.js') }}" defer></script>
 {% endblock %}

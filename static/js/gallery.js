@@ -221,7 +221,7 @@
       context.beginPath();
       values.forEach((value, index) => {
         const x = box.x + (index / (values.length - 1)) * box.width;
-        const y = box.y + value * box.height;
+        const y = box.y + (1 - value) * box.height;
         if (index === 0) context.moveTo(x, y);
         else context.lineTo(x, y);
       });
