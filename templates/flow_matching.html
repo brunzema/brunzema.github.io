@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}A visual exploration of flow matching — {{ site.name }}{% endblock %}
+
+{% block content %}
+
+<section class="viz-page-header viz-entry-nav animate-in">
+  <div class="container">
+    <a class="viz-back-link" href="{{ url_for('visualizations_page') }}">← All visualizations</a>
+  </div>
+</section>
+
+<section class="viz-feed">
+  <div class="viz-container">
+    <article class="viz-post viz-post--flow animate-in">
+      <header class="viz-post-header">
+        <div class="viz-post-meta">
+          <time datetime="2026-08-03">3 August 2026</time>
+          <span aria-hidden="true">·</span>
+          <span>Interactive note 004</span>
+          <span aria-hidden="true">·</span>
+          <span>Created with Claude Opus 5</span>
+        </div>
+        <h1 class="viz-post-title">A visual exploration of flow matching</h1>
+        <p class="viz-post-deck">
+          Draw one straight line from noise to a data point. Average those lines. Follow the average, and noise becomes structure.
+        </p>
+      </header>
+
+      <section class="flow-chapter" aria-labelledby="flow-path-title">
+        <header class="flow-chapter-header">
+          <span class="flow-chapter-number">01</span>
+          <div>
+            <p class="flow-kicker">The probability path</p>
+            <h2 id="flow-path-title">A line you can draw, a field you can learn</h2>
+            <p>Pairing a noise sample with a data sample gives a path so simple its velocity is a constant. The field we actually learn is what those paths look like on average—and it is the one that transports the whole distribution.</p>
+          </div>
+        </header>
+
+        <figure class="flow-lab" data-flow-path>
+          <div class="flow-toolbar">
+            <div class="flow-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-flow-step>step 0 / 24</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-flow-nfe>0 field evaluations</span>
+            </div>
+            <div class="flow-actions">
+              <div class="flow-switch" role="group" aria-label="Data distribution">
+                <button class="is-active" type="button" data-flow-dataset="moons" aria-pressed="true">Moons</button>
+                <button type="button" data-flow-dataset="ring" aria-pressed="false">Ring</button>
+                <button type="button" data-flow-dataset="mixture" aria-pressed="false">Clusters</button>
+                <button type="button" data-flow-dataset="sketch" aria-pressed="false">Sketch your own</button>
+              </div>
+              <button class="viz-button" type="button" data-flow-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-flow-play-label>Play</span>
+              </button>
+              <button class="viz-button" type="button" data-flow-restart>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Restart
+              </button>
+            </div>
+          </div>
+
+          <div class="flow-sketch-editor" data-flow-sketch hidden>
+            <div>
+              <span class="flow-kicker">Data sandbox</span>
+              <strong>Click or drag inside the frame to place your own data points.</strong>
+              <span data-flow-sketch-status>8 data points</span>
+            </div>
+            <div class="flow-sketch-actions">
+              <button class="viz-button" type="button" data-flow-sketch-clear>Clear</button>
+              <button class="viz-button" type="button" data-flow-sketch-reset>Start over</button>
+            </div>
+          </div>
+
+          <div class="flow-tabs" role="tablist" aria-label="Views of the probability path">
+            <button class="flow-tab is-active" id="flow-tab-path" type="button" role="tab" aria-selected="true" aria-controls="flow-panel-path" data-flow-mode="path">
+              <span>01</span><strong>Path</strong><small>interpolate</small>
+            </button>
+            <button class="flow-tab" id="flow-tab-conditional" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-conditional" data-flow-mode="conditional" tabindex="-1">
+              <span>02</span><strong>Conditional</strong><small>one target</small>
+            </button>
+            <button class="flow-tab" id="flow-tab-marginal" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-marginal" data-flow-mode="marginal" tabindex="-1">
+              <span>03</span><strong>Marginal</strong><small>average</small>
+            </button>
+            <button class="flow-tab" id="flow-tab-sample" type="button" role="tab" aria-selected="false" aria-controls="flow-panel-sample" data-flow-mode="sample" tabindex="-1">
+              <span>04</span><strong>Sample</strong><small>integrate</small>
+            </button>
+          </div>
+
+          <div class="flow-workbench">
+            <div class="flow-stage">
+              <div class="flow-stage-heading">
+                <span data-flow-view-title>One straight conditional path</span>
+                <ul aria-label="Plot legend">
+                  <li><i class="flow-legend flow-legend--conditional" aria-hidden="true"></i>conditional</li>
+                  <li><i class="flow-legend flow-legend--marginal" aria-hidden="true"></i>marginal</li>
+                  <li><i class="flow-legend flow-legend--particle" aria-hidden="true"></i>sample</li>
+                </ul>
+              </div>
+              <canvas class="flow-canvas" data-flow-canvas role="img" aria-label="Samples travelling from a Gaussian at time zero to a data distribution at time one, with the conditional and marginal velocity fields drawn over the probability path."></canvas>
+              <p class="flow-canvas-hint">Click inside the frame: in <em>Path</em> it promotes a pair, in <em>Conditional</em> it re-aims the field, and in the sketch dataset it places a data point.</p>
+            </div>
+
+            <div class="flow-notes">
+              <section class="flow-panel is-active" id="flow-panel-path" role="tabpanel" aria-labelledby="flow-tab-path" data-flow-panel="path">
+                <p class="flow-kicker">Pick a pair</p>
+                <h3>Noise in, data out, straight through</h3>
+                <p>Choose a noise sample and a data sample and simply interpolate between them. The resulting conditional path is Gaussian at every time, and its velocity does not depend on where you are along it.</p>
+                <div class="flow-equation flow-equation--stacked">
+                  \[x_0\sim\mathcal N(0,I),\qquad x_1\sim q_{\text{data}}\]
+                  \[x_t=\sigma_t\,x_0+t\,x_1,\qquad
+                  \sigma_t=1-(1-\sigma_{\min})t\]
+                </div>
+                <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--conditional"></i>The bold pair is one draw of (<em>x</em><sub>0</sub>, <em>x</em><sub>1</sub>); the faint ones are others. Along a dashed line the orange velocity is the same vector at every time.</p>
+              </section>
+
+              <section class="flow-panel" id="flow-panel-conditional" role="tabpanel" aria-labelledby="flow-tab-conditional" data-flow-panel="conditional" hidden>
+                <p class="flow-kicker">Condition on one sample</p>
+                <h3>A field that knows the answer</h3>
+                <p>Fix the endpoint and the path defines a velocity field everywhere, not just on the line you drew. It transports the whole Gaussian onto that single data point—useful as a regression target, useless as a generator.</p>
+                <div class="flow-equation flow-equation--stacked">
+                  \[p_t(x\mid x_1)=\mathcal N\!\left(x;\,t x_1,\ \sigma_t^2 I\right)\]
+                  \[u_t(x\mid x_1)=\frac{x_1-(1-\sigma_{\min})x}{1-(1-\sigma_{\min})t}\]
+                </div>
+                <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--conditional"></i>The dashed circle is the conditional Gaussian at the current time. Click any data point to condition on it instead.</p>
+              </section>
+
+              <section class="flow-panel" id="flow-panel-marginal" role="tabpanel" aria-labelledby="flow-tab-marginal" data-flow-panel="marginal" hidden>
+                <p class="flow-kicker">Average over the data</p>
+                <h3>The field that generates</h3>
+                <p>Averaging the conditional fields under the posterior over endpoints gives the marginal field. It is the one that carries the noise density to the data density—and unlike the conditional field, it never needs to know which data point you were aiming at.</p>
+                <div class="flow-equation flow-equation--stacked">
+                  \[p_t(x)=\int p_t(x\mid x_1)\,q_{\text{data}}(x_1)\,\mathrm dx_1\]
+                  \[u_t(x)=\int u_t(x\mid x_1)\,\underbrace{p_t(x_1\mid x)}_{\text{posterior}}\,\mathrm dx_1\]
+                </div>
+                <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--marginal"></i>Blue arrows are the marginal field. Early on it points at the mean of the data; near <em>t</em> = 1 it splits and commits to a mode.</p>
+              </section>
+
+              <section class="flow-panel" id="flow-panel-sample" role="tabpanel" aria-labelledby="flow-tab-sample" data-flow-panel="sample" hidden>
+                <p class="flow-kicker">Generate</p>
+                <h3>Sampling is solving an ODE</h3>
+                <p>Draw noise, follow the marginal field to <em>t</em> = 1, and stop. No pairing, no score, no noise injected along the way—just an initial value problem. Because the paths are nearly straight, a handful of Euler steps already lands on the data.</p>
+                <p>Note what changed since chapter 01: the straight lines there cross each other constantly, because each is drawn for its own pair. These trajectories cannot—two solutions of the same ODE never occupy one point at one time. Traces that appear to meet on the page do so at different moments, with the time axis projected away.</p>
+                <div class="flow-equation flow-equation--stacked">
+                  \[\frac{\mathrm d}{\mathrm dt}\psi_t(x)=v_\theta\!\left(\psi_t(x),t\right),\qquad \psi_0(x)=x\]
+                  \[x^{(k+1)}=x^{(k)}+\tfrac1N\,v_\theta\!\left(x^{(k)},\tfrac kN\right)\]
+                </div>
+                <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--marginal"></i>Drop the step count to 2 or 3 and watch where it starts to hurt: the cost is paid at the moment the field splits between modes.</p>
+              </section>
+            </div>
+          </div>
+
+          <div class="flow-lab-footer">
+            <label for="flow-time">
+              <span><strong>Time</strong><output for="flow-time" data-flow-time-output>t = 0.00</output></span>
+              <input id="flow-time" type="range" min="0" max="1" value="0" step="0.001" data-flow-time>
+            </label>
+            <label for="flow-steps">
+              <span><strong>Euler steps</strong><output for="flow-steps" data-flow-steps-output>24 steps</output></span>
+              <input id="flow-steps" type="range" min="2" max="60" value="24" step="1" data-flow-steps>
+            </label>
+            <label for="flow-blur">
+              <span><strong>Data blur</strong><output for="flow-blur" data-flow-blur-output>σ = 0.10</output></span>
+              <input id="flow-blur" type="range" min="0.02" max="0.40" value="0.10" step="0.01" data-flow-blur>
+            </label>
+            <div class="flow-live-metrics" aria-label="Live measurements">
+              <span>data points <strong data-flow-anchors>96</strong></span>
+              <span>path width <strong data-flow-sigma>1.00</strong></span>
+              <span>sample spread <strong data-flow-spread>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="flow-chapter flow-chapter--regression" aria-labelledby="flow-regression-title">
+        <header class="flow-chapter-header">
+          <span class="flow-chapter-number">02</span>
+          <div>
+            <p class="flow-kicker">The training trick</p>
+            <h2 id="flow-regression-title">Regress on the line, get the average for free</h2>
+            <p>The marginal field is an intractable integral, so nobody regresses on it. Regressing on the single conditional vector instead works because least squares returns a conditional expectation—and that expectation <em>is</em> the marginal field.</p>
+          </div>
+        </header>
+
+        <figure class="flow-regression-lab" data-flow-regression>
+          <div class="flow-regression-toolbar">
+            <div>
+              <span>drag the query point <strong data-regression-query>x = (−0.35, 0.55)</strong></span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span>marginal velocity <strong data-regression-marginal>—</strong></span>
+            </div>
+            <button class="viz-button" type="button" data-regression-reset>Recentre x</button>
+          </div>
+
+          <div class="flow-regression-grid">
+            <div class="flow-regression-stage">
+              <canvas class="flow-regression-canvas" data-regression-canvas role="img" tabindex="0" aria-label="A query point in sample space with one conditional velocity arrow per data point, next to the same vectors plotted in velocity space where the weighted mean minimises the regression loss. Drag the query point, or focus the canvas and use arrow keys."></canvas>
+            </div>
+
+            <div class="flow-regression-notes">
+              <p class="flow-kicker">Two losses, one gradient</p>
+              <h3>The target you cannot compute</h3>
+              <p>The flow matching loss needs <em>u<sub>t</sub></em>(<em>x</em>); the conditional loss needs only the vector between a sampled pair. Expanding both squares shows they differ by a term that does not contain θ, so their gradients agree exactly.</p>
+              <div class="flow-equation flow-equation--stacked">
+                \[\mathcal L_{\text{FM}}(\theta)=\mathbb E_{t,\,x\sim p_t}
+                \left\lVert v_\theta(x,t)-u_t(x)\right\rVert^2\]
+                \[\mathcal L_{\text{CFM}}(\theta)=\mathbb E_{t,\,x_1,\,x\sim p_t(\cdot\mid x_1)}
+                \left\lVert v_\theta(x,t)-u_t(x\mid x_1)\right\rVert^2\]
+                \[\nabla_\theta\mathcal L_{\text{FM}}=\nabla_\theta\mathcal L_{\text{CFM}}\]
+              </div>
+              <p>What separates the two is the spread of the orange dots around the cross—the variance of the conditional target at this <em>x</em>. It is irreducible noise in the regression, and it is constant in θ:</p>
+              <div class="flow-equation">
+                \[\mathcal L_{\text{CFM}}-\mathcal L_{\text{FM}}
+                =\mathbb E\!\left[\operatorname{Var}\!\left(u_t(x\mid x_1)\mid x_t=x\right)\right]\]
+              </div>
+              <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--marginal"></i>Right panel: every orange dot is one conditional target, sized by its posterior weight. The loss is a quadratic bowl whose minimiser is their weighted mean.</p>
+            </div>
+          </div>
+
+          <div class="flow-regression-controls">
+            <label for="regression-time">
+              <span><strong>Time</strong><output for="regression-time" data-regression-time-output>t = 0.50</output></span>
+              <input id="regression-time" type="range" min="0.02" max="0.98" value="0.5" step="0.01" data-regression-time>
+            </label>
+            <label for="regression-spread">
+              <span><strong>Mode separation</strong><output for="regression-spread" data-regression-spread-output>gap = 1.00</output></span>
+              <input id="regression-spread" type="range" min="0.2" max="2.4" value="1" step="0.05" data-regression-spread>
+            </label>
+            <div class="flow-balance-readout" aria-live="polite">
+              <span>conditional variance <strong data-regression-gap>—</strong></span>
+              <span aria-hidden="true">·</span>
+              <span>effective data points <strong data-regression-effective>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="flow-chapter flow-chapter--image" aria-labelledby="flow-image-title">
+        <header class="flow-chapter-header">
+          <span class="flow-chapter-number">03</span>
+          <div>
+            <p class="flow-kicker">The application</p>
+            <h2 id="flow-image-title">Two dimensions, or a hundred and ninety-six</h2>
+            <p>Nothing above cared that the data lived in a plane. Treat a 14 × 14 image as one point in ℝ<sup>196</sup>, keep the same path and the same field, and the ODE turns static into digits—conditioned on a class, with a step budget you choose.</p>
+          </div>
+        </header>
+
+        <figure class="flow-image-lab" data-flow-image>
+          <div class="flow-image-toolbar">
+            <div class="flow-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-image-step>step 0 / 8</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-image-time>t = 0.00</span>
+            </div>
+            <div class="flow-actions">
+              <button class="viz-button" type="button" data-image-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-image-play-label>Play</span>
+              </button>
+              <button class="viz-button" type="button" data-image-resample>New noise</button>
+            </div>
+          </div>
+
+          <div class="flow-class-bar">
+            <span class="flow-kicker">Condition on</span>
+            <div class="flow-class-switch" role="group" aria-label="Class to condition on">
+              <button class="is-active" type="button" data-image-class="all" aria-pressed="true">all</button>
+              <button type="button" data-image-class="0" aria-pressed="false">0</button>
+              <button type="button" data-image-class="1" aria-pressed="false">1</button>
+              <button type="button" data-image-class="2" aria-pressed="false">2</button>
+              <button type="button" data-image-class="3" aria-pressed="false">3</button>
+              <button type="button" data-image-class="4" aria-pressed="false">4</button>
+              <button type="button" data-image-class="5" aria-pressed="false">5</button>
+              <button type="button" data-image-class="6" aria-pressed="false">6</button>
+              <button type="button" data-image-class="7" aria-pressed="false">7</button>
+              <button type="button" data-image-class="8" aria-pressed="false">8</button>
+              <button type="button" data-image-class="9" aria-pressed="false">9</button>
+            </div>
+          </div>
+
+          <div class="flow-image-workbench">
+            <div class="flow-image-stage">
+              <canvas class="flow-image-canvas" data-image-canvas role="img" aria-label="Twelve images being generated in parallel: each starts as Gaussian pixel noise and is integrated along the marginal velocity field into a digit. A filmstrip above shows one sample at successive times."></canvas>
+              <p class="flow-canvas-hint">Click any tile to follow that sample in the filmstrip.</p>
+            </div>
+
+            <div class="flow-image-notes">
+              <p class="flow-kicker">Same recipe, bigger vector</p>
+              <h3>Static, resolved</h3>
+              <p>Each tile is a single point moving through pixel space. At <em>t</em> = 0 it is Gaussian noise; the field pulls it toward the data manifold, and the posterior over which image it is heading for sharpens as time runs out. Conditioning simply restricts that posterior to one class.</p>
+              <div class="flow-equation flow-equation--image">
+                \[x\in\mathbb R^{196},\qquad x_1\sim q_{\text{data}}(\,\cdot\mid c)\]
+                \[x^{(k+1)}=x^{(k)}+\tfrac1N\,v_\theta\!\left(x^{(k)},\tfrac kN\,\middle|\,c\right)\]
+              </div>
+              <p>Drop the budget to one or two steps and the tiles come out blurred: a single Euler step lands on the <em>average</em> of the images still in contention. More steps let the field commit before you stop.</p>
+              <p class="flow-reading"><i class="flow-reading-mark flow-reading-mark--marginal"></i>Honest caveat: with 50 stored images and the exact field, this <em>memorises</em>—each sample converges to a training image. A learned <em>v</em><sub>θ</sub> is a smooth approximation, and that smoothing is where novel samples come from.</p>
+            </div>
+          </div>
+
+          <div class="flow-image-controls">
+            <label for="image-steps">
+              <span><strong>Euler steps</strong><output for="image-steps" data-image-steps-output>8 steps</output></span>
+              <input id="image-steps" type="range" min="1" max="32" value="8" step="1" data-image-steps>
+            </label>
+            <div class="flow-image-metrics">
+              <span>dimensions <strong data-image-dim>196</strong></span>
+              <span>distinct classes <strong data-image-classes>—</strong></span>
+              <span>distance to nearest image <strong data-image-distance>—</strong></span>
+            </div>
+          </div>
+
+          <div class="flow-image-paper-note">
+            <span>Where this goes</span>
+            <p>Real image models replace the 50 stored pictures with a network trained by exactly the loss in chapter 02, and the same construction now drives text-to-image and video systems as well as robot policies, where a chunk of future actions plays the role of the image — see <a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">Esser et al., Scaling Rectified Flow Transformers (2024)</a> and <a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noopener">Black et al., π₀ (2024)</a>.</p>
+          </div>
+        </figure>
+      </section>
+
+      <aside class="flow-takeaway">
+        <p class="flow-kicker">The through-line</p>
+        <p>
+          Flow matching replaces a hard question—<strong>which field transports noise to data?</strong>—with an easy one:
+          <strong>where does this one sample need to go?</strong> Least squares does the averaging, the average is a valid
+          transport field, and sampling collapses to integrating it. Straight conditional paths are what make that integration cheap,
+          which is why the same three lines now sit under text-to-image models and robot policies alike.
+        </p>
+        <div class="flow-sources">
+          <span>Primary sources</span>
+          <a href="https://arxiv.org/abs/2210.02747" target="_blank" rel="noopener">Lipman et al. (2023)</a>
+          <a href="https://arxiv.org/abs/2209.03003" target="_blank" rel="noopener">Liu et al. (2023)</a>
+          <a href="https://arxiv.org/abs/2209.15571" target="_blank" rel="noopener">Albergo &amp; Vanden-Eijnden (2023)</a>
+          <a href="https://arxiv.org/abs/2302.00482" target="_blank" rel="noopener">Tong et al. (2024)</a>
+          <a href="https://arxiv.org/abs/2410.24164" target="_blank" rel="noopener">Black et al. (2024)</a>
+        </div>
+        <p class="flow-caveat">Every field on this page is computed exactly for a finite, smoothed set of data points—no network is trained here. A learned <em>v</em><sub>θ</sub> only approximates it, and the approximation error, not the maths, is what usually decides how few steps you can get away with.</p>
+      </aside>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <script src="{{ url_for('static', filename='js/flow.js') }}" defer></script>
+{% endblock %}

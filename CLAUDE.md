@@ -21,7 +21,9 @@ This is a minimal Flask personal academic website with these routes:
 - `/` — About page, shows bio, experience timeline, awards, social links, and selected publications
 - `/publications` — Full publications list grouped by year
 - `/visualizations/` — Gallery of interactive mathematical notes
+- `/visualizations/flow-matching/` — Conditional/marginal probability paths, the CFM regression identity, and image generation in 196 dimensions
 - `/visualizations/optimization/` — Optimization overview plus a linked 24-dimensional tensor experiment
+- `/visualizations/stein-variational-inference/` — Stein particle transport, custom Gaussian mixtures, Stein identity, and Old Faithful density estimation
 - `/visualizations/pareto/` — Time-varying two-objective Pareto-front experiment
 - `/cv.pdf` — Serves `data/cv.pdf` directly
 
@@ -38,11 +40,13 @@ This is a minimal Flask personal academic website with these routes:
 
 Interactive-note copy and structure live in the visualization templates; their dependency-free canvas simulations live under `static/js/`.
 
+`static/js/flow.js` computes every field on the flow matching note in closed form — no network is trained. Data (2-D point sets, or 14×14 digit rasters produced by `buildGlyphLibrary()`) become isotropic Gaussian components, so the marginal velocity `u_t(x)` is an exact posterior-weighted sum; the same dimension-agnostic helpers drive both the 2-D panels and the 196-D image panel. Panels share a `viewFor()` world window that keeps equal scale on both axes.
+
 **Template structure:**
 
 - `templates/base.html` — Nav and footer wrapper; all pages extend this
 - `templates/index.html` / `templates/publications.html` — Page content
-- `templates/visualizations.html` — Visualization gallery; `optimization.html` and `pareto.html` are the individual entries
+- `templates/visualizations.html` — Visualization gallery; `flow_matching.html`, `optimization.html`, `stein_variational.html`, and `pareto.html` are the individual entries
 - `templates/partials/pub_card.html` — Reusable publication card included in both pages
 
 The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first with selected ones prioritised within the same year.

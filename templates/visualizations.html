@@ -15,6 +15,44 @@
 <section class="viz-index-section animate-in">
   <div class="container">
     <div class="viz-index-list">
+      <a class="viz-index-card viz-index-card--flow" href="{{ url_for('flow_matching_page') }}">
+        <div class="viz-index-preview" aria-hidden="true">
+          <canvas data-viz-preview="flow"></canvas>
+        </div>
+        <div class="viz-index-card-body">
+          <div class="viz-post-meta">
+            <time datetime="2026-08-03">3 August 2026</time>
+            <span aria-hidden="true">·</span>
+            <span>Note 004</span>
+          </div>
+          <h2>A visual exploration of flow matching</h2>
+          <p>Draw one straight line from noise to a data point, average those lines, and integrate the result — first in the plane, then in pixel space.</p>
+          <div class="viz-index-card-footer">
+            <ul aria-label="Topics"><li>Flow matching</li><li>CFM</li><li>ODE sampling</li><li>Generation</li></ul>
+            <span>Explore <span aria-hidden="true">→</span></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="viz-index-card viz-index-card--stein" href="{{ url_for('stein_variational_page') }}">
+        <div class="viz-index-preview" aria-hidden="true">
+          <canvas data-viz-preview="stein"></canvas>
+        </div>
+        <div class="viz-index-card-body">
+          <div class="viz-post-meta">
+            <time datetime="2026-08-03">3 August 2026</time>
+            <span aria-hidden="true">·</span>
+            <span>Note 003</span>
+          </div>
+          <h2>A visual exploration of Stein variational inference</h2>
+          <p>Watch particles share target gradients, build custom mixtures, and estimate a density from real Old Faithful records.</p>
+          <div class="viz-index-card-footer">
+            <ul aria-label="Topics"><li>SVGD</li><li>Stein identity</li><li>Particles</li><li>Density estimation</li></ul>
+            <span>Explore <span aria-hidden="true">→</span></span>
+          </div>
+        </div>
+      </a>
+
       <a class="viz-index-card viz-index-card--optimization" href="{{ url_for('optimization_page') }}">
         <div class="viz-index-preview" aria-hidden="true">
           <canvas data-viz-preview="optimization"></canvas>

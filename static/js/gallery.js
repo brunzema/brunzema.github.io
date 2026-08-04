@@ -18,6 +18,8 @@
   });
   const paretoSamples = buildParetoSamples();
   const paretoFront = findParetoFront(paretoSamples);
+  const flowAnchors = buildFlowAnchors();
+  const flowSamples = buildFlowSamples();
 
   const drawAll = () => canvases.forEach(drawPreview);
   const resizeObserver = new ResizeObserver(drawAll);
@@ -32,7 +34,137 @@
     const surface = fitCanvas(canvas);
     if (!surface) return;
     if (canvas.dataset.vizPreview === "optimization") drawOptimization(surface);
+    else if (canvas.dataset.vizPreview === "stein") drawStein(surface);
+    else if (canvas.dataset.vizPreview === "flow") drawFlow(surface);
     else drawPareto(surface);
+  }
+
+  function drawFlow({ context, width, height }) {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = color(palette.bgWarm);
+    context.fillRect(0, 0, width, height);
+    const plot = { x: 22, y: 30, width: width - 44, height: height - 46 };
+    drawMiniTitle(context, "NOISE → DATA · MARGINAL FIELD AT t = 0.85", 12, 10, palette.muted);
+    drawMiniGrid(context, plot, 5, 4);
+
+    const time = 0.85;
+    const project = ([x, y]) => [
+      plot.x + ((x + 3.2) / 6.4) * plot.width,
+      plot.y + plot.height - ((y + 2.2) / 4.4) * plot.height,
+    ];
+
+    context.save();
+    context.beginPath();
+    context.rect(plot.x, plot.y, plot.width, plot.height);
+    context.clip();
+
+    flowAnchors.forEach((anchor) => {
+      const [x, y] = project(anchor);
+      context.beginPath();
+      context.arc(x, y, 1.7, 0, Math.PI * 2);
+      context.fillStyle = rgba(palette.ink, 0.3);
+      context.fill();
+    });
+
+    for (let row = 0; row < 6; row += 1) {
+      for (let column = 0; column < 10; column += 1) {
+        const point = [-3.2 + ((column + 0.5) / 10) * 6.4, -2.2 + ((row + 0.5) / 6) * 4.4];
+        const velocity = flowVelocity(point, time);
+        const length = Math.hypot(velocity[0], velocity[1]);
+        if (length < 1e-4) continue;
+        const factor = (0.3 * Math.tanh(length / 2.4)) / length;
+        const [fromX, fromY] = project(point);
+        const [toX, toY] = project([point[0] + velocity[0] * factor, point[1] + velocity[1] * factor]);
+        context.beginPath();
+        context.moveTo(fromX, fromY);
+        context.lineTo(toX, toY);
+        context.strokeStyle = rgba(palette.accent, 0.42);
+        context.lineWidth = 0.9;
+        context.stroke();
+      }
+    }
+
+    flowSamples.forEach((sample) => {
+      context.beginPath();
+      sample.trail.forEach((point, index) => {
+        const [x, y] = project(point);
+        if (index === 0) context.moveTo(x, y);
+        else context.lineTo(x, y);
+      });
+      context.strokeStyle = rgba(palette.orange, 0.62);
+      context.lineWidth = 1.1;
+      context.stroke();
+
+      const [x, y] = project(sample.trail.at(-1));
+      context.beginPath();
+      context.arc(x, y, 2.2, 0, Math.PI * 2);
+      context.fillStyle = color(palette.bg);
+      context.fill();
+      context.strokeStyle = color(palette.ink);
+      context.lineWidth = 1;
+      context.stroke();
+    });
+    context.restore();
+
+    const railY = plot.y - 9;
+    context.strokeStyle = rgba(palette.line, 1);
+    context.lineWidth = 2.5;
+    context.beginPath();
+    context.moveTo(plot.x, railY);
+    context.lineTo(plot.x + plot.width, railY);
+    context.stroke();
+    context.strokeStyle = color(palette.accent);
+    context.beginPath();
+    context.moveTo(plot.x, railY);
+    context.lineTo(plot.x + time * plot.width, railY);
+    context.stroke();
+  }
+
+  function drawStein({ context, width, height }) {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = color(palette.bgWarm);
+    context.fillRect(0, 0, width, height);
+    const plot = { x: 22, y: 27, width: width - 44, height: height - 43 };
+    drawMiniTitle(context, "OLD FAITHFUL · KDE + STEIN PARTICLES", 12, 10, palette.muted);
+    drawMiniGrid(context, plot, 5, 4);
+
+    const densityCenters = [[plot.x + plot.width * 0.27, plot.y + plot.height * 0.7], [plot.x + plot.width * 0.7, plot.y + plot.height * 0.34]];
+    densityCenters.forEach(([cx, cy], centerIndex) => {
+      [1, 0.7, 0.4].forEach((scaleValue, ringIndex) => {
+        context.beginPath();
+        context.ellipse(cx, cy, plot.width * (0.15 + ringIndex * 0.055), plot.height * (0.18 + ringIndex * 0.065), centerIndex ? -0.2 : 0.15, 0, Math.PI * 2);
+        context.strokeStyle = rgba(palette.accent, 0.38 - ringIndex * 0.08);
+        context.lineWidth = 0.8;
+        context.stroke();
+        if (ringIndex === 2) {
+          context.fillStyle = rgba(palette.accent, 0.035 * scaleValue);
+          context.fill();
+        }
+      });
+    });
+
+    const particles = [
+      [.18,.72],[.24,.58],[.29,.44],[.33,.67],[.38,.52],[.43,.35],[.47,.61],[.52,.48],
+      [.57,.69],[.61,.39],[.66,.56],[.71,.31],[.75,.48],[.8,.63],[.84,.39],[.88,.54],
+    ];
+    particles.forEach(([px, py], index) => {
+      const x = plot.x + px * plot.width;
+      const y = plot.y + py * plot.height;
+      if (index % 4 === 0) {
+        const center = px < 0.54 ? densityCenters[0] : densityCenters[1];
+        drawArrow(context, x, y, x + (center[0] - x) * 0.24, y + (center[1] - y) * 0.24, palette.orange);
+        const side = index % 8 === 0 ? -1 : 1;
+        drawArrow(context, x, y, x + side * 8, y + 6, palette.accent);
+      }
+      context.beginPath();
+      context.arc(x, y, index % 4 === 0 ? 2.7 : 1.9, 0, Math.PI * 2);
+      context.fillStyle = color(palette.bg);
+      context.fill();
+      context.strokeStyle = color(index % 4 === 0 ? palette.ink : palette.cloud);
+      context.lineWidth = 1;
+      context.stroke();
+    });
+
   }
 
   function drawOptimization({ context, width, height }) {
@@ -358,6 +490,64 @@
       point = [point[0] - 0.086 * moment[0], point[1] - 0.086 * moment[1]];
     }
     return path;
+  }
+
+  /* Marginal velocity of the linear probability path over the two-moon anchors. */
+  function flowVelocity(point, t) {
+    const sigma = 1 - 0.98 * t;
+    const scaleValue = Math.sqrt(sigma * sigma + t * t * 0.0144);
+    const ratio = (-0.98 * sigma + t * 0.0144) / (scaleValue * scaleValue);
+    const inverse = 1 / (2 * scaleValue * scaleValue);
+    let peak = -Infinity;
+    const logits = flowAnchors.map((anchor) => {
+      const value = -((point[0] - t * anchor[0]) ** 2 + (point[1] - t * anchor[1]) ** 2) * inverse;
+      if (value > peak) peak = value;
+      return value;
+    });
+    let total = 0;
+    const weights = logits.map((value) => {
+      const exponent = Math.exp(value - peak);
+      total += exponent;
+      return exponent;
+    });
+    return flowAnchors.reduce((velocity, anchor, index) => {
+      const weight = weights[index] / total;
+      return [
+        velocity[0] + weight * (anchor[0] + ratio * (point[0] - t * anchor[0])),
+        velocity[1] + weight * (anchor[1] + ratio * (point[1] - t * anchor[1])),
+      ];
+    }, [0, 0]);
+  }
+
+  function buildFlowAnchors() {
+    const anchors = [];
+    for (let index = 0; index < 26; index += 1) {
+      const angle = (index / 25) * Math.PI;
+      anchors.push([1.45 * Math.cos(angle) - 0.7, 1.45 * Math.sin(angle) - 0.35]);
+      anchors.push([1.45 * Math.cos(angle) + 0.7, -1.45 * Math.sin(angle) + 0.35]);
+    }
+    return anchors;
+  }
+
+  function buildFlowSamples() {
+    const random = createRandomSource(717);
+    const steps = 12;
+    const limit = Math.round(steps * 0.85);
+    return Array.from({ length: 26 }, () => {
+      let point = [gaussianSample(random), gaussianSample(random)];
+      const trail = [point.slice()];
+      for (let step = 0; step < limit; step += 1) {
+        const velocity = flowVelocity(point, step / steps);
+        point = [point[0] + velocity[0] / steps, point[1] + velocity[1] / steps];
+        trail.push(point.slice());
+      }
+      return { trail };
+    });
+  }
+
+  function gaussianSample(random) {
+    const first = Math.max(1e-9, random());
+    return Math.sqrt(-2 * Math.log(first)) * Math.cos(2 * Math.PI * random());
   }
 
   function buildParetoSamples() {

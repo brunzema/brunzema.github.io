@@ -251,6 +251,16 @@ def optimization_page():
     return render_template("optimization.html", site=SITE)
 
 
+@app.route("/visualizations/flow-matching/")
+def flow_matching_page():
+    return render_template("flow_matching.html", site=SITE)
+
+
+@app.route("/visualizations/stein-variational-inference/")
+def stein_variational_page():
+    return render_template("stein_variational.html", site=SITE)
+
+
 @app.route("/visualizations/pareto/")
 def pareto_page():
     return render_template("pareto.html", site=SITE)

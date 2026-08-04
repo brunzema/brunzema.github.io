@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block title %}A visual exploration of Stein variational inference — {{ site.name }}{% endblock %}
+
+{% block content %}
+
+<section class="viz-page-header viz-entry-nav animate-in">
+  <div class="container">
+    <a class="viz-back-link" href="{{ url_for('visualizations_page') }}">← All visualizations</a>
+  </div>
+</section>
+
+<section class="viz-feed">
+  <div class="viz-container">
+    <article class="viz-post viz-post--stein animate-in">
+      <header class="viz-post-header">
+        <div class="viz-post-meta">
+          <time datetime="2026-08-03">3 August 2026</time>
+          <span aria-hidden="true">·</span>
+          <span>Interactive note 003</span>
+          <span aria-hidden="true">·</span>
+          <span>Created with GPT-5.6-sol</span>
+        </div>
+        <h1 class="viz-post-title">A visual exploration of Stein variational inference</h1>
+        <p class="viz-post-deck">
+          One target, many particles, and a vector field with two jobs: seek probability and refuse collapse.
+        </p>
+      </header>
+
+      <section class="stein-chapter" aria-labelledby="stein-particles-title">
+        <header class="stein-chapter-header">
+          <span class="stein-chapter-number">01</span>
+          <div>
+            <p class="stein-kicker">The particle view</p>
+            <h2 id="stein-particles-title">From a gradient to a population</h2>
+            <p>A score points uphill. A kernel lets nearby particles share that information—and gives them room to remain different.</p>
+          </div>
+        </header>
+
+        <figure class="stein-lab" data-stein-lab>
+          <div class="stein-toolbar">
+            <div class="stein-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-stein-step>step 0 / 180</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-stein-log-density>mean log density —</span>
+            </div>
+            <div class="stein-actions">
+              <div class="stein-switch" role="group" aria-label="Target distribution">
+                <button class="is-active" type="button" data-stein-target="mixture" aria-pressed="true">Mixture</button>
+                <button type="button" data-stein-target="banana" aria-pressed="false">Banana</button>
+                <button type="button" data-stein-target="custom" aria-pressed="false">Build your own</button>
+              </div>
+              <button class="viz-button" type="button" data-stein-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-stein-play-label>Play</span>
+              </button>
+              <button class="viz-button" type="button" data-stein-restart>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Restart
+              </button>
+            </div>
+          </div>
+
+          <div class="stein-custom-editor" data-custom-editor hidden>
+            <div>
+              <span class="stein-kicker">Target sandbox</span>
+              <strong data-custom-instruction>Press and drag to draw up to five Gaussian components.</strong>
+              <span data-custom-status>Drag to draw the first component.</span>
+            </div>
+            <div class="stein-custom-actions">
+              <button class="viz-button" type="button" data-custom-reset>Clear mixture</button>
+            </div>
+          </div>
+
+          <div class="stein-tabs" role="tablist" aria-label="Terms in the SVGD update">
+            <button class="stein-tab is-active" id="stein-tab-score" type="button" role="tab" aria-selected="true" aria-controls="stein-panel-score" data-stein-mode="score">
+              <span>01</span><strong>Score</strong><small>climb</small>
+            </button>
+            <button class="stein-tab" id="stein-tab-attraction" type="button" role="tab" aria-selected="false" aria-controls="stein-panel-attraction" data-stein-mode="attraction" tabindex="-1">
+              <span>02</span><strong>Neighbors</strong><small>share</small>
+            </button>
+            <button class="stein-tab" id="stein-tab-repulsion" type="button" role="tab" aria-selected="false" aria-controls="stein-panel-repulsion" data-stein-mode="repulsion" tabindex="-1">
+              <span>03</span><strong>Repulsion</strong><small>separate</small>
+            </button>
+            <button class="stein-tab" id="stein-tab-svgd" type="button" role="tab" aria-selected="false" aria-controls="stein-panel-svgd" data-stein-mode="svgd" tabindex="-1">
+              <span>04</span><strong>SVGD</strong><small>combine</small>
+            </button>
+          </div>
+
+          <div class="stein-workbench">
+            <div class="stein-stage">
+              <div class="stein-stage-heading">
+                <span data-stein-view-title>Raw target score</span>
+                <ul aria-label="Particle plot legend">
+                  <li><i class="stein-legend stein-legend--score" aria-hidden="true"></i>score</li>
+                  <li><i class="stein-legend stein-legend--repulsion" aria-hidden="true"></i>repulsion</li>
+                  <li><i class="stein-legend stein-legend--particle" aria-hidden="true"></i>particle</li>
+                </ul>
+              </div>
+              <canvas class="stein-particle-canvas" data-stein-canvas role="img" aria-label="Particles moving across a two-dimensional target density under the selected component of the Stein variational update."></canvas>
+              <span class="stein-axis stein-axis--x">x₁</span>
+              <span class="stein-axis stein-axis--y">x₂</span>
+            </div>
+
+            <div class="stein-notes">
+              <section class="stein-panel is-active" id="stein-panel-score" role="tabpanel" aria-labelledby="stein-tab-score" data-stein-panel="score">
+                <p class="stein-kicker">Ask the target</p>
+                <h3>The score points uphill</h3>
+                <p>The normalization constant disappears under a gradient, so an unnormalized posterior still tells every particle which direction increases density.</p>
+                <div class="stein-equation">
+                  \[p(x)=\frac{\bar p(x)}{Z},\qquad
+                  s_p(x)=\nabla_x\log p(x)=\nabla_x\log\bar p(x)\]
+                </div>
+                <p class="stein-reading"><i class="stein-reading-mark stein-reading-mark--score"></i>Used alone, score ascent sends each particle toward a mode. It finds peaks, not a distribution.</p>
+              </section>
+
+              <section class="stein-panel" id="stein-panel-attraction" role="tabpanel" aria-labelledby="stein-tab-attraction" data-stein-panel="attraction" hidden>
+                <p class="stein-kicker">Share local information</p>
+                <h3>Neighbors vote on direction</h3>
+                <p>The kernel gives nearby scores more influence. Particles no longer climb independently; each receives a smoothed message from the population.</p>
+                <div class="stein-equation">
+                  \[a_i=\frac1n\sum_{j=1}^{n}
+                  k_h(x_j,x_i)\,s_p(x_j)\]
+                </div>
+                <p class="stein-reading"><i class="stein-reading-mark stein-reading-mark--score"></i>Orange arrows are kernel-weighted target messages. Attraction alone still favors collapse.</p>
+              </section>
+
+              <section class="stein-panel" id="stein-panel-repulsion" role="tabpanel" aria-labelledby="stein-tab-repulsion" data-stein-panel="repulsion" hidden>
+                <p class="stein-kicker">Protect diversity</p>
+                <h3>The kernel also pushes apart</h3>
+                <p>Differentiating the RBF kernel with respect to the sending particle produces a local repulsive message with the correct outward sign.</p>
+                <div class="stein-equation stein-equation--stacked">
+                  \[k_h(x,y)=\exp\!\left(-\frac{\lVert x-y\rVert^2}{h}\right)\]
+                  \[r_i=\frac1n\sum_{j=1}^{n}\nabla_{x_j}k_h(x_j,x_i)
+                  =\frac1n\sum_j\frac{2}{h}(x_i-x_j)k_h(x_j,x_i)\]
+                </div>
+                <p class="stein-reading"><i class="stein-reading-mark stein-reading-mark--repulsion"></i>Blue arrows point away from close neighbors. Repulsion alone spreads mass without knowing where probability lives.</p>
+              </section>
+
+              <section class="stein-panel" id="stein-panel-svgd" role="tabpanel" aria-labelledby="stein-tab-svgd" data-stein-panel="svgd" hidden>
+                <p class="stein-kicker">One coupled field</p>
+                <h3>Attraction plus repulsion</h3>
+                <p>SVGD transports the empirical distribution with the single RKHS-optimal field formed by both messages—not two unrelated objectives.</p>
+                <div class="stein-equation stein-equation--stacked">
+                  \[\widehat\phi_t(z)=\frac1n\sum_{j=1}^{n}
+                  \left[k_h(x_j^t,z)s_p(x_j^t)+\nabla_{x_j^t}k_h(x_j^t,z)\right]\]
+                  \[x_i^{t+1}=x_i^t+\epsilon_t\widehat\phi_t(x_i^t)\]
+                </div>
+                <p class="stein-reading"><i class="stein-reading-mark stein-reading-mark--combined"></i>The bright arrow is the sum. The target attracts the population while interaction keeps it distributed.</p>
+              </section>
+            </div>
+          </div>
+
+          <div class="stein-lab-footer">
+            <label for="stein-bandwidth">
+              <span><strong>Kernel bandwidth</strong><output for="stein-bandwidth" data-stein-bandwidth-output>h = 1.10</output></span>
+              <input id="stein-bandwidth" type="range" min="0.25" max="3.00" value="1.10" step="0.05" data-stein-bandwidth>
+            </label>
+            <div class="stein-live-metrics" aria-label="Live particle measurements">
+              <span>particles <strong data-stein-particle-count>80</strong></span>
+              <span>effective neighbors <strong data-stein-neighbors>—</strong></span>
+              <span>mean spacing <strong data-stein-spacing>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="stein-chapter stein-chapter--identity" aria-labelledby="stein-identity-title">
+        <header class="stein-chapter-header">
+          <span class="stein-chapter-number">02</span>
+          <div>
+            <p class="stein-kicker">The diagnostic underneath</p>
+            <h2 id="stein-identity-title">Move <i>q</i>, break the balance</h2>
+            <p>The Stein operator averages to zero under the target <i>p</i>. Move the approximation <i>q</i> away, and the leftover signal tells us that transport can still improve it.</p>
+          </div>
+        </header>
+
+        <figure class="stein-identity-lab" data-stein-identity>
+          <div class="stein-identity-toolbar">
+            <div>
+              <span>black <i>p</i> is fixed · blue <i>q</i> is yours to move</span>
+              <strong data-identity-residual>Stein signal —</strong>
+            </div>
+            <button class="viz-button" type="button" data-identity-reset>Set <i>q</i> = <i>p</i></button>
+          </div>
+          <div class="stein-identity-grid">
+            <div class="stein-identity-stage">
+              <canvas class="stein-identity-canvas" data-identity-canvas role="img" tabindex="0" aria-label="Target p and movable approximation q above the two contributions to the Stein operator. Click the upper plot to move q."></canvas>
+            </div>
+            <div class="stein-identity-notes">
+              <p class="stein-kicker">A calibration test</p>
+              <h3>At <i>p</i>, every valid field balances</h3>
+              <p>The orange score contribution and blue divergence contribution must cancel when samples come from <i>p</i>. Shift or squeeze <i>q</i>, and this probe usually becomes nonzero; one balanced probe alone is not proof that <i>q</i> = <i>p</i>.</p>
+              <div class="stein-equation stein-equation--identity">
+                \[\mathcal A_p\phi(x)=s_p(x)^\top\phi(x)+\nabla_x\!\cdot\phi(x)\]
+                \[\mathbb E_{x\sim p}[\mathcal A_p\phi(x)]=0\]
+              </div>
+              <p>That imbalance is precisely the first-order KL descent available to a transport field:</p>
+              <div class="stein-equation">
+                \[\left.\frac{\mathrm d}{\mathrm d\epsilon}
+                \operatorname{KL}((I+\epsilon\phi)_\#q\,\|\,p)
+                \right|_{\epsilon=0}
+                =-\mathbb E_q[\mathcal A_p\phi]\]
+              </div>
+            </div>
+          </div>
+          <div class="stein-identity-controls">
+            <label for="identity-center"><span><i>q</i> mean <output for="identity-center" data-identity-center-output>μq = 1.35</output></span><input id="identity-center" type="range" min="-2.2" max="2.2" value="1.35" step="0.05" data-identity-center></label>
+            <label for="identity-width"><span><i>q</i> spread <output for="identity-width" data-identity-width-output>σq = 0.72</output></span><input id="identity-width" type="range" min="0.45" max="1.55" value="0.72" step="0.05" data-identity-width></label>
+            <div class="stein-balance-readout" aria-live="polite">
+              <span>score term <strong data-identity-score>—</strong></span>
+              <span aria-hidden="true">+</span>
+              <span>divergence term <strong data-identity-divergence>—</strong></span>
+              <span aria-hidden="true">=</span>
+              <span>Stein signal <strong data-identity-sum>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="stein-chapter stein-chapter--density" aria-labelledby="stein-density-title">
+        <header class="stein-chapter-header">
+          <span class="stein-chapter-number">03</span>
+          <div>
+            <p class="stein-kicker">A density in the wild</p>
+            <h2 id="stein-density-title">How long until Old Faithful erupts?</h2>
+            <p>Real observations arrive as dots, not a probability law. A kernel density estimate turns 272 geyser records into a smooth target; Stein particles then make that target usable.</p>
+          </div>
+        </header>
+
+        <figure class="stein-density-lab" data-stein-density data-faithful-url="{{ url_for('static', filename='data/faithful.csv') }}">
+          <div class="stein-density-toolbar">
+            <div class="stein-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-density-step>step 0 / 160</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-density-status>loading 272 geyser records</span>
+            </div>
+            <div class="stein-actions">
+              <div class="stein-switch" role="group" aria-label="Density estimate smoothness">
+                <button type="button" data-density-bandwidth="fine" aria-pressed="false">Detailed</button>
+                <button class="is-active" type="button" data-density-bandwidth="balanced" aria-pressed="true">Balanced</button>
+                <button type="button" data-density-bandwidth="smooth" aria-pressed="false">Smooth</button>
+              </div>
+              <button class="viz-button" type="button" data-density-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-density-play-label>Fit particles</span>
+              </button>
+              <button class="viz-button" type="button" data-density-reset>Restart</button>
+            </div>
+          </div>
+
+          <div class="stein-density-workbench">
+            <div class="stein-density-stage">
+              <div class="stein-stage-heading">
+                <span>eruption duration × next wait</span>
+                <ul aria-label="Density estimate legend">
+                  <li><i class="stein-legend stein-legend--observation"></i>observation</li>
+                  <li><i class="stein-legend stein-legend--score"></i>KDE</li>
+                  <li><i class="stein-legend stein-legend--repulsion"></i>Stein particle</li>
+                </ul>
+              </div>
+              <canvas class="stein-density-canvas" data-density-canvas role="img" tabindex="0" aria-label="Old Faithful eruption observations, a kernel density estimate, and Stein particles approximating that density. Drag the vertical query line to condition on eruption duration."></canvas>
+              <p class="stein-canvas-hint">Drag the vertical line to ask: after an eruption of this duration, how long is the next wait?</p>
+            </div>
+
+            <div class="stein-density-notes">
+              <div>
+                <p class="stein-kicker">Observed phenomenon</p>
+                <h3>Two eruption regimes emerge</h3>
+                <p>Short eruptions tend to precede shorter waits; long eruptions tend to precede longer waits. Density estimation discovers both regimes without class labels.</p>
+              </div>
+              <div class="stein-equation stein-equation--density">
+                \[\widehat p_H(x)=\frac1N\sum_{n=1}^{N}
+                \mathcal N(x;x_n,H)\]
+                \[s_{\widehat p}(x)=\sum_{n=1}^{N}
+                \rho_n(x)H^{-1}(x_n-x),\qquad
+                \rho_n(x)=\frac{\mathcal N(x;x_n,H)}{\sum_m\mathcal N(x;x_m,H)}\]
+              </div>
+              <p class="stein-reading"><i class="stein-reading-mark stein-reading-mark--combined"></i>The side profile is a conditional slice, \(\widehat p_H(\text{wait}\mid\text{duration})\). Move the query line and watch a two-dimensional density answer a practical one-dimensional question.</p>
+            </div>
+          </div>
+
+          <div class="stein-density-footer">
+            <div class="stein-live-metrics" aria-label="Live density measurements">
+              <span>observations <strong data-density-observations>272</strong></span>
+              <span>Stein particles <strong data-density-particles>96</strong></span>
+              <span>query duration <strong data-density-duration>3.0 min</strong></span>
+              <span>likely next wait <strong data-density-wait>—</strong></span>
+            </div>
+            <span>Data source</span>
+            <p>The <a href="https://search.r-project.org/R/refmans/datasets/html/faithful.html" target="_blank" rel="noopener">R <code>faithful</code> dataset</a> records eruption duration and waiting time to the next eruption at Old Faithful in Yellowstone National Park.</p>
+          </div>
+        </figure>
+      </section>
+
+      <aside class="stein-takeaway">
+        <p class="stein-kicker">The through-line</p>
+        <p>
+          SVGD is deterministic particle transport: the <strong>score</strong> supplies target information,
+          the <strong>Stein identity</strong> turns it into a distributional descent direction, and the
+          <strong>kernel</strong> couples particles strongly enough to move together without becoming identical. Once observations define a target density, those particles can carry it into downstream questions and decisions.
+        </p>
+        <div class="stein-sources">
+          <span>Primary sources</span>
+          <a href="https://proceedings.neurips.cc/paper/2016/hash/b3ba8f1bee1238a2f37603d90b58898d-Abstract.html" target="_blank" rel="noopener">Liu &amp; Wang (2016)</a>
+          <a href="https://proceedings.mlr.press/v48/liub16.html" target="_blank" rel="noopener">Liu, Lee &amp; Jordan (2016)</a>
+          <a href="https://proceedings.mlr.press/v80/zhuo18a.html" target="_blank" rel="noopener">Zhuo et al. (2018)</a>
+        </div>
+        <p class="stein-caveat">The displayed particle system is an educational finite-step simulation. General convergence depends on the target, kernel, regularity, particle approximation, and step-size choices.</p>
+      </aside>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <script src="{{ url_for('static', filename='js/stein.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/stein-density.js') }}" defer></script>
+{% endblock %}
