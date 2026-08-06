@@ -260,18 +260,24 @@
       const plot = plotBox(rect);
       if (!inBox(event.offsetX, event.offsetY, plot)) return;
       const point = unproject([event.offsetX, event.offsetY], plot, viewFor(plot, VIEW_HALF));
+      const nearest = nearestAnchor(point);
+      const onAnchor = nearest !== -1 && distance(anchors[nearest], point) < 0.14;
 
-      /* In the conditional view a click re-aims the field at the nearest data sample. */
-      if (mode === "conditional" && anchors.length > 0) {
-        focus = anchors.reduce(
-          (best, anchor, index) => (distance(anchor, point) < distance(anchors[best], point) ? index : best),
-          0,
-        );
+      /* In the sandbox drawing always wins, in every tab. A click only means
+         "select this one" when it actually lands on a point already there. */
+      if (dataset === "sketch" && !onAnchor) {
+        addAnchor(point);
+        return;
+      }
+      if (nearest === -1) return;
+
+      /* Otherwise the click re-aims the conditional field or promotes a drawn pair. */
+      if (mode === "conditional") {
+        focus = nearest;
         draw();
         return;
       }
-      /* In the path view it promotes the nearest drawn pair to the highlighted one. */
-      if (mode === "path" && anchors.length > 0) {
+      if (mode === "path") {
         const shown = pairIndices();
         const t = stepIndex / steps;
         focus = shown.reduce(
@@ -282,15 +288,23 @@
           0,
         );
         draw();
-        return;
       }
-      if (dataset !== "sketch") return;
+    }
+
+    function nearestAnchor(point) {
+      if (anchors.length === 0) return -1;
+      return anchors.reduce(
+        (best, anchor, index) => (distance(anchor, point) < distance(anchors[best], point) ? index : best),
+        0,
+      );
+    }
+
+    function addAnchor(point) {
       if (anchors.length >= 240) {
         sketchMessage = "240 points is the sandbox limit.";
         syncOutputs();
         return;
       }
-      if (anchors.some((anchor) => distance(anchor, point) < 0.1)) return;
       anchors.push(point);
       sketchMessage = "";
       particles.forEach((particle, index) => { particle.pair = index % anchors.length; });
