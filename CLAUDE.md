@@ -25,6 +25,7 @@ This is a minimal Flask personal academic website with these routes:
 - `/visualizations/optimization/` — Optimization overview plus a linked 24-dimensional tensor experiment
 - `/visualizations/stein-variational-inference/` — Stein particle transport, custom Gaussian mixtures, Stein identity, and Old Faithful density estimation
 - `/visualizations/pareto/` — Time-varying two-objective Pareto-front experiment
+- `/visualizations/gaussian-splatting/` — Splat anatomy, ordered alpha compositing, a live image fit, and a 3-D EWA renderer
 - `/cv.pdf` — Serves `data/cv.pdf` directly
 
 **Biographical and publication content is defined in two places:**
@@ -40,13 +41,15 @@ This is a minimal Flask personal academic website with these routes:
 
 Interactive-note copy and structure live in the visualization templates; their dependency-free canvas simulations live under `static/js/`.
 
+`static/js/splat.js` and `static/js/splat-fit.js` drive the Gaussian splatting note. `splat.js` holds the single-splat anatomy panel, the six-splat compositing panel (front-to-back blending with a clickable per-pixel probe), and a CPU rasteriser for 3-D scenes: covariances are projected with the EWA affine Jacobian (`Σ' = J W Σ Wᵀ Jᵀ` plus the 0.3 px² low-pass term), depth-sorted by counting sort, and composited front-to-back into a Float32 framebuffer whose resolution adapts to the measured frame cost. Splats are always iterated in a fixed shuffled order so that switching the depth sort off shows genuine ordering artefacts. `splat-fit.js` is a complete differentiable rasteriser at 96×96: analytic 3DGS gradients (no autodiff), Adam, and clone/split/prune density control; scale and rotation are the parameters, never Σ. Both files tabulate `exp(−½·)` because the inner loop runs millions of times per frame.
+
 `static/js/flow.js` computes every field on the flow matching note in closed form — no network is trained. Data (2-D point sets, or 14×14 digit rasters produced by `buildGlyphLibrary()`) become isotropic Gaussian components, so the marginal velocity `u_t(x)` is an exact posterior-weighted sum; the same dimension-agnostic helpers drive both the 2-D panels and the 196-D image panel. Panels share a `viewFor()` world window that keeps equal scale on both axes.
 
 **Template structure:**
 
 - `templates/base.html` — Nav and footer wrapper; all pages extend this
 - `templates/index.html` / `templates/publications.html` — Page content
-- `templates/visualizations.html` — Visualization gallery; `flow_matching.html`, `optimization.html`, `stein_variational.html`, and `pareto.html` are the individual entries
+- `templates/visualizations.html` — Visualization gallery; `gaussian_splatting.html`, `flow_matching.html`, `optimization.html`, `stein_variational.html`, and `pareto.html` are the individual entries
 - `templates/partials/pub_card.html` — Reusable publication card included in both pages
 
 The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first with selected ones prioritised within the same year.

@@ -15,6 +15,25 @@
 <section class="viz-index-section animate-in">
   <div class="container">
     <div class="viz-index-list">
+      <a class="viz-index-card viz-index-card--splat" href="{{ url_for('gaussian_splatting_page') }}">
+        <div class="viz-index-preview" aria-hidden="true">
+          <canvas data-viz-preview="splat"></canvas>
+        </div>
+        <div class="viz-index-card-body">
+          <div class="viz-post-meta">
+            <time datetime="2026-08-14">14 August 2026</time>
+            <span aria-hidden="true">·</span>
+            <span>Note 005</span>
+          </div>
+          <h2>A visual exploration of Gaussian splatting</h2>
+          <p>Build one anisotropic splat, blend a handful in depth order, fit an image by gradient descent, then orbit a scene of thousands projected with the EWA Jacobian.</p>
+          <div class="viz-index-card-footer">
+            <ul aria-label="Topics"><li>3DGS</li><li>EWA projection</li><li>Alpha compositing</li><li>Densification</li></ul>
+            <span>Explore <span aria-hidden="true">→</span></span>
+          </div>
+        </div>
+      </a>
+
       <a class="viz-index-card viz-index-card--flow" href="{{ url_for('flow_matching_page') }}">
         <div class="viz-index-preview" aria-hidden="true">
           <canvas data-viz-preview="flow"></canvas>

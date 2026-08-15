@@ -20,6 +20,7 @@
   const paretoFront = findParetoFront(paretoSamples);
   const flowAnchors = buildFlowAnchors();
   const flowSamples = buildFlowSamples();
+  const splatSurface = buildSplatSurface();
 
   const drawAll = () => canvases.forEach(drawPreview);
   const resizeObserver = new ResizeObserver(drawAll);
@@ -36,7 +37,126 @@
     if (canvas.dataset.vizPreview === "optimization") drawOptimization(surface);
     else if (canvas.dataset.vizPreview === "stein") drawStein(surface);
     else if (canvas.dataset.vizPreview === "flow") drawFlow(surface);
+    else if (canvas.dataset.vizPreview === "splat") drawSplat(surface);
     else drawPareto(surface);
+  }
+
+  /* A torus of surface-aligned Gaussians, projected with the same affine
+     approximation the note uses: two tangent offsets become the ellipse axes. */
+  function buildSplatSurface() {
+    const along = 74;
+    const around = 30;
+    const major = 1.05;
+    const minor = 0.42;
+    const splats = [];
+    for (let i = 0; i < along; i += 1) {
+      const u = (i / along) * Math.PI * 2;
+      for (let j = 0; j < around; j += 1) {
+        const v = (j / around) * Math.PI * 2;
+        const ringX = Math.cos(u);
+        const ringZ = Math.sin(u);
+        const radial = major + minor * Math.cos(v);
+        const position = [radial * ringX, minor * Math.sin(v), radial * ringZ];
+        const normal = [Math.cos(v) * ringX, Math.sin(v), Math.cos(v) * ringZ];
+        const tangentU = [-ringZ * radial, 0, ringX * radial];
+        const tangentV = [-minor * Math.sin(v) * ringX, minor * Math.cos(v), -minor * Math.sin(v) * ringZ];
+        splats.push({
+          position,
+          normal,
+          axisOne: tangentU.map((value) => (value * Math.PI * 2 * 0.62) / along),
+          axisTwo: tangentV.map((value) => (value * Math.PI * 2 * 0.62) / around),
+          tone: 0.5 + 0.5 * Math.sin(2 * u + v),
+        });
+      }
+    }
+    return splats;
+  }
+
+  function drawSplat({ context, width, height }) {
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = color(palette.bgWarm);
+    context.fillRect(0, 0, width, height);
+    drawMiniTitle(context, "3-D GAUSSIANS · EWA PROJECTION · DEPTH SORTED", 12, 10, palette.muted);
+
+    const azimuth = 0.85;
+    const elevation = 0.5;
+    const distance = 4.1;
+    const eye = [
+      distance * Math.cos(elevation) * Math.sin(azimuth),
+      distance * Math.sin(elevation),
+      distance * Math.cos(elevation) * Math.cos(azimuth),
+    ];
+    const normalize = (v) => {
+      const length = Math.hypot(v[0], v[1], v[2]) || 1;
+      return [v[0] / length, v[1] / length, v[2] / length];
+    };
+    const cross = (a, b) => [
+      a[1] * b[2] - a[2] * b[1],
+      a[2] * b[0] - a[0] * b[2],
+      a[0] * b[1] - a[1] * b[0],
+    ];
+    const forward = normalize([-eye[0], -eye[1], -eye[2]]);
+    const right = normalize(cross(forward, [0, 1, 0]));
+    const up = cross(right, forward);
+    const focal = height * 1.15;
+    const centreX = width / 2;
+    const centreY = height / 2 + 6;
+
+    const cameraSpace = (point) => {
+      const dx = point[0] - eye[0];
+      const dy = point[1] - eye[1];
+      const dz = point[2] - eye[2];
+      return [
+        right[0] * dx + right[1] * dy + right[2] * dz,
+        up[0] * dx + up[1] * dy + up[2] * dz,
+        forward[0] * dx + forward[1] * dy + forward[2] * dz,
+      ];
+    };
+
+    const projected = [];
+    splatSurface.forEach((splat) => {
+      const t = cameraSpace(splat.position);
+      if (t[2] < 0.3) return;
+      const screenX = centreX + (focal * t[0]) / t[2];
+      const screenY = centreY - (focal * t[1]) / t[2];
+      // Affine approximation: the Jacobian applied to the two tangent offsets.
+      const jacobian = (axis) => {
+        const cameraAxis = [
+          right[0] * axis[0] + right[1] * axis[1] + right[2] * axis[2],
+          up[0] * axis[0] + up[1] * axis[1] + up[2] * axis[2],
+          forward[0] * axis[0] + forward[1] * axis[1] + forward[2] * axis[2],
+        ];
+        return [
+          (focal * cameraAxis[0]) / t[2] - (focal * t[0] * cameraAxis[2]) / (t[2] * t[2]),
+          -((focal * cameraAxis[1]) / t[2] - (focal * t[1] * cameraAxis[2]) / (t[2] * t[2])),
+        ];
+      };
+      const facing = Math.max(0, -(forward[0] * splat.normal[0] + forward[1] * splat.normal[1] + forward[2] * splat.normal[2]));
+      projected.push({
+        x: screenX,
+        y: screenY,
+        depth: t[2],
+        axisOne: jacobian(splat.axisOne),
+        axisTwo: jacobian(splat.axisTwo),
+        tone: splat.tone,
+        facing,
+      });
+    });
+
+    projected.sort((first, second) => second.depth - first.depth);
+    const cool = blendRgb(palette.cloud, palette.ink, 0.15);
+    projected.forEach((splat) => {
+      const tint = blendRgb(cool, palette.orange, splat.tone * 0.85);
+      const shaded = blendRgb(blendRgb(tint, palette.bg, 0.55), tint, 0.35 + 0.65 * splat.facing);
+      context.save();
+      context.translate(splat.x, splat.y);
+      context.transform(splat.axisOne[0], splat.axisOne[1], splat.axisTwo[0], splat.axisTwo[1], 0, 0);
+      context.beginPath();
+      context.arc(0, 0, 1.9, 0, Math.PI * 2);
+      context.restore();
+      context.fillStyle = rgba(shaded, 0.5);
+      context.fill();
+    });
   }
 
   function drawFlow({ context, width, height }) {

@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+
+{% block title %}A visual exploration of Gaussian splatting — {{ site.name }}{% endblock %}
+
+{% block content %}
+
+<section class="viz-page-header viz-entry-nav animate-in">
+  <div class="container">
+    <a class="viz-back-link" href="{{ url_for('visualizations_page') }}">← All visualizations</a>
+  </div>
+</section>
+
+<section class="viz-feed">
+  <div class="viz-container">
+    <article class="viz-post viz-post--splat animate-in">
+      <header class="viz-post-header">
+        <div class="viz-post-meta">
+          <time datetime="2026-08-14">14 August 2026</time>
+          <span aria-hidden="true">·</span>
+          <span>Interactive note 005</span>
+          <span aria-hidden="true">·</span>
+          <span>Created with Opus 5</span>
+        </div>
+        <h1 class="viz-post-title">A visual exploration of Gaussian splatting</h1>
+        <p class="viz-post-deck">
+          A scene made of nothing but ellipsoids of coloured fog. Sort them by depth, blend them in order,
+          and every parameter — where they sit, how they lean, how solid they are — falls out of a gradient.
+        </p>
+      </header>
+
+      <section class="splat-chapter" aria-labelledby="splat-anatomy-title">
+        <header class="splat-chapter-header">
+          <span class="splat-chapter-number">01</span>
+          <div>
+            <p class="splat-kicker">The primitive</p>
+            <h2 id="splat-anatomy-title">One splat is five numbers and a colour</h2>
+            <p>
+              A splat is a Gaussian with a colour and an opacity. Its shape never comes from the covariance
+              directly — that would let the optimizer wander into matrices that are not positive semi-definite.
+              It is built instead from a rotation and two scales, which cannot.
+            </p>
+          </div>
+        </header>
+
+        <figure class="splat-anatomy" data-splat-anatomy>
+          <div class="splat-toolbar">
+            <div class="splat-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>drag μ, s₁ or s₂ directly on the canvas</span>
+            </div>
+            <div class="splat-actions">
+              <div class="splat-switch" role="group" aria-label="What to draw">
+                <button class="is-active" type="button" data-anatomy-view="field" aria-pressed="true">Density</button>
+                <button type="button" data-anatomy-view="contour" aria-pressed="false">Level sets</button>
+              </div>
+              <button class="viz-button" type="button" data-anatomy-reset>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="splat-workbench">
+            <div class="splat-stage">
+              <canvas class="splat-anatomy-canvas" data-anatomy-canvas role="img" aria-label="A single anisotropic 2-D Gaussian with its 1σ, 2σ and 3σ level sets and its two principal axes. Drag the handles to change the covariance."></canvas>
+            </div>
+
+            <div class="splat-notes">
+              <p class="splat-kicker">Parameterisation</p>
+              <h3>Rotation and scale, never Σ itself</h3>
+              <p>
+                The two handles are the columns of <i>R</i>, stretched by s₁ and s₂. Whatever you do to them,
+                the matrix below stays a valid covariance: it is a product that cannot come out indefinite.
+              </p>
+              <div class="splat-equation splat-equation--stacked">
+                \[\Sigma = R\,\mathrm{diag}(s_1^2,s_2^2)\,R^{\top}\]
+                \[G(x)=\exp\!\left(-\tfrac12 (x-\mu)^{\top}\Sigma^{-1}(x-\mu)\right)\]
+              </div>
+
+              <div class="splat-matrix" aria-label="Current covariance matrix">
+                <span class="splat-matrix-label">Σ</span>
+                <div class="splat-matrix-grid">
+                  <span data-sigma-xx>—</span><span data-sigma-xy>—</span>
+                  <span data-sigma-yx>—</span><span data-sigma-yy>—</span>
+                </div>
+              </div>
+
+              <dl class="splat-facts">
+                <div><dt>Anisotropy</dt><dd data-anatomy-ratio>—</dd></div>
+                <div><dt>Orientation</dt><dd data-anatomy-angle>—</dd></div>
+                <div><dt>1σ footprint</dt><dd data-anatomy-footprint>—</dd></div>
+                <div><dt>Peak opacity</dt><dd data-anatomy-peak>—</dd></div>
+              </dl>
+
+              <p class="splat-reading">
+                <i class="splat-reading-mark splat-reading-mark--major"></i>Squash one axis and the splat becomes
+                a needle that can trace an edge. This anisotropy is the whole reason a few hundred thousand
+                Gaussians can stand in for a scene: each one is allowed to be the wrong shape everywhere except
+                where it is needed.
+              </p>
+            </div>
+          </div>
+
+          <div class="splat-lab-footer">
+            <label for="anatomy-sx"><span><strong>Scale s₁</strong><output for="anatomy-sx" data-anatomy-sx-output>s₁ = 1.15</output></span>
+              <input id="anatomy-sx" type="range" min="0.12" max="2" step="0.01" value="1.15" data-anatomy-sx></label>
+            <label for="anatomy-sy"><span><strong>Scale s₂</strong><output for="anatomy-sy" data-anatomy-sy-output>s₂ = 0.42</output></span>
+              <input id="anatomy-sy" type="range" min="0.08" max="2" step="0.01" value="0.42" data-anatomy-sy></label>
+            <label for="anatomy-theta"><span><strong>Rotation θ</strong><output for="anatomy-theta" data-anatomy-theta-output>θ = −32°</output></span>
+              <input id="anatomy-theta" type="range" min="-3.14" max="3.14" step="0.01" value="-0.55" data-anatomy-theta></label>
+            <label for="anatomy-alpha"><span><strong>Opacity α</strong><output for="anatomy-alpha" data-anatomy-alpha-output>α = 0.85</output></span>
+              <input id="anatomy-alpha" type="range" min="0.05" max="1" step="0.01" value="0.85" data-anatomy-alpha></label>
+          </div>
+        </figure>
+      </section>
+
+      <section class="splat-chapter splat-chapter--composite" aria-labelledby="splat-composite-title">
+        <header class="splat-chapter-header">
+          <span class="splat-chapter-number">02</span>
+          <div>
+            <p class="splat-kicker">The renderer</p>
+            <h2 id="splat-composite-title">Blending is a walk from front to back</h2>
+            <p>
+              There is no ray marching and no network here. Each pixel visits the splats that cover it in depth
+              order, spends a little of its remaining transmittance on each one, and stops when nothing is left.
+              That is the entire renderer.
+            </p>
+          </div>
+        </header>
+
+        <figure class="splat-composite" data-splat-composite>
+          <div class="splat-toolbar">
+            <div class="splat-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span>transmittance left at the probe <strong data-composite-transmittance>—</strong></span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span>covered <strong data-composite-covered>—</strong></span>
+            </div>
+            <div class="splat-actions">
+              <div class="splat-switch" role="group" aria-label="Compositing order">
+                <button class="is-active" type="button" data-composite-order="sorted" aria-pressed="true">Depth sorted</button>
+                <button type="button" data-composite-order="authored" aria-pressed="false">Arbitrary order</button>
+              </div>
+              <button class="viz-button" type="button" data-composite-reset>Reset layout</button>
+            </div>
+          </div>
+
+          <div class="splat-workbench">
+            <div class="splat-stage">
+              <canvas class="splat-composite-canvas" data-composite-canvas role="img" aria-label="Six overlapping coloured splats composited front to back. Drag a splat to move it, click anywhere to inspect one pixel."></canvas>
+            </div>
+
+            <div class="splat-notes">
+              <p class="splat-kicker">One pixel, opened up</p>
+              <h3>Each splat spends what is left</h3>
+              <div class="splat-equation splat-equation--stacked">
+                \[a_i=\alpha_i\,G_i(x),\qquad T_i=\prod_{j&lt;i}\left(1-a_j\right)\]
+                \[C(x)=\sum_{i=1}^{n} c_i\,a_i\,T_i \;+\; T_{n+1}\,c_{\text{bg}}\]
+              </div>
+
+              <div class="splat-probe">
+                <div class="splat-probe-head">
+                  <span></span><span>#</span><span>G</span><span>a</span><span>T</span><span>a·T</span>
+                </div>
+                <ol data-composite-probe></ol>
+                <div class="splat-probe-final">
+                  <span>resulting pixel</span>
+                  <i data-composite-final></i>
+                </div>
+              </div>
+
+              <p class="splat-reading">
+                <i class="splat-reading-mark splat-reading-mark--order"></i>Switch to arbitrary order and the picture
+                changes although not one splat moved. Alpha compositing does not commute, which is why a real
+                renderer sorts every splat by view depth for every frame — and why the sort, not the maths,
+                is the expensive part.
+              </p>
+            </div>
+          </div>
+
+          <div class="splat-lab-footer splat-lab-footer--composite">
+            <label for="composite-opacity"><span><strong>Opacity scale</strong><output for="composite-opacity" data-composite-opacity-output>×1.00</output></span>
+              <input id="composite-opacity" type="range" min="0.1" max="1.4" step="0.01" value="1" data-composite-opacity></label>
+            <p class="splat-hint">
+              Drag the numbered splats over each other. The list above is recomputed for the pixel under the
+              crosshair — click anywhere on the canvas to move it.
+            </p>
+          </div>
+        </figure>
+      </section>
+
+      <section class="splat-chapter splat-chapter--fit" aria-labelledby="splat-fit-title">
+        <header class="splat-chapter-header">
+          <span class="splat-chapter-number">03</span>
+          <div>
+            <p class="splat-kicker">The optimizer</p>
+            <h2 id="splat-fit-title">Where the splats come from</h2>
+            <p>
+              Nobody places them. A few hundred random Gaussians are dropped on the image and every one of the
+              nine numbers describing them is pushed downhill by the same gradient that flows back through the
+              blend above. This runs live in your browser — analytic gradients, Adam, and the clone / split /
+              prune rule that decides how many splats the picture deserves.
+            </p>
+          </div>
+        </header>
+
+        <figure class="splat-fit" data-splat-fit>
+          <div class="splat-toolbar">
+            <div class="splat-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span data-fit-iteration>iteration 0</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span>PSNR <strong data-fit-psnr>—</strong></span>
+            </div>
+            <div class="splat-actions">
+              <div class="splat-switch" role="group" aria-label="Target image">
+                <button class="is-active" type="button" data-fit-target="dusk" aria-pressed="true">Dusk</button>
+                <button type="button" data-fit-target="bauhaus" aria-pressed="false">Hard edges</button>
+                <button type="button" data-fit-target="field" aria-pressed="false">GP draw</button>
+              </div>
+              <button class="viz-button" type="button" data-fit-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-fit-play-label>Fit splats</span>
+              </button>
+              <button class="viz-button" type="button" data-fit-restart>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v6h-6"/></svg>
+                Restart
+              </button>
+            </div>
+          </div>
+
+          <div class="splat-fit-workbench">
+            <div class="splat-stage">
+              <div class="splat-stage-heading">
+                <span>gradient descent on 96 × 96 pixels</span>
+                <div class="splat-switch splat-switch--small" role="group" aria-label="Right pane">
+                  <button class="is-active" type="button" data-fit-view="render" aria-pressed="true">Render</button>
+                  <button type="button" data-fit-view="ellipses" aria-pressed="false">Ellipses</button>
+                  <button type="button" data-fit-view="residual" aria-pressed="false">Residual</button>
+                </div>
+              </div>
+              <canvas class="splat-fit-canvas" data-fit-canvas role="img" aria-label="Target image beside the current splat reconstruction, with a curve of PSNR and splat count over the optimization."></canvas>
+            </div>
+
+            <div class="splat-notes">
+              <p class="splat-kicker">The backward pass</p>
+              <h3>Nine gradients per splat</h3>
+              <p>
+                The loss is plain ℓ₂ between render and target. Because the renderer is a product of
+                transmittances, the derivative for splat <i>i</i> needs everything composited behind it — so the
+                backward pass walks the same list in reverse, rebuilding each Tᵢ by division.
+              </p>
+              <div class="splat-equation splat-equation--stacked">
+                \[\frac{\partial \mathcal L}{\partial a_i}
+                = \nabla_{C}\mathcal L \cdot \left(c_i T_i - \frac{S_i}{1-a_i}\right),\qquad
+                S_i=\sum_{j>i} c_j a_j T_j\]
+                \[\frac{\partial \mathcal L}{\partial \Sigma} = -\Sigma^{-1}
+                \frac{\partial \mathcal L}{\partial \Sigma^{-1}} \Sigma^{-1},\qquad
+                \frac{\partial \mathcal L}{\partial W}=2\,\frac{\partial \mathcal L}{\partial \Sigma}W,
+                \quad W=RS\]
+              </div>
+              <p class="splat-reading">
+                <i class="splat-reading-mark splat-reading-mark--densify"></i>Every 60 steps the splats with the
+                largest positional gradient are duplicated: small ones are <strong>cloned</strong> into the gap
+                they are being pulled towards, large ones are <strong>split</strong> in two with their scale
+                divided by 1.6. Splats that fade below 2 % opacity are deleted. Detail appears where the loss
+                asks for it — watch the dashed count climb on the hard-edged target.
+              </p>
+            </div>
+          </div>
+
+          <div class="splat-fit-footer">
+            <label for="fit-budget"><span><strong>Splat budget</strong><output for="fit-budget" data-fit-budget-output>600 splats</output></span>
+              <input id="fit-budget" type="range" min="150" max="1200" step="25" value="600" data-fit-budget></label>
+            <button class="viz-button" type="button" data-fit-densify aria-pressed="true">Adaptive density</button>
+            <div class="splat-live-metrics" aria-label="Live fitting measurements">
+              <span>splats <strong data-fit-count>—</strong></span>
+              <span>parameters <strong data-fit-parameters>—</strong></span>
+              <span>vs. pixels <strong data-fit-compression>—</strong></span>
+              <span>ℓ₂ loss <strong data-fit-loss>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <section class="splat-chapter splat-chapter--scene" aria-labelledby="splat-scene-title">
+        <header class="splat-chapter-header">
+          <span class="splat-chapter-number">04</span>
+          <div>
+            <p class="splat-kicker">The projection</p>
+            <h2 id="splat-scene-title">Lifting the ellipse into a camera</h2>
+            <p>
+              A perspective camera is not a linear map, so a projected Gaussian is not exactly a Gaussian.
+              EWA splatting linearises the projection at each splat's centre and keeps the quadratic form —
+              one Jacobian per splat, one 2×2 covariance in pixels, and the renderer from chapter 02 does the rest.
+              Everything below is rasterised on the CPU, one pixel at a time.
+            </p>
+          </div>
+        </header>
+
+        <figure class="splat-scene" data-splat-scene>
+          <div class="splat-toolbar">
+            <div class="splat-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span><strong data-scene-count>—</strong> Gaussians</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span><strong data-scene-visible>—</strong> after culling</span>
+              <span class="status-separator" aria-hidden="true"></span>
+              <span data-scene-frame>—</span>
+            </div>
+            <div class="splat-actions">
+              <div class="splat-switch" role="group" aria-label="Scene">
+                <button class="is-active" type="button" data-scene-name="surface" aria-pressed="true">GP surface</button>
+                <button type="button" data-scene-name="knot" aria-pressed="false">Torus knot</button>
+                <button type="button" data-scene-name="cloud" aria-pressed="false">Volumetric</button>
+              </div>
+              <button class="viz-button" type="button" data-scene-play>
+                <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
+                <svg class="button-icon button-icon--play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7z"/></svg>
+                <span data-scene-play-label>Pause orbit</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="splat-scene-workbench">
+            <div class="splat-stage">
+              <canvas class="splat-scene-canvas" data-scene-canvas role="img" aria-label="A scene of thousands of 3-D Gaussians rendered by projecting each covariance to screen space and compositing front to back. Drag to orbit the camera."></canvas>
+              <p class="splat-canvas-hint">drag to orbit</p>
+            </div>
+
+            <div class="splat-notes">
+              <p class="splat-kicker">EWA splatting</p>
+              <h3>Σ′ = J W Σ Wᵀ Jᵀ</h3>
+              <p>
+                <i>W</i> rotates the covariance into camera space; <i>J</i> is the Jacobian of the perspective
+                divide evaluated at the splat centre. Drop the third row and column and a 3-D ellipsoid has
+                become a 2-D ellipse in pixels.
+              </p>
+              <div class="splat-equation splat-equation--stacked">
+                \[J=\begin{bmatrix} f/t_z & 0 & -f\,t_x/t_z^{2}\\[2pt] 0 & f/t_z & -f\,t_y/t_z^{2}\end{bmatrix},
+                \qquad \Sigma' = J W \Sigma W^{\top} J^{\top}\]
+                \[c_i(d) = c_i^{(0)} + \langle a_i, d\rangle \quad (\ell = 1 \text{ spherical harmonic})\]
+              </div>
+
+              <div class="splat-toggles" role="group" aria-label="Renderer switches">
+                <button class="viz-button" type="button" data-scene-toggle="sort">Depth sort</button>
+                <button class="viz-button" type="button" data-scene-toggle="dilate">Low-pass filter</button>
+                <button class="viz-button" type="button" data-scene-toggle="sh">View-dependent colour</button>
+                <button class="viz-button" type="button" data-scene-toggle="outline">Show ellipses</button>
+              </div>
+
+              <p class="splat-reading">
+                <i class="splat-reading-mark splat-reading-mark--order"></i>Turn off the depth sort — the splats then
+                arrive in the arbitrary order they sit in memory — and the far side of the surface starts breaking
+                through the near side in speckles: with opaque splats the order <em>is</em> the occlusion. Turn off the
+                low-pass filter and distant splats thin below one pixel and start to shimmer; the reference
+                implementation simply adds 0.3 px² to the diagonal of Σ′ so that nothing is ever narrower than a sample.
+              </p>
+            </div>
+          </div>
+
+          <div class="splat-scene-footer">
+            <label for="scene-distance"><span><strong>Camera distance</strong><output for="scene-distance" data-scene-distance-output>d = 7.2</output></span>
+              <input id="scene-distance" type="range" min="3" max="14" step="0.1" value="7.2" data-scene-distance></label>
+            <label for="scene-scale"><span><strong>Splat scale</strong><output for="scene-scale" data-scene-scale-output>×1.00</output></span>
+              <input id="scene-scale" type="range" min="0.3" max="2" step="0.02" value="1" data-scene-scale></label>
+            <label for="scene-opacity"><span><strong>Opacity</strong><output for="scene-opacity" data-scene-opacity-output>×1.00</output></span>
+              <input id="scene-opacity" type="range" min="0.15" max="1.6" step="0.01" value="1" data-scene-opacity></label>
+            <div class="splat-live-metrics" aria-label="Live renderer measurements">
+              <span>rasterised <strong data-scene-rasterized>—</strong></span>
+              <span>buffer <strong data-scene-resolution>—</strong></span>
+            </div>
+          </div>
+        </figure>
+      </section>
+
+      <aside class="splat-takeaway">
+        <p class="splat-kicker">The through-line</p>
+        <p>
+          Gaussian splatting keeps three things that usually fight each other. The primitive stays
+          <strong>explicit</strong>, so it can be moved, cloned and deleted while training. The renderer stays
+          <strong>closed form</strong>, so a frame costs a sort and a blend rather than millions of network
+          evaluations. And the whole path from parameters to pixels stays <strong>differentiable</strong>, so
+          the scene is fitted by the same ℓ₂ gradient you can watch descending in chapter 03. The uncertainty
+          is not being modelled here — the Gaussian is a shape, not a belief — but the algebra that makes
+          covariances easy to rotate, project and marginalise is exactly the algebra that makes them convenient
+          in inference too.
+        </p>
+        <div class="splat-sources">
+          <span>Primary sources</span>
+          <a href="https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/" target="_blank" rel="noopener">Kerbl et al. (2023)</a>
+          <a href="https://www.cs.umd.edu/~zwicker/publications/EWASplatting-TVCG02.pdf" target="_blank" rel="noopener">Zwicker et al. (2002), EWA splatting</a>
+          <a href="https://arxiv.org/abs/2407.01866" target="_blank" rel="noopener">Zhang et al. (2024), Image-GS</a>
+          <a href="https://arxiv.org/abs/2311.16493" target="_blank" rel="noopener">Yu et al. (2024), Mip-Splatting</a>
+        </div>
+        <p class="splat-caveat">
+          Everything on this page is computed in the browser at a reduced scale: 96 × 96 pixels and a few
+          hundred splats for the fit, a few thousand for the 3-D scenes, with colour handled by a degree-1
+          spherical harmonic rather than the degree-3 basis used in the paper. A production reconstruction
+          optimises millions of Gaussians against dozens of calibrated photographs on a GPU — the equations
+          are the ones above, the budget is not.
+        </p>
+      </aside>
+    </article>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <script src="{{ url_for('static', filename='js/splat.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/splat-fit.js') }}" defer></script>
+{% endblock %}
