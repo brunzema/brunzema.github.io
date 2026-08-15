@@ -222,10 +222,22 @@
     return target;
   }
 
+  /* An empty sheet of paper for the sandbox. */
+  function buildSandbox() {
+    const target = new Float32Array(PIXELS * 3);
+    for (let index = 0; index < PIXELS; index += 1) {
+      target[index * 3] = 0.949;
+      target[index * 3 + 1] = 0.925;
+      target[index * 3 + 2] = 0.878;
+    }
+    return target;
+  }
+
   const TARGETS = {
     dusk: { label: "Dusk", build: buildDusk },
     bauhaus: { label: "Hard edges", build: buildBauhaus },
     field: { label: "GP draw", build: buildField },
+    sandbox: { label: "Sandbox", build: buildSandbox },
   };
 
   /* ── the fitter ────────────────────────────────────────────────────── */
@@ -247,6 +259,9 @@
     let history = [];
     let random = randomSource(7);
     let residualGain = 4;
+    let layout = null;
+    let brush = { color: [0.949, 0.925, 0.878], radius: 6 };
+    let stroke = null;
 
     const colorBuffer = new Float32Array(PIXELS * 3);
     const transmittance = new Float64Array(PIXELS);
@@ -618,7 +633,9 @@
       const loss = forward();
       backward();
       iteration += 1;
-      if (densifying && iteration >= 80 && iteration <= 2400 && iteration % 60 === 0) densify();
+      // No upper bound: the budget caps growth, and the sandbox needs density
+      // control to keep responding to whatever gets painted next.
+      if (densifying && iteration >= 80 && iteration % 60 === 0) densify();
       return loss;
     }
 
@@ -684,11 +701,16 @@
       const paneSize = Math.min((width - gap) / 2, available);
       const offsetX = (width - (paneSize * 2 + gap)) / 2;
       const offsetY = 18;
+      layout = { paneSize, offsetX, offsetY };
 
       writeRender();
 
       const panes = [
-        { canvas: targetCanvas, x: offsetX, title: "TARGET · 96 × 96" },
+        {
+          canvas: targetCanvas,
+          x: offsetX,
+          title: targetName === "sandbox" ? "SANDBOX · paint here" : "TARGET · 96 × 96",
+        },
         {
           canvas: renderCanvas,
           x: offsetX + paneSize + gap,
@@ -783,10 +805,13 @@
         const maxIteration = Math.max(400, history[history.length - 1].iteration);
         const values = history.map((point) => point.psnr);
         const low = Math.min(...values, 8);
-        const high = Math.max(...values, 20) + 1;
+        const high = Math.min(Math.max(...values, 20) + 1, 62);
         const toX = (value) => curveX + 6 + (value / maxIteration) * (curveWidth - 12);
         const toY = (value) =>
-          curveTop + curveHeight - 8 - ((value - low) / (high - low)) * (curveHeight - 18);
+          Math.max(
+            curveTop + 6,
+            curveTop + curveHeight - 8 - ((value - low) / (high - low)) * (curveHeight - 18)
+          );
 
         context.beginPath();
         history.forEach((point, index) => {
@@ -844,6 +869,115 @@
       return psnr;
     }
 
+    /* ── the sandbox: paint the target while the fit keeps running ───── */
+
+    function toImage(event) {
+      if (!layout) return null;
+      const rect = canvas.getBoundingClientRect();
+      const px = event.clientX - rect.left - layout.offsetX;
+      const py = event.clientY - rect.top - layout.offsetY;
+      if (px < 0 || py < 0 || px > layout.paneSize || py > layout.paneSize) return null;
+      return [(px / layout.paneSize) * RESOLUTION, (py / layout.paneSize) * RESOLUTION];
+    }
+
+    function dab(cx, cy) {
+      const radius = brush.radius;
+      // A super-Gaussian: flat in the middle, soft only at the rim.
+      const sigma = Math.max(radius * 0.78, 0.9);
+      const falloff = 1 / (sigma * sigma * sigma * sigma);
+      const minX = Math.max(0, Math.floor(cx - radius));
+      const maxX = Math.min(RESOLUTION - 1, Math.ceil(cx + radius));
+      const minY = Math.max(0, Math.floor(cy - radius));
+      const maxY = Math.min(RESOLUTION - 1, Math.ceil(cy + radius));
+      for (let y = minY; y <= maxY; y += 1) {
+        const dy = y + 0.5 - cy;
+        for (let x = minX; x <= maxX; x += 1) {
+          const dx = x + 0.5 - cx;
+          const squared = dx * dx + dy * dy;
+          const weight = 0.6 * Math.exp(-0.5 * squared * squared * falloff);
+          if (weight < 0.004) continue;
+          const index = (y * RESOLUTION + x) * 3;
+          for (let channel = 0; channel < 3; channel += 1) {
+            target[index + channel] += (brush.color[channel] - target[index + channel]) * weight;
+          }
+        }
+      }
+    }
+
+    function paintTo(point) {
+      if (!stroke) {
+        dab(point[0], point[1]);
+      } else {
+        // Interpolate along the stroke so fast pointers leave no gaps.
+        const dx = point[0] - stroke[0];
+        const dy = point[1] - stroke[1];
+        const steps = Math.max(1, Math.ceil(Math.hypot(dx, dy)));
+        for (let step = 1; step <= steps; step += 1) {
+          dab(stroke[0] + (dx * step) / steps, stroke[1] + (dy * step) / steps);
+        }
+      }
+      stroke = point;
+      paintTarget();
+      if (!running) {
+        forward();
+        draw();
+      }
+    }
+
+    canvas.addEventListener("pointerdown", (event) => {
+      if (targetName !== "sandbox") return;
+      const point = toImage(event);
+      if (!point) return;
+      stroke = null;
+      canvas.setPointerCapture(event.pointerId);
+      paintTo(point);
+      event.preventDefault();
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      if (targetName !== "sandbox" || !canvas.hasPointerCapture(event.pointerId)) return;
+      const point = toImage(event);
+      if (point) paintTo(point);
+    });
+
+    const endStroke = () => {
+      stroke = null;
+    };
+    canvas.addEventListener("pointerup", endStroke);
+    canvas.addEventListener("pointercancel", endStroke);
+
+    root.querySelectorAll("[data-fit-brush]").forEach((button) => {
+      button.addEventListener("click", () => {
+        brush.color = button.dataset.fitBrush.split(",").map((value) => Number(value) / 255);
+        root.querySelectorAll("[data-fit-brush]").forEach((other) => {
+          const active = other === button;
+          other.classList.toggle("is-active", active);
+          other.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      });
+    });
+
+    root.querySelectorAll("[data-fit-brush-size]").forEach((button) => {
+      button.addEventListener("click", () => {
+        brush.radius = Number(button.dataset.fitBrushSize);
+        root.querySelectorAll("[data-fit-brush-size]").forEach((other) => {
+          const active = other === button;
+          other.classList.toggle("is-active", active);
+          other.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      });
+    });
+
+    const clearButton = root.querySelector("[data-fit-sandbox-clear]");
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        target.set(buildSandbox());
+        paintTarget();
+        forward();
+        draw();
+      });
+    }
+
     /* ── controls ────────────────────────────────────────────────────── */
 
     const playButton = root.querySelector("[data-fit-play]");
@@ -863,6 +997,8 @@
     const restartButton = root.querySelector("[data-fit-restart]");
     if (restartButton) restartButton.addEventListener("click", () => reset());
 
+    const sandboxBar = root.querySelector("[data-fit-sandbox-bar]");
+
     root.querySelectorAll("[data-fit-target]").forEach((button) => {
       button.addEventListener("click", () => {
         targetName = button.dataset.fitTarget;
@@ -873,7 +1009,15 @@
           other.classList.toggle("is-active", active);
           other.setAttribute("aria-pressed", active ? "true" : "false");
         });
+        const sandbox = targetName === "sandbox";
+        if (sandboxBar) sandboxBar.hidden = !sandbox;
+        canvas.style.cursor = sandbox ? "crosshair" : "default";
+        canvas.style.touchAction = sandbox ? "none" : "";
         reset();
+        if (sandbox && !running) {
+          running = true;
+          syncPlay();
+        }
       });
     });
 

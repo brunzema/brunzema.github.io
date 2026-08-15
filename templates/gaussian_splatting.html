@@ -199,7 +199,8 @@
               Nobody places them. A few hundred random Gaussians are dropped on the image and every one of the
               nine numbers describing them is pushed downhill by the same gradient that flows back through the
               blend above. This runs live in your browser — analytic gradients, Adam, and the clone / split /
-              prune rule that decides how many splats the picture deserves.
+              prune rule that decides how many splats the picture deserves. Or open the sandbox and paint your
+              own target: the optimizer never stops, so the population reorganises under the brush.
             </p>
           </div>
         </header>
@@ -217,6 +218,7 @@
                 <button class="is-active" type="button" data-fit-target="dusk" aria-pressed="true">Dusk</button>
                 <button type="button" data-fit-target="bauhaus" aria-pressed="false">Hard edges</button>
                 <button type="button" data-fit-target="field" aria-pressed="false">GP draw</button>
+                <button type="button" data-fit-target="sandbox" aria-pressed="false">Sandbox</button>
               </div>
               <button class="viz-button" type="button" data-fit-play>
                 <svg class="button-icon button-icon--pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>
@@ -228,6 +230,28 @@
                 Restart
               </button>
             </div>
+          </div>
+
+          <div class="splat-sandbox-bar" data-fit-sandbox-bar hidden>
+            <div>
+              <span class="splat-kicker">Sandbox</span>
+              <strong>Paint into the left pane. The optimizer never stops — the splats chase whatever you draw.</strong>
+            </div>
+            <div class="splat-swatches" role="group" aria-label="Brush colour">
+              <button class="is-active" type="button" data-fit-brush="242,236,224" style="--swatch: #f2ece0" aria-label="Paper" aria-pressed="true"></button>
+              <button type="button" data-fit-brush="31,78,121" style="--swatch: #1f4e79" aria-label="Petrol" aria-pressed="false"></button>
+              <button type="button" data-fit-brush="224,122,60" style="--swatch: #e07a3c" aria-label="Orange" aria-pressed="false"></button>
+              <button type="button" data-fit-brush="201,162,39" style="--swatch: #c9a227" aria-label="Gold" aria-pressed="false"></button>
+              <button type="button" data-fit-brush="63,125,99" style="--swatch: #3f7d63" aria-label="Green" aria-pressed="false"></button>
+              <button type="button" data-fit-brush="138,63,92" style="--swatch: #8a3f5c" aria-label="Plum" aria-pressed="false"></button>
+              <button type="button" data-fit-brush="28,26,23" style="--swatch: #1c1a17" aria-label="Ink" aria-pressed="false"></button>
+            </div>
+            <div class="splat-switch splat-switch--small" role="group" aria-label="Brush size">
+              <button type="button" data-fit-brush-size="3" aria-pressed="false">S</button>
+              <button class="is-active" type="button" data-fit-brush-size="6" aria-pressed="true">M</button>
+              <button type="button" data-fit-brush-size="11" aria-pressed="false">L</button>
+            </div>
+            <button class="viz-button" type="button" data-fit-sandbox-clear>Clear canvas</button>
           </div>
 
           <div class="splat-fit-workbench">
