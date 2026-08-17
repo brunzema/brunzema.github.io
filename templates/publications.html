@@ -4,15 +4,16 @@
 
 {% block content %}
 
-<section class="page-header">
+<section class="page-header animate-in">
   <div class="container">
     <h1 class="page-title">Publications</h1>
   </div>
 </section>
 
-<section class="section">
+<section class="section section--flush">
   <div class="container">
 
+    {% set hide_year = true %}
     {% for year in years %}
       <div class="year-group">
         <div class="year-label">{{ year }}</div>
@@ -24,7 +25,7 @@
         </div>
       </div>
     {% endfor %}
-    <p class="page-subtitle" style="margin-top:0.35rem">
+    <p class="pub-footnote">
       <sup>*</sup> Equal contribution.
     </p>
   </div>

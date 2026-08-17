@@ -56,9 +56,23 @@ The `parse_publications()` function in `app.py` reads the BibTeX on every reques
 
 Equal-contribution authors are marked with `$*$` or `\\*` in the BibTeX author field and rendered with a superscript `*`. The `is_me()` helper in `app.py` identifies Paul Brunzema's name to apply the `author-me` CSS class.
 
+**Design system:**
+
+Apple-style clarity on a pure-white page. Everything is driven by tokens at the top of `static/css/style.css`: a 4pt spacing scale (`--s-1`…`--s-8`), a radius scale (`--r-xs`…`--r-xl`), a type scale (`--t-caption`…`--t-display`), and material tokens. Use the tokens rather than new literal values.
+
+- **Type is San Francisco** via the `-apple-system` stack (`--font-display` / `--font-body`) — the same stack apple.com ships. There are no webfonts to load. Display type is weight **600**; body is 17px/1.47 at −0.022em.
+- **Surfaces are glass tiles**: `--glass` fill + `--glass-filter` backdrop blur + `--card-elev` (a specular top edge, a hairline rim, and a wide soft shadow). White-on-white, so the edge and shadow do the separating. Applied to `.pub-list`, `.exp-list`, `.viz-index-card`, `.group-card`, and every note lab.
+- **Grouped lists**: rows live inside one tile, separated by hairlines inset to the content edge via `.row + .row::before`; the separators around a hovered row fade out.
+- Controls are pill-shaped with `--fill-1` backgrounds; the active state is a filled `--accent` pill.
+- The interactive notes were built on an earlier editorial chrome. Rather than rewrite their 2,500 lines of layout, an additive **"INTERACTIVE NOTES — design language"** layer near the end of the stylesheet restyles their surfaces, controls, and radii. It wins by cascade order, so keep it last and add note-chrome overrides there.
+
+`static/js/ui.js` toggles `nav.is-scrolled`, which reveals the nav's bottom hairline only once the page scrolls.
+
 **Theming (light/dark):**
 
 The theme is driven by a `data-theme` attribute on `<html>`, with all colors defined as CSS custom properties under `:root` (light) and `[data-theme="dark"]` in `static/css/style.css`. There is no hardcoded color anywhere else — add new colors as variables in both blocks.
+
+Two ordering constraints the note pages depend on: `--bg-card` must stay **lighter** than `--bg-warm` (the segmented switches use warm as the track and card as the selected thumb), and `--bg` / `--bg-warm` are read from JS to paint the visualization canvases, so changing them changes the plots.
 
 - An inline script in `base.html` `<head>` sets the initial theme from `localStorage` or `prefers-color-scheme` before first paint (FOUC prevention) — keep theme init inline, not in an external file.
 - `static/js/theme.js` wires the nav toggle button, persists the choice, and fires a `themechange` window event.

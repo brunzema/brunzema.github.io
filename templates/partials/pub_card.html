@@ -1,14 +1,22 @@
+{% set primary = pub.html or pub.arxiv or pub.pdf %}
 <article class="pub-card">
 
   <!-- Thumbnail -->
   <div class="pub-thumb">
     {% if pub.preview %}
-      <img
-        src="{{ url_for('static', filename='img/publication_preview/' + pub.preview) }}"
-        alt="{{ pub.title }} preview"
-        class="pub-img"
-        loading="lazy"
-      />
+      {% set thumb %}
+        <img
+          src="{{ url_for('static', filename='img/publication_preview/' + pub.preview) }}"
+          alt="{{ pub.title }} preview"
+          class="pub-img"
+          loading="lazy"
+        />
+      {% endset %}
+      {% if primary %}
+        <a href="{{ primary }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{{ thumb }}</a>
+      {% else %}
+        {{ thumb }}
+      {% endif %}
     {% else %}
       <div class="pub-img-placeholder">
         <span>{{ pub.abbr or pub.year }}</span>
@@ -24,13 +32,21 @@
       {% if pub.abbr %}
         <span class="badge badge-venue">{{ pub.abbr }}</span>
       {% endif %}
-      <span class="pub-year">{{ pub.year }}</span>
+      {% if not hide_year %}
+        <span class="pub-year">{{ pub.year }}</span>
+      {% endif %}
       {% if pub.award_name %}
         <span class="badge badge-award">{{ pub.award_name }}</span>
       {% endif %}
     </div>
 
-    <h3 class="pub-title">{{ pub.title }}</h3>
+    <h3 class="pub-title">
+      {% if primary %}
+        <a href="{{ primary }}" target="_blank" rel="noopener">{{ pub.title }}</a>
+      {% else %}
+        {{ pub.title }}
+      {% endif %}
+    </h3>
 
     <!-- Authors -->
     <p class="pub-authors">
