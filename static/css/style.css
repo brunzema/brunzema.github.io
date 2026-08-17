@@ -109,12 +109,15 @@
 [data-theme="dark"] {
   color-scheme: dark;
 
-  /* Mirrors light: page at the extreme, tiles as the tinted surface */
-  --bg:          #100f0c;
-  --bg-card:     #1d1b17;
-  --bg-card-rgb: 29, 27, 23;
-  --bg-warm:     #25231e;
-  --bg-rgb:      16, 15, 12;
+  /* Mirrors light: page at the extreme, tiles as the tinted surface.
+     Surfaces stay near-neutral graphite — the palette's warmth lives
+     in the ink, not the panels. A warm tint that reads as "paper" at
+     high luminance just reads as brown across a large dark tile. */
+  --bg:          #0f0f0e;
+  --bg-card:     #1b1b19;
+  --bg-card-rgb: 27, 27, 25;
+  --bg-warm:     #232321;
+  --bg-rgb:      15, 15, 14;
 
   --ink:         #f2eee6;
   --ink-rgb:     242, 238, 230;
@@ -122,8 +125,8 @@
   --subtle:      #8f877c;
   --body-text:   #d6d0c6;
 
-  --line:        #343128;
-  --line-strong: #514b3f;
+  --line:        #302f2c;
+  --line-strong: #4a4844;
 
   --accent:      #8dbfe8;
   --accent-rgb:  141, 191, 232;
@@ -144,9 +147,14 @@
   --fill-2:      rgba(var(--ink-rgb), 0.09);
   --ring:        inset 0 0 0 1px rgba(var(--ink-rgb), 0.07);
 
+  /* The top highlight lightens with neutral white rather than a
+     lighter warm tone, so the tile gains depth without gaining hue. */
   --glass:        linear-gradient(180deg,
-                    rgba(38, 35, 30, 0.82),
-                    rgba(var(--bg-card-rgb), 0.66));
+                    rgba(255, 255, 255, 0.05),
+                    rgba(255, 255, 255, 0.012)),
+                  linear-gradient(180deg,
+                    rgba(var(--bg-card-rgb), 0.78),
+                    rgba(var(--bg-card-rgb), 0.78));
   --glass-filter: blur(24px) saturate(180%);
   --glass-edge:   inset 0 1px 0 rgba(255, 255, 255, 0.06),
                   inset 0 0 0 1px rgba(var(--ink-rgb), 0.09);
