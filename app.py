@@ -38,7 +38,7 @@ SITE = {
             '<a href="https://meta.com">Meta</a> '
             "in New York, NY working on Bayesian optimization and AutoML. "
             "In summer 2025, I joined the "
-            '<a href="https://www.tri.global/research/epic">EPIC group at Toyota Research Institute (TRI)</a> '
+            '<a href="https://www.tri.global/our-work/human-interactive-driving">EPIC group at Toyota Research Institute (TRI)</a> '
             "in Los Altos, CA as a research intern, working on autonomous racing in changing conditions."
         ),
         (
@@ -71,7 +71,7 @@ SITE = {
             "group": "EPIC Group",
             "org": "Toyota Research Institute, Los Altos, CA",
             "org_short": "TRI",
-            "url": "https://www.tri.global/research/epic",
+            "url": "https://www.tri.global/our-work/human-interactive-driving",
             "logo": "tri.svg",
             "period": "Summer 2025",
             "location": "Los Altos, CA",
