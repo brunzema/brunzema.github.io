@@ -34,6 +34,7 @@ This is a minimal Flask personal academic website with these routes:
 2. `data/papers.bib` — All publications in BibTeX format. Custom fields beyond standard BibTeX:
    - `abbr` — Short venue name shown as a badge
    - `selected = {true}` — Whether to show on the homepage
+   - `month` — Numeric publication, preprint, or conference month (1–12); both publication lists sort by year and month, newest first. Missing months sort last within their year; ties keep bibliography order.
    - `preview` — Filename of the thumbnail image (stored in `static/img/publication_preview/`)
    - `award_name` — Short award label shown as a badge
    - `arxiv` — arXiv ID (just the number, e.g. `2207.11120`) or full URL
@@ -52,7 +53,7 @@ Interactive-note copy and structure live in the visualization templates; their d
 - `templates/visualizations.html` — Visualization gallery; `gaussian_splatting.html`, `flow_matching.html`, `optimization.html`, `stein_variational.html`, and `pareto.html` are the individual entries
 - `templates/partials/pub_card.html` — Reusable publication card included in both pages
 
-The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first with selected ones prioritised within the same year.
+The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first by year and month. The homepage filters this ordered list to selected papers.
 
 Equal-contribution authors are marked with `$*$` or `\\*` in the BibTeX author field and rendered with a superscript `*`. The `is_me()` helper in `app.py` identifies Paul Brunzema's name to apply the `author-me` CSS class.
 

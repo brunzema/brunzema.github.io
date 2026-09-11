@@ -33,13 +33,15 @@ SITE = {
             "since March 2022. Since September 2023, I am also an associate doctoral researcher in the "
             '<a href="https://unravel.rwth-aachen.de">UnRAVel Research Training Group</a>, funded by the DFG.'
         ),
-        (   
-            "Currently, I am a research scientist intern at "
+        (
+            "In summer 2026, I was a research scientist intern at "
             '<a href="https://meta.com">Meta</a> '
-            "in New York, NY working on Bayesian optimization and AutoML. "
+            "in New York, NY, developing the concept of "
+            '<a href="https://arxiv.org/abs/2608.00316"><em>agentic Bayesian optimization</em></a>. '
             "In summer 2025, I joined the "
             '<a href="https://www.tri.global/our-work/human-interactive-driving">EPIC group at Toyota Research Institute (TRI)</a> '
-            "in Los Altos, CA as a research intern, working on autonomous racing in changing conditions."
+            "in Los Altos, CA as a research intern, working on "
+            '<a href="https://arxiv.org/abs/2601.09178">vision-conditioned autonomous racing in changing conditions</a>.'
         ),
         (
             "My research focuses on <strong>uncertainty quantification</strong> "
@@ -55,6 +57,17 @@ SITE = {
         "Germany Scholarship",
     ],
     "experience": [
+        {
+            "role": "PhD Student",
+            "group": "Institute for Data Science in Mechanical Engineering",
+            "org": "RWTH Aachen University, Germany",
+            "org_short": "RWTH",
+            "url": "https://dsme.rwth-aachen.de",
+            "logo": "rwth.svg",
+            "period": "Mar 2022 – present",
+            "location": "Aachen, Germany",
+            "note": "Supervised by Sebastian Trimpe. Associate doctoral researcher, UnRAVel Research Training Group (DFG) since Sep 2023.",
+        },
         {
             "role": "Research Scientist Intern",
             "group": "",
@@ -76,17 +89,6 @@ SITE = {
             "period": "Summer 2025",
             "location": "Los Altos, CA",
             "note": "Autonomous racing in changing conditions.",
-        },
-        {
-            "role": "PhD Student",
-            "group": "Institute for Data Science in Mechanical Engineering",
-            "org": "RWTH Aachen University, Germany",
-            "org_short": "RWTH",
-            "url": "https://dsme.rwth-aachen.de",
-            "logo": "rwth.svg",
-            "period": "Mar 2022 – present",
-            "location": "Aachen, Germany",
-            "note": "Supervised by Sebastian Trimpe. Associate doctoral researcher, UnRAVel Research Training Group (DFG) since Sep 2023.",
         },
         {
             "role": "M.Sc. Automation Engineering",
@@ -210,8 +212,8 @@ def parse_publications() -> list[dict]:
         }
         publications.append(pub)
 
-    # Sort: newer first, selected prioritised within same year
-    publications.sort(key=lambda p: (p["year"], p["selected"]), reverse=True)
+    # Newest publication month first; preserve bibliography order for ties.
+    publications.sort(key=lambda p: (p["year"], p["month"]), reverse=True)
     return publications
 
 
@@ -223,7 +225,6 @@ def parse_publications() -> list[dict]:
 def index():
     publications = parse_publications()
     selected = [p for p in publications if p["selected"]]
-    selected.sort(key=lambda p: (p["year"], p["month"]), reverse=True)
     return render_template("index.html", site=SITE, selected_publications=selected, is_me=is_me)
 
 
