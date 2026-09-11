@@ -188,6 +188,8 @@ def parse_publications() -> list[dict]:
 
         year_str = entry.get("year", "0").strip()
         year = int(year_str) if year_str.isdigit() else 0
+        month_str = entry.get("month", "0").strip()
+        month = int(month_str) if month_str.isdigit() and 1 <= int(month_str) <= 12 else 0
 
         pub = {
             "key": entry.get("ID", ""),
@@ -196,6 +198,8 @@ def parse_publications() -> list[dict]:
             "venue": clean_latex(venue),
             "abbr": clean_latex(entry.get("abbr", "")),
             "year": year,
+            "month": month,
+            "collaboration": clean_latex(entry.get("collaboration", "")),
             "abstract": clean_latex(entry.get("abstract", "")),
             "arxiv": arxiv_url,
             "html": entry.get("html", "").strip(),
@@ -219,6 +223,7 @@ def parse_publications() -> list[dict]:
 def index():
     publications = parse_publications()
     selected = [p for p in publications if p["selected"]]
+    selected.sort(key=lambda p: (p["year"], p["month"]), reverse=True)
     return render_template("index.html", site=SITE, selected_publications=selected, is_me=is_me)
 
 

@@ -757,13 +757,21 @@ main { padding-top: var(--nav-h); }
   margin-bottom: 0.15rem;
 }
 
-.author-me { color: var(--ink); font-weight: 600; }
+.author-me { color: var(--ink); font-weight: 700; }
 
 .pub-venue {
   font-size: var(--t-foot);
   color: var(--subtle);
   margin-bottom: 0.85rem;
 }
+
+.pub-collaboration {
+  font-size: var(--t-foot);
+  color: var(--muted);
+  margin-bottom: var(--s-3);
+}
+
+.pub-venue:has(+ .pub-collaboration) { margin-bottom: var(--s-1); }
 
 .pub-links {
   display: flex;

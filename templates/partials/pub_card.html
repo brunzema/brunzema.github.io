@@ -59,6 +59,10 @@
       <p class="pub-venue">{{ pub.venue }}</p>
     {% endif %}
 
+    {% if pub.collaboration %}
+      <p class="pub-collaboration">{{ pub.collaboration }}</p>
+    {% endif %}
+
     <!-- Links -->
     <div class="pub-links">
       {% if pub.html %}
