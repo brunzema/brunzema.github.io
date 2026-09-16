@@ -18,11 +18,11 @@
   const ctx = canvas.getContext("2d");
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  let A = hexToRgb("#1f4e79");
+  let A = hexToRgb("#356fa3");
   let paper = { r: 251, g: 250, b: 247 };
   function syncThemeColors() {
     const css = getComputedStyle(document.documentElement);
-    A = hexToRgb((css.getPropertyValue("--accent") || "#1f4e79").trim());
+    A = hexToRgb((css.getPropertyValue("--accent") || "#356fa3").trim());
     paper = rgbVarToRgb(css.getPropertyValue("--bg-rgb") || "251,250,247");
   }
   syncThemeColors();

@@ -28,8 +28,8 @@
   --line:        #e3ded3;   /* hairline */
   --line-strong: #d3ccbd;   /* stronger rule */
 
-  --accent:      #1f4e79;   /* deep petrol blue, used sparingly */
-  --accent-rgb:  31, 78, 121;
+  --accent:      #356fa3;   /* Denim blue, shared with the favicon */
+  --accent-rgb:  53, 111, 163;
   --accent-soft: #eef2f6;
 
   --gold:        #8a6d1f;   /* award text */
@@ -558,10 +558,11 @@ main { padding-top: var(--nav-h); }
 }
 
 .exp-entry {
+  --logo-column: calc(34px + var(--s-3));
   position: relative;
   display: grid;
-  grid-template-columns: 34px 1fr;
-  gap: 0.7rem;
+  grid-template-columns: var(--logo-column) 1fr;
+  gap: var(--s-3);
   align-items: center;
   padding: 0.6rem 0.7rem;
   border-radius: var(--r-md);
@@ -574,7 +575,7 @@ main { padding-top: var(--nav-h); }
   content: '';
   position: absolute;
   top: 0;
-  left: calc(34px + 0.7rem + 0.7rem);
+  left: calc(var(--logo-column) + var(--s-3) + 0.7rem);
   right: 0.7rem;
   height: 1px;
   background: var(--line);
@@ -589,6 +590,7 @@ main { padding-top: var(--nav-h); }
 .exp-logo {
   width: 34px;
   height: 34px;
+  justify-self: center;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -599,7 +601,6 @@ main { padding-top: var(--nav-h); }
 .exp-logo--wide {
   width: 44px;
   height: 30px;
-  margin-left: -5px;
 }
 
 .exp-logo-abbr {

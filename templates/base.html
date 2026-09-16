@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}{{ site.name }}{% endblock %}</title>
-  <link rel="icon" href="{{ url_for('static', filename='favicon.ico', v=3) }}" sizes="16x16 32x32 48x48" />
-  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg', v=3) }}" sizes="any" />
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico', v=10) }}" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg', v=10) }}" sizes="any" />
 
   <!-- Type is San Francisco via -apple-system (see --font-body in style.css),
        so there are no webfonts to fetch. -->
@@ -17,7 +17,7 @@
       document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=5) }}" />
   {% block head %}{% endblock %}
 </head>
 <body>
