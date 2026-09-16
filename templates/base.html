@@ -25,7 +25,10 @@
   <!-- ── NAV ── -->
   <nav>
     <div class="nav-inner">
-      <a href="/" class="nav-brand">{{ site.name }}</a>
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-mark" aria-hidden="true"></span>
+        {{ site.name }}
+      </a>
       <div class="nav-actions">
         <ul class="nav-links">
           <li><a href="/"            class="{% if request.path == '/' %}active{% endif %}">About</a></li>

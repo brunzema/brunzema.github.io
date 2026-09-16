@@ -242,6 +242,11 @@ nav.is-scrolled { border-bottom-color: var(--line); }
 }
 
 .nav-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  flex-shrink: 0;
+  white-space: nowrap;
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 600;
@@ -251,6 +256,15 @@ nav.is-scrolled { border-bottom-color: var(--line); }
   transition: opacity var(--dur) var(--ease);
 }
 .nav-brand:hover { text-decoration: none; color: var(--ink); opacity: 0.62; }
+
+.nav-brand-mark {
+  width: var(--s-5);
+  height: var(--s-5);
+  flex-shrink: 0;
+  background: var(--accent);
+  -webkit-mask: url('../favicon.svg?v=2') center / contain no-repeat;
+  mask: url('../favicon.svg?v=2') center / contain no-repeat;
+}
 
 .nav-links {
   display: flex;
