@@ -262,8 +262,8 @@ nav.is-scrolled { border-bottom-color: var(--line); }
   height: var(--s-5);
   flex-shrink: 0;
   background: var(--accent);
-  -webkit-mask: url('../favicon.svg?v=2') center / contain no-repeat;
-  mask: url('../favicon.svg?v=2') center / contain no-repeat;
+  -webkit-mask: url('../img/pb-mark.svg') center / contain no-repeat;
+  mask: url('../img/pb-mark.svg') center / contain no-repeat;
 }
 
 .nav-links {
