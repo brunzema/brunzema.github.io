@@ -163,17 +163,35 @@ def is_me(name: str) -> bool:
     return "brunzema" in clean and "paul" in clean
 
 
+def citation_bibtex(entry: dict) -> str:
+    """Export citation fields only, preserving BibTeX's LaTeX and title casing."""
+    fields = (
+        "title", "author", "booktitle", "journal", "year", "volume", "number",
+        "pages", "publisher", "editor", "organization", "school", "institution",
+        "address", "edition", "series", "doi", "isbn", "issn",
+        "eprint", "archiveprefix", "primaryclass", "howpublished", "note",
+    )
+    citation = {field: entry[field] for field in fields if entry.get(field)}
+    if "author" in citation:
+        citation["author"] = citation["author"].replace("$*$", "").replace("\\*", "").replace("*", "")
+    lines = [f"@{entry['ENTRYTYPE']}{{{entry['ID']},"]
+    lines.extend(f"  {field} = {{{value}}}," for field, value in citation.items())
+    lines[-1] = lines[-1].removesuffix(",")
+    return "\n".join([*lines, "}"])
+
+
 def parse_publications() -> list[dict]:
     """Parse data/papers.bib and return a list of publication dicts."""
     bib_path = os.path.join(BASE_DIR, "data", "papers.bib")
 
     with open(bib_path, encoding="utf-8") as f:
         parser = BibTexParser(common_strings=True)
-        parser.customization = convert_to_unicode
         bib = bibtexparser.load(f, parser=parser)
 
     publications = []
-    for entry in bib.entries:
+    for raw_entry in bib.entries:
+        citation = citation_bibtex(raw_entry)
+        entry = convert_to_unicode(dict(raw_entry))
         venue = (
             entry.get("journal")
             or entry.get("booktitle")
@@ -195,6 +213,7 @@ def parse_publications() -> list[dict]:
 
         pub = {
             "key": entry.get("ID", ""),
+            "bibtex": citation,
             "title": clean_latex(entry.get("title", "")),
             "authors": parse_authors(entry.get("author", "")),
             "venue": clean_latex(venue),

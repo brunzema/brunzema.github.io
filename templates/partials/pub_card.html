@@ -65,15 +65,23 @@
 
     <!-- Links -->
     <div class="pub-links">
-      {% if pub.html %}
-        <a href="{{ pub.html }}" class="pub-link" target="_blank" rel="noopener">Paper</a>
+      {% set paper_url = pub.html or pub.pdf %}
+      {% set arxiv_url = pub.arxiv or (paper_url if 'arxiv.org/' in paper_url else '') %}
+      {% if paper_url and 'arxiv.org/' not in paper_url %}
+        <a href="{{ paper_url }}" class="pub-link" target="_blank" rel="noopener">Paper</a>
       {% endif %}
-      {% if pub.pdf %}
-        <a href="{{ pub.pdf }}" class="pub-link" target="_blank" rel="noopener">PDF</a>
+      {% if arxiv_url %}
+        <a href="{{ arxiv_url }}" class="pub-link" target="_blank" rel="noopener">arXiv</a>
       {% endif %}
-      {% if pub.arxiv %}
-        <a href="{{ pub.arxiv }}" class="pub-link" target="_blank" rel="noopener">arXiv</a>
-      {% endif %}
+      <button type="button" class="pub-link" data-bibtex-toggle aria-expanded="false" aria-controls="bibtex-{{ pub.key }}">BibTeX</button>
+    </div>
+
+    <div class="pub-citation" id="bibtex-{{ pub.key }}" hidden>
+      <textarea class="pub-bibtex" readonly aria-label="BibTeX citation for {{ pub.title }}" spellcheck="false">{{ pub.bibtex }}</textarea>
+      <div class="pub-citation-actions">
+        <button type="button" class="pub-link" data-bibtex-copy>Copy BibTeX</button>
+        <span class="pub-copy-status" role="status" aria-live="polite"></span>
+      </div>
     </div>
 
   </div>

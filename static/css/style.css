@@ -796,6 +796,8 @@ main { padding-top: var(--nav-h); }
 }
 
 .pub-link {
+  font-family: inherit;
+  cursor: pointer;
   font-size: var(--t-foot);
   font-weight: 500;
   color: var(--ink);
@@ -812,6 +814,40 @@ main { padding-top: var(--nav-h); }
   background: var(--accent-soft);
   text-decoration: none;
 }
+
+.pub-citation {
+  margin-top: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  background: var(--bg-card);
+}
+
+.pub-bibtex {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 11rem;
+  resize: vertical;
+  padding: var(--s-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-caption);
+  line-height: 1.6;
+}
+
+.pub-citation-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-2);
+}
+
+.pub-copy-status { color: var(--muted); font-size: var(--t-caption); }
 
 .pub-footnote {
   margin-top: var(--s-5);
