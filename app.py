@@ -169,7 +169,7 @@ def citation_bibtex(entry: dict) -> str:
         "title", "author", "booktitle", "journal", "year", "volume", "number",
         "pages", "publisher", "editor", "organization", "school", "institution",
         "address", "edition", "series", "doi", "isbn", "issn",
-        "eprint", "archiveprefix", "primaryclass", "howpublished", "note",
+        "eprint", "archiveprefix", "primaryclass", "howpublished",
     )
     citation = {field: entry[field] for field in fields if entry.get(field)}
     if "author" in citation:
