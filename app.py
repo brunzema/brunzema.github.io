@@ -221,6 +221,7 @@ def parse_publications() -> list[dict]:
             "year": year,
             "month": month,
             "collaboration": clean_latex(entry.get("collaboration", "")),
+            "note": clean_latex(entry.get("note", "")),
             "abstract": clean_latex(entry.get("abstract", "")),
             "arxiv": arxiv_url,
             "html": entry.get("html", "").strip(),
