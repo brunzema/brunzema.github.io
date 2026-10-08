@@ -156,7 +156,8 @@ pre.art {
 /* Variant switch: the selected tab wears brackets (after ascii.rest). */
 .hero-bar { display: flex; align-items: baseline; gap: 3ch; margin-bottom: .5rem; }
 .hero-bar [data-playpause] { margin-left: auto; }
-.tabs { display: flex; gap: 3ch; }
+.tabs { display: flex; gap: 2ch; }
+.tabs-arrow { color: var(--faint); }
 .tabs [role="tab"] > span::before { content: "["; visibility: hidden; }
 .tabs [role="tab"] > span::after { content: "]"; visibility: hidden; }
 .tabs [role="tab"][aria-selected="true"] { color: var(--ink); }

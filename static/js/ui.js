@@ -48,3 +48,17 @@ document.querySelectorAll("[data-bibtex-copy]").forEach((button) => {
     }
   });
 });
+
+/* ASCII easter egg: shortly after load the pill types its own label once,
+   key by key, so the one moving thing in the hero invites a click. */
+(function () {
+  const label = document.querySelector(".ascii-egg-label");
+  if (!label || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const text = label.textContent;
+  label.textContent = "";
+  let i = 0;
+  setTimeout(function type() {
+    label.textContent = text.slice(0, ++i);
+    if (i < text.length) setTimeout(type, 55 + Math.random() * 70);
+  }, 900);
+})();
