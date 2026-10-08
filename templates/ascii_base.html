@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{{ site.name | lower }} — ascii{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico', v=10) }}" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg', v=10) }}" sizes="any" />
+
+  <!-- Same theme key as the main site, so the choice carries across. -->
+  <script>
+    (() => {
+      let saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = saved === "light" || saved === "dark" ? saved : (dark ? "dark" : "light");
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ascii.css', v=1) }}" />
+</head>
+<body>
+<div class="frame">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="side">
+    <a class="home" href="/ascii/">{{ site.name | lower }}</a>
+    <p class="by">{{ site.title | lower }} · rwth aachen</p>
+
+
+    <nav>
+      <h2>site</h2>
+      <ul>
+        {% set home = "" if page == "home" else "/ascii/" %}
+        <li><a href="{{ home }}#about">about</a></li>
+        <li><a href="{{ home }}#cv">cv</a></li>
+        <li><a href="{{ home }}#publications">selected work</a></li>
+        <li><a href="/ascii/publications/"{% if page == "pubs" %} aria-current="page"{% endif %}>all publications</a></li>
+        <li>
+          <a href="/visualizations/">interactive notes</a>
+          <span class="soon">not in ascii yet ↗</span>
+        </li>
+      </ul>
+
+      <h2>elsewhere</h2>
+      <ul>
+        <li><a href="{{ site.social.scholar }}" target="_blank" rel="noopener">scholar</a></li>
+        <li><a href="{{ site.social.github }}" target="_blank" rel="noopener">github</a></li>
+        <li><a href="{{ site.social.linkedin }}" target="_blank" rel="noopener">linkedin</a></li>
+        <li><a href="/cv.pdf" target="_blank" rel="noopener">cv.pdf</a></li>
+        <li><a href="mailto:{{ site.social.email }}">email</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ── PAGE ── -->
+  <main class="page"{% block main_attrs %}{% endblock %}>
+    <div class="top">
+      <h1>{% block heading %}{{ site.name | lower }}{% endblock %}</h1>
+      <span class="tools">
+        <a href="{% block classic_url %}/{% endblock %}">[classic]</a>
+        <button id="theme" class="button" type="button"><span>[dark]</span></button>
+      </span>
+    </div>
+{% block content %}{% endblock %}
+
+    <footer class="foot muted">
+      <span>© {{ site.name | lower }} 2026</span>
+      <span>ascii edition, after <a href="https://ascii.rest/" target="_blank" rel="noopener">ascii.rest</a></span>
+    </footer>
+  </main>
+
+</div>
+<!-- Hero variants register themselves before ascii.js runs. -->
+<script src="{{ url_for('static', filename='js/ascii-hero-agentic.js', v=1) }}" defer></script>
+<script src="{{ url_for('static', filename='js/ascii.js', v=1) }}" defer></script>
+</body>
+</html>

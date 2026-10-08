@@ -353,6 +353,32 @@ main { padding-top: var(--nav-h); }
 
 .hero-inner { position: relative; z-index: 2; }
 
+/* Easter egg: a terminal-prompt pill in the hero's top-right corner, in the
+   band above the intro (hero padding ≥ 3rem), leading to /ascii/. */
+.ascii-egg {
+  position: absolute;
+  top: -2.5rem;
+  right: var(--pad);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5ch;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: var(--fill-1);
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-caption);
+  letter-spacing: 0;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.ascii-egg-prompt { color: var(--accent); }
+.ascii-egg-cursor { margin-left: -0.2ch; animation: ascii-egg-blink 1.06s steps(1) infinite; }
+.ascii-egg:hover, .ascii-egg:focus-visible { background: var(--accent); color: var(--bg); text-decoration: none; }
+.ascii-egg:hover .ascii-egg-prompt, .ascii-egg:focus-visible .ascii-egg-prompt { color: inherit; }
+@keyframes ascii-egg-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ascii-egg-cursor { animation: none; } }
+
 .hero-intro {
   display: flex;
   align-items: center;
@@ -3398,6 +3424,7 @@ footer {
 
 .footer-copy  { font-size: var(--t-foot); color: var(--muted); }
 .footer-note  { font-size: var(--t-foot); color: var(--subtle); }
+
 
 /* ══════════════════════
    ANIMATIONS

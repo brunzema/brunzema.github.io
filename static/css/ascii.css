@@ -1,0 +1,235 @@
+/* ───────────────────────────────────────────────────────────
+   ASCII edition of the homepage (/ascii/).
+
+   Self-contained: shares nothing with style.css except the
+   `theme` localStorage key. Monochrome by design — ink, text,
+   muted and a recessed well — after ascii.rest.
+   ─────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #f5f6f7;
+  --ink: #1e2125;
+  --text: #3b4149;
+  --muted: #5f6873;
+  --faint: #a3aab3;
+  --well: #eceef0;
+  --pad: .5ch;
+  --art: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #131518;
+  --ink: #e8ebef;
+  --text: #c3c9d1;
+  --muted: #8c95a1;
+  --faint: #4a515a;
+  --well: #1a1d21;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scrollbar-gutter: stable; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .875rem;
+  line-height: 1.65;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+::selection { background: var(--ink); color: var(--bg); }
+
+h1, h2, h3 { margin: 0; color: var(--ink); font-size: inherit; font-weight: 500; }
+p { margin: 0; text-wrap: pretty; }
+ul { margin: 0; padding: 0; list-style: none; }
+strong { color: var(--ink); font-weight: 500; }
+.muted { color: var(--muted); }
+
+/* Links invert on hover — the one interaction idiom on the page. */
+a { color: var(--ink); text-decoration: none; }
+a, .button > span {
+  padding: 0 var(--pad);
+  margin: 0 calc(var(--pad) * -1);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.pitch a, .foot a {
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--muted);
+  text-underline-offset: .25em;
+}
+@media (hover: hover) {
+  a:hover, .button:hover > span { background: var(--ink); color: var(--bg); text-decoration-line: none; }
+}
+a:focus-visible, .button:focus-visible > span {
+  background: var(--ink); color: var(--bg); text-decoration-line: none;
+  outline: 1px dotted var(--ink); outline-offset: 2px;
+}
+.button {
+  padding: 0; border: 0; background: none; color: var(--muted);
+  font: inherit; cursor: pointer; -webkit-appearance: none; appearance: none;
+}
+.button:focus-visible { outline: none; }
+[hidden] { display: none !important; }
+
+/* ── frame: sticky sidebar + page ── */
+.frame {
+  display: grid;
+  grid-template-columns: 22ch minmax(0, 1fr);
+  gap: 5ch;
+  width: min(100% - 2.5rem, 150ch);
+  margin-inline: auto;
+}
+.side {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; height: 100dvh; overflow-y: auto;
+  padding: 4rem 1ch 3rem; margin-inline: -1ch;
+  scrollbar-width: thin;
+}
+.side .home { display: inline-block; font-weight: 500; }
+.side .by { margin: .25rem 0 2rem; color: var(--muted); font-size: .875em; }
+.side h2 { margin-top: 1.75rem; font-weight: 400; color: var(--muted); }
+.side ul a { color: var(--muted); }
+.side ul a[aria-current="true"], .side ul a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+.side .soon { display: block; color: var(--faint); font-size: .8125em; }
+
+.page { min-width: 0; padding: 4rem 0 3rem; }
+.top { display: flex; align-items: baseline; gap: 2ch; }
+.top .tools { display: flex; gap: 2ch; margin: 0 -1ch 0 auto; }
+.lede { max-width: 72ch; margin-top: .25rem; }
+
+/* ── ascii art ──
+   A <pre> sized in characters; the font size is derived from the
+   container so the whole grid always fits its well. */
+pre.art {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--art);
+  line-height: 1.2;
+  letter-spacing: 0;
+  white-space: pre;
+  font-variant-ligatures: none;
+  -webkit-user-select: none; user-select: none;
+}
+.art .m { color: var(--muted); }
+.art .f { color: var(--faint); }
+.art .i { color: var(--ink); font-weight: 600; }
+
+.well {
+  container-type: inline-size;
+  display: grid; place-items: center;
+  overflow: hidden;
+  padding: 1.5rem 1ch;
+  background: var(--well);
+}
+.well pre.art { font-size: min(14px, calc(97cqi / var(--cols, 100) / .6)); }
+
+/* Play: the hero opens on a still; the button sits centred over it. */
+.well { position: relative; }
+.well.is-paused pre.art { cursor: pointer; }
+.play {
+  position: absolute; inset: 0; margin: auto; width: max-content; height: max-content;
+  padding: .5rem 2ch; border: 1px solid var(--ink); background: var(--bg); color: var(--ink);
+  font: inherit; font-weight: 500; cursor: pointer;
+}
+@media (hover: hover) { .play:hover { background: var(--ink); color: var(--bg); } }
+.play:focus-visible { background: var(--ink); color: var(--bg); outline: 1px dotted var(--ink); outline-offset: 3px; }
+
+/* Typed tagline (after ascii.rest's typewriter piece). */
+.tagline { display: grid; max-width: 72ch; margin-top: 2rem; color: var(--ink); font-weight: 500; }
+.tagline > span { grid-area: 1 / 1; }
+.tagline .typed:empty { display: none; }
+.tagline:has(.typed:not(:empty)) .ghost { visibility: hidden; }
+.tagline .cursor.blink { animation: blink 1.06s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .tagline .cursor.blink { animation: none; } }
+
+.hero { margin: 2rem 0 0; }
+
+/* Variant switch: the selected tab wears brackets (after ascii.rest). */
+.hero-bar { display: flex; align-items: baseline; gap: 3ch; margin-bottom: .5rem; }
+.hero-bar [data-playpause] { margin-left: auto; }
+.tabs { display: flex; gap: 3ch; }
+.tabs [role="tab"] > span::before { content: "["; visibility: hidden; }
+.tabs [role="tab"] > span::after { content: "]"; visibility: hidden; }
+.tabs [role="tab"][aria-selected="true"] { color: var(--ink); }
+.tabs [role="tab"][aria-selected="true"] > span::before,
+.tabs [role="tab"][aria-selected="true"] > span::after { visibility: visible; }
+.facts { display: flex; flex-wrap: wrap; gap: 0 3ch; margin-top: .5rem; color: var(--muted); }
+
+.pitch { max-width: 72ch; margin-top: 1.75rem; color: var(--ink); }
+.pitch p + p { margin-top: 1em; }
+
+/* ── intro: bio beside cv + awards ── */
+.intro .pitch { margin-top: 0; }
+.intro { margin-top: 1.75rem; }
+@media (min-width: 1240px) {
+  .intro { display: grid; grid-template-columns: minmax(0, 64ch) minmax(0, 1fr); gap: 5ch; align-items: start; }
+  .facts-col section:first-child { margin-top: 0; }
+  .facts-col section + section { margin-top: 2.5rem; }
+  /* role | date on one line; org gets the full width beneath */
+  .facts-col .rows li { grid-template-columns: minmax(0, 1fr) auto; gap: 0 2ch; align-items: baseline; }
+  .facts-col .rows .what { display: contents; }
+  .facts-col .rows .what > a { grid-area: 1 / 1; justify-self: start; }
+  .facts-col .rows .when { grid-area: 1 / 2; white-space: nowrap; }
+  .facts-col .rows .what > .muted { grid-area: 2 / 1 / 3 / 3; }
+  .facts-col .rows li + li { margin-top: .9rem; }
+}
+
+/* ── sections ── */
+section { margin-top: 3.5rem; scroll-margin-top: 2rem; }
+.head { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 1rem; }
+.head .count { margin-left: auto; color: var(--muted); }
+.head .count + a { margin-left: 0; }
+
+.rows li { display: grid; grid-template-columns: 22ch minmax(0, 1fr); gap: 3ch; }
+.rows li + li { margin-top: .5rem; }
+.rows .what { display: flex; flex-wrap: wrap; gap: 0 2ch; }
+
+.bullets li::before { content: "·"; color: var(--muted); margin-right: 1.5ch; }
+
+/* publications: year gutter + title, authors, links (matches the cv rows) */
+.pubs { margin: 0; padding: 0; list-style: none; }
+.pubs li { display: grid; grid-template-columns: 6ch minmax(0, 72ch); gap: 3ch; }
+.pubs li + li { margin-top: 1.75rem; }
+.pubs .name { color: var(--ink); font-weight: 500; }
+.pubs .note { margin-top: .25rem; color: var(--muted); }
+.pubs .note .me { color: var(--ink); }
+.pubs .venue { color: var(--text); font-style: italic; }
+.pubs .links { display: flex; flex-wrap: wrap; gap: 0 2ch; margin-top: .25rem; }
+.pubs .award { color: var(--ink); }
+.lede .me { color: var(--ink); }
+/* all-publications page: the year sits on each year's first row, years spaced apart */
+.pubs.by-year li:has(> .when:not(:empty)):not(:first-child) { margin-top: 3.5rem; }
+.bib { margin-top: .75rem; }
+.bib .button { margin-top: .25rem; }
+pre.code {
+  margin: 0; padding: 1rem 2ch; overflow-x: auto;
+  background: var(--well); color: var(--text);
+  font: inherit; font-size: .75rem; line-height: 1.6; tab-size: 2;
+}
+
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 3ch; margin-top: 5rem; }
+
+/* ── narrow: sidebar collapses into a header ── */
+@media (max-width: 860px) {
+  .frame { display: block; }
+  .side { position: static; height: auto; overflow: visible; padding: 2.5rem 0 0; margin: 0; }
+  .side .by { margin-bottom: 1rem; }
+  .side h2 { display: none; }
+  .side nav, .side ul { display: flex; flex-wrap: wrap; gap: .25rem 3ch; }
+  .side ul + h2 + ul { display: none; }
+  .side .soon { display: inline; margin-left: 1ch; }
+  .page { padding-top: 2rem; }
+  .rows li, .pubs li { grid-template-columns: 1fr; gap: 0; }
+}
+@media (max-width: 480px) {
+  body { font-size: .8125rem; line-height: 1.6; }
+}

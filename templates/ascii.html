@@ -1,0 +1,80 @@
+{% extends "ascii_base.html" %}
+{% set page = "home" %}
+{% block main_attrs %} id="about"{% endblock %}
+{% block content %}
+    <p class="lede muted">{{ site.title | lower }}, {{ site.affiliation | lower }}</p>
+
+    {% set tagline = "I aim to create agents and algorithms that efficiently and optimally act in uncertain and potentially changing environments." %}
+    <!-- The ghost copy reserves the final size; the typed copy is drawn over it. -->
+    <p class="tagline" data-typewriter>
+      <span class="ghost">{{ tagline }}<span class="cursor">▌</span></span>
+      <span class="typed" aria-hidden="true"></span>
+    </p>
+
+    <figure class="hero">
+      <div class="hero-bar">
+        <div class="tabs" role="tablist" aria-label="Hero variant">
+          <button class="button" type="button" role="tab" data-hero="ei" aria-selected="true"><span>expected improvement</span></button>
+          <button class="button" type="button" role="tab" data-hero="agentic" aria-selected="false"><span>agentic</span></button>
+        </div>
+        <button class="button" type="button" data-playpause hidden><span>[pause]</span></button>
+      </div>
+      <div class="well">
+        <pre class="art" id="bo" role="img" aria-label="Bayesian optimization of a one-dimensional function: a Gaussian process posterior, its expected improvement, and the points queried so far"></pre>
+        <button class="play" type="button" data-play><span>[▶ play]</span></button>
+      </div>
+      <figcaption class="facts" id="bo-facts">
+        <span>gaussian process posterior</span><span>expected improvement</span><span>live, not a recording</span>
+      </figcaption>
+    </figure>
+
+    <!-- Bio at reading measure; cv + awards fill the column beside it on wide screens. -->
+    <div class="intro">
+    <div class="pitch">
+      {% for paragraph in site.bio %}
+        <p>{{ paragraph | safe }}</p>
+      {% endfor %}
+    </div>
+
+    <aside class="facts-col">
+    <!-- ── CV ── -->
+    <section id="cv">
+      <div class="head"><h2>cv</h2><span class="count">{{ site.experience | length }}</span></div>
+      <ul class="rows">
+        {% for item in site.experience %}
+        <li>
+          <span class="when muted">{{ item.period | lower }}</span>
+          <span class="what">
+            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.role | lower }}</a>
+            <span class="muted">{{ item.org | lower }}</span>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section id="awards">
+      <div class="head"><h2>awards</h2><span class="count">{{ site.awards | length }}</span></div>
+      <ul class="bullets">
+        {% for award in site.awards %}<li>{{ award | lower }}</li>{% endfor %}
+      </ul>
+    </section>
+    </aside>
+    </div>
+
+
+    <!-- ── SELECTED PUBLICATIONS ── -->
+    <section id="publications">
+      <div class="head">
+        <h2>selected work</h2>
+        <span class="count">{{ selected_publications | length }}</span>
+        <a href="/ascii/publications/">[all]</a>
+      </div>
+      <ol class="pubs">
+        {% for pub in selected_publications %}
+          {% set year_label = pub.year %}
+          {% include "partials/ascii_pub.html" %}
+        {% endfor %}
+      </ol>
+    </section>
+{% endblock %}

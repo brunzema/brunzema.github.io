@@ -248,6 +248,30 @@ def index():
     return render_template("index.html", site=SITE, selected_publications=selected, is_me=is_me)
 
 
+@app.route("/ascii/")
+def ascii_page():
+    publications = parse_publications()
+    selected = [p for p in publications if p["selected"]]
+    return render_template("ascii.html", site=SITE, selected_publications=selected, is_me=is_me)
+
+
+@app.route("/ascii/publications/")
+def ascii_publications_page():
+    pubs = parse_publications()
+    pubs_by_year: dict[int, list] = {}
+    for pub in pubs:
+        pubs_by_year.setdefault(pub["year"], []).append(pub)
+    years = sorted(pubs_by_year.keys(), reverse=True)
+    return render_template(
+        "ascii_publications.html",
+        site=SITE,
+        pubs_by_year=pubs_by_year,
+        years=years,
+        count=len(pubs),
+        is_me=is_me,
+    )
+
+
 @app.route("/publications/")
 def publications_page():
     pubs = parse_publications()

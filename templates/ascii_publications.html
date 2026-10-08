@@ -1,0 +1,19 @@
+{% extends "ascii_base.html" %}
+{% set page = "pubs" %}
+{% block title %}publications — {{ site.name | lower }} — ascii{% endblock %}
+{% block heading %}publications{% endblock %}
+{% block classic_url %}/publications/{% endblock %}
+{% block content %}
+    <p class="lede muted">{{ count }} papers, newest first · <span class="me">{{ site.name }}</span> in ink · * equal contribution</p>
+
+    <section id="all">
+      <ol class="pubs by-year">
+        {% for year in years %}
+          {% for pub in pubs_by_year[year] %}
+            {% set year_label = year if loop.first else "" %}
+            {% include "partials/ascii_pub.html" %}
+          {% endfor %}
+        {% endfor %}
+      </ol>
+    </section>
+{% endblock %}

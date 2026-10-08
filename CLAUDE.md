@@ -26,6 +26,8 @@ This is a minimal Flask personal academic website with these routes:
 - `/visualizations/stein-variational-inference/` — Stein particle transport, custom Gaussian mixtures, Stein identity, and Old Faithful density estimation
 - `/visualizations/pareto/` — Time-varying two-objective Pareto-front experiment
 - `/visualizations/gaussian-splatting/` — Splat anatomy, ordered alpha compositing, a live image fit, and a 3-D EWA renderer
+- `/ascii/` — Monospace "ASCII edition" of the homepage (after ascii.rest), self-contained: `templates/ascii_base.html` (sidebar, top bar, footer) → `ascii.html`, `static/css/ascii.css`, `static/js/ascii.js`. Reached via the `>_ ascii` pill in the homepage hero.
+- `/ascii/publications/` — All publications in the ASCII style (`ascii_publications.html`; rows from `partials/ascii_pub.html`). The interactive notes have no ASCII version; the ASCII sidebar says so and links to the classic ones.
 - `/cv.pdf` — Serves `data/cv.pdf` directly
 
 **Biographical and publication content is defined in two places:**
@@ -43,6 +45,8 @@ This is a minimal Flask personal academic website with these routes:
 Interactive-note copy and structure live in the visualization templates; their dependency-free canvas simulations live under `static/js/`.
 
 `static/js/splat.js` and `static/js/splat-fit.js` drive the Gaussian splatting note. `splat.js` holds the single-splat anatomy panel, the six-splat compositing panel (front-to-back blending with a clickable per-pixel probe), and a CPU rasteriser for 3-D scenes: covariances are projected with the EWA affine Jacobian (`Σ' = J W Σ Wᵀ Jᵀ` plus the 0.3 px² low-pass term), depth-sorted by counting sort, and composited front-to-back into a Float32 framebuffer whose resolution adapts to the measured frame cost. Splats are always iterated in a fixed shuffled order so that switching the depth sort off shows genuine ordering artefacts. `splat-fit.js` is a complete differentiable rasteriser at 96×96: analytic 3DGS gradients (no autodiff), Adam, and clone/split/prune density control; scale and rotation are the parameters, never Σ. Its "Sandbox" target is a paintable canvas — brush strokes write straight into the target buffer while the optimizer keeps running, so density control has no upper iteration bound. Both files tabulate `exp(−½·)` because the inner loop runs millions of times per frame.
+
+`static/js/ascii.js` draws everything on `/ascii/` as character grids (`Grid` → `<pre>`) driven by one loop that only ticks on-screen scenes — currently the hero (exact-GP Bayesian optimization with expected improvement). Selected publications are a plain text list. Hero variants live in their own files (e.g. `ascii-hero-agentic.js`), are loaded before `ascii.js`, and register `window.asciiHeroes[name] = (pre, facts, kit) => ({ tick, destroy })`; `kit` is the shared grid/GP toolkit. The page shares only the `theme` localStorage key with the main site.
 
 `static/js/flow.js` computes every field on the flow matching note in closed form — no network is trained. Data (2-D point sets, or 14×14 digit rasters produced by `buildGlyphLibrary()`) become isotropic Gaussian components, so the marginal velocity `u_t(x)` is an exact posterior-weighted sum; the same dimension-agnostic helpers drive both the 2-D panels and the 196-D image panel. Panels share a `viewFor()` world window that keeps equal scale on both axes.
 

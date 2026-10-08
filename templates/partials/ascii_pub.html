@@ -1,0 +1,32 @@
+{# One publication row on the ASCII pages. Set `year_label` before including
+   (the year, or "" to leave the gutter empty). #}
+{% set paper_url = pub.html or pub.pdf %}
+{% set arxiv_url = pub.arxiv or (paper_url if 'arxiv.org/' in paper_url else '') %}
+{% set primary = paper_url or arxiv_url %}
+<li>
+  <span class="when muted">{{ year_label }}</span>
+  <div class="what">
+    {% if primary %}
+      <a class="name" href="{{ primary }}" target="_blank" rel="noopener">{{ pub.title }}</a>
+    {% else %}
+      <span class="name">{{ pub.title }}</span>
+    {% endif %}
+    <p class="note">
+      {% for author in pub.authors %}<span{% if is_me(author.name) %} class="me"{% endif %}>{{ author.name }}{% if author.equal %}*{% endif %}</span>{% if not loop.last %}, {% endif %}{% endfor %}
+    </p>
+    {% if pub.venue or pub.note %}
+      <p class="venue">{{ pub.venue }}{% if pub.venue and pub.note %} · {% endif %}{{ pub.note }}</p>
+    {% endif %}
+    <p class="links">
+      {% if pub.abbr %}<span class="muted">{{ pub.abbr }}</span>{% endif %}
+      {% if pub.award_name %}<span class="award">* {{ pub.award_name | lower }}</span>{% endif %}
+      {% if paper_url and 'arxiv.org/' not in paper_url %}<a href="{{ paper_url }}" target="_blank" rel="noopener">[paper]</a>{% endif %}
+      {% if arxiv_url %}<a href="{{ arxiv_url }}" target="_blank" rel="noopener">[arxiv]</a>{% endif %}
+      <button class="button" type="button" data-bibtex-toggle aria-expanded="false" aria-controls="bib-{{ pub.key }}"><span>[bibtex]</span></button>
+    </p>
+    <div class="bib" id="bib-{{ pub.key }}" hidden>
+      <pre class="code">{{ pub.bibtex }}</pre>
+      <button class="button" type="button" data-bibtex-copy><span>[copy]</span></button>
+    </div>
+  </div>
+</li>
