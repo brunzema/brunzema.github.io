@@ -412,31 +412,42 @@
 
   const HEROES = Object.assign({ ei: heroScene }, window.asciiHeroes || {});
 
-  // The hero opens on a still and waits for [▶ play], so the tagline and the
-  // still can be read first; clicking play also opts in under reduced motion.
-  const hero = document.getElementById("bo");
-  if (hero) {
-    const facts = document.getElementById("bo-facts");
-    const playBtn = document.querySelector("[data-play]"), toggle = document.querySelector("[data-playpause]");
+  // The hero is opt-in: the page reads as text until the notice beside the tagline opens the figure.
+  // The scene is built on first open (it needs the well's real width) and starts
+  // at once; opening also opts in under reduced motion. [close] folds it away again.
+  const hero = document.getElementById("bo"), opener = document.querySelector("[data-hero-open]");
+  if (hero && opener) {
+    const figure = hero.closest("figure"), facts = document.getElementById("bo-facts");
+    const toggle = document.querySelector("[data-playpause]"), closeBtn = document.querySelector("[data-hero-close]");
+    const tabs = [...document.querySelectorAll("[data-hero]")];
     const showStill = (v) => { if (v.still) v.still(); else for (let i = 0; i < 150; i++) v.tick(100); };
-    let current = HEROES.ei(hero, facts, kit);
+    let current = null;
     const wrapper = { tick: (dt) => current.tick(dt), paused: true };
-    showStill(current);
-    addScene(hero, wrapper, 30);
 
     const setPaused = (p) => {
       wrapper.paused = p;
       wrapper.last = 0;
-      hero.parentElement.classList.toggle("is-paused", p);
       toggle.firstChild.textContent = p ? "[play]" : "[pause]";
       if (!p) { motion = true; kick(); }
     };
-    const play = () => { playBtn.hidden = true; toggle.hidden = false; setPaused(false); };
-    playBtn.addEventListener("click", play);
-    hero.addEventListener("click", () => { if (!playBtn.hidden) play(); });
+    const setOpen = (open) => {
+      figure.hidden = !open;
+      opener.hidden = open;
+      opener.setAttribute("aria-expanded", String(open));
+    };
+    opener.addEventListener("click", () => {
+      setOpen(true);
+      if (!current) {
+        const tab = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+        current = HEROES[tab && HEROES[tab.dataset.hero] ? tab.dataset.hero : "ei"](hero, facts, kit);
+        current.tick(0);
+        addScene(hero, wrapper, 30);
+      }
+      setPaused(false);
+      toggle.focus({ preventScroll: true });
+    });
+    closeBtn.addEventListener("click", () => { setPaused(true); setOpen(false); opener.focus({ preventScroll: true }); });
     toggle.addEventListener("click", () => setPaused(!wrapper.paused));
-    hero.parentElement.classList.add("is-paused");
-    const tabs = [...document.querySelectorAll("[data-hero]")];
     for (const tab of tabs) {
       if (!HEROES[tab.dataset.hero]) { tab.hidden = true; continue; }
       tab.addEventListener("click", () => {

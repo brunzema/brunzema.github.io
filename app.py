@@ -53,7 +53,8 @@ SITE = {
             "My research focuses on <strong>uncertainty quantification</strong> "
             "(Gaussian processes, Bayesian neural networks) and "
             "<strong>sequential decision-making</strong> "
-            "(Bayesian optimization, control, reinforcement learning)."
+            "(Bayesian optimization, control, reinforcement learning, and "
+            "LLM agents for optimization and autoresearch)."
         ),
     ],
     "awards": [

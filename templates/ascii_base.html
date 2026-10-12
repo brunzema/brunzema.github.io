@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/ascii.css', v=2) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ascii.css', v=4) }}" />
 </head>
 <body>
 <div class="frame">
@@ -78,6 +78,6 @@
 <!-- Hero variants register themselves before ascii.js runs. -->
 <script src="{{ url_for('static', filename='js/ascii-hero-agentic.js', v=1) }}" defer></script>
 {% block page_scripts %}{% endblock %}
-<script src="{{ url_for('static', filename='js/ascii.js', v=2) }}" defer></script>
+<script src="{{ url_for('static', filename='js/ascii.js', v=4) }}" defer></script>
 </body>
 </html>
