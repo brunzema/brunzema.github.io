@@ -5,17 +5,16 @@
     <p class="lede muted">{{ site.title | lower }}, {{ site.affiliation | lower }}</p>
 
     {% set tagline = "I aim to create agents and algorithms that efficiently and optimally act in uncertain and potentially changing environments." %}
-    <!-- Tagline, with the opt-in for the simulation beside it (a notice, after ascii.rest). -->
+    <!-- Tagline, with the opt-in for the simulation beside it; it appears once the tagline is typed. -->
     <div class="opening">
       <!-- The ghost copy reserves the final size; the typed copy is drawn over it. -->
       <p class="tagline" data-typewriter>
         <span class="ghost">{{ tagline }}<span class="cursor">▌</span></span>
         <span class="typed" aria-hidden="true"></span>
       </p>
-      <button class="notice" type="button" data-hero-open aria-expanded="false" aria-controls="hero">
-        <span class="tag">live</span>
-        <span class="shine">bayesian optimization</span>
-        <span class="go">[▶ run]</span>
+      <button class="notice waiting" type="button" data-hero-open aria-expanded="false" aria-controls="hero">
+        <span class="label">bayesian optimization</span>
+        <span class="go">[  ▶ run  ]</span>
       </button>
     </div>
 

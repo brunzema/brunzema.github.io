@@ -34,7 +34,7 @@
     const T = { drop: 650, update: 900, reset: 700 };
 
     let cols = 0, H = 0, LOGN = 0, xs = [], G;
-    let f, fx, fe, fOpt, obs, prev, next, updT = -1e9, clock = 0;
+    let f, fx, fOpt, obs, prev, next, updT = -1e9, clock = 0;
     let bounds, cands, chosen, pending, dropT, acqShown, n, limit;
     let log, queue, typing, wait, resetT, dissolve;
 
@@ -82,7 +82,7 @@
       pre.style.setProperty("--cols", cols);
       xs = centres(cols);
       if (f) {
-        fx = xs.map((x) => f(x)); fe = edges(cols, f);
+        fx = xs.map((x) => f(x));
         prev = next = gpPosterior(obs, xs, kern, NOISE);
       }
       return true;
@@ -124,7 +124,7 @@
 
     function newRun() {
       f = rff(ELL, 400).f;
-      fx = xs.map((x) => f(x)); fe = edges(cols, f);
+      fx = xs.map((x) => f(x));
       obs = []; prev = next = gpPosterior(obs, xs, kern, NOISE); updT = -1e9;
       bounds = [0, 1]; cands = []; chosen = null; pending = null; acqShown = false; n = 0; limit = null;
       log = []; queue = []; typing = null; wait = 0; resetT = null;
@@ -274,7 +274,7 @@
       const box = { r: 0, c: 0, w: cols, h: H };
       const post = curPost();
       G.clear();
-      drawPosterior(G, box, Y_MIN, Y_MAX, post.mu, post.sd, fe);
+      drawPosterior(G, box, Y_MIN, Y_MAX, post.mu, post.sd);
       if (pending !== null) {
         const target = Math.max(rowIn(box, Y_MIN, Y_MAX, f(pending)), 0);
         drawQuery(G, box, col(pending), Math.round(clamp((clock - dropT) / T.drop, 0, 1) * target) + 1);

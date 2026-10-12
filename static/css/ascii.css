@@ -131,27 +131,23 @@ pre.art {
 }
 .well pre.art { font-size: min(14px, calc(97cqi / var(--cols, 100) / .6)); }
 
-/* Open: the hero is opt-in. Its opener sits beside the tagline as a notice (after
-   ascii.rest): an inverted tag, a line with a glint passing over it, and a [go]
-   that inverts on hover. It wraps under the tagline when the row runs out. */
+/* Open: the hero is opt-in. Its opener sits beside the tagline: a muted label and a
+   padded bracket button (after ascii.rest's form controls) that inverts on hover.
+   It waits, invisible but holding its place, until the tagline has been typed, and
+   wraps under the tagline when the row runs out. */
 .opening { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 4ch; margin-top: 2rem; }
 .opening .tagline { margin-top: 0; }
 .notice {
   display: flex; align-items: baseline; gap: 1.5ch; padding: 0; border: 0; background: none;
-  color: var(--ink); font: inherit; white-space: nowrap; cursor: pointer; -webkit-appearance: none; appearance: none;
+  color: var(--muted); font: inherit; white-space: nowrap; cursor: pointer; -webkit-appearance: none; appearance: none;
+  transition: opacity .5s ease;
 }
-.notice .tag { padding: 0 .75ch; background: var(--ink); color: var(--bg); }
-.notice .shine {
-  background: linear-gradient(105deg, var(--ink) 0 42%, var(--faint) 50%, var(--ink) 58% 100%) 100% 0 / 250% 100% no-repeat;
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: notice-glint 4s ease-in-out infinite;
-}
-@keyframes notice-glint { 0%, 15% { background-position: 100% 0; } 75%, to { background-position: 0 0; } }
-@media (prefers-reduced-motion: reduce) { .notice .shine { background: none; color: var(--ink); animation: none; } }
-.notice .go { padding: 0 var(--pad); margin: 0 calc(var(--pad) * -1); color: var(--muted); }
+.notice.waiting { opacity: 0; visibility: hidden; }
+.notice .go { color: var(--ink); font-weight: 500; white-space: pre; }
 @media (hover: hover) { .notice:hover .go { background: var(--ink); color: var(--bg); } }
 .notice:focus-visible { outline: none; }
 .notice:focus-visible .go { background: var(--ink); color: var(--bg); outline: 1px dotted var(--ink); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .notice { transition: none; } }
 
 /* Typed tagline (after ascii.rest's typewriter piece). */
 .tagline { display: grid; max-width: 72ch; margin-top: 2rem; color: var(--ink); font-weight: 500; }

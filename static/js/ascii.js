@@ -10,8 +10,8 @@
       Fourier features), so the model is exactly specified. The
       exact GP posterior is drawn as the mean (● where the band is
       thinner than a row, • elsewhere), ±1σ dense dots and ±2σ a
-      checkered fringe, the true objective faint underneath, and
-      expected improvement as eighth-block bars below.
+      checkered fringe, and expected improvement as eighth-block
+      bars below.
    2. Hero variants from other files (window.asciiHeroes), switched
       by the tabs above the hero.
    3. Theme toggle, BibTeX toggle/copy, nav scroll-spy.
@@ -181,8 +181,8 @@
     }
   }
 
-  // GP-style posterior: ±1σ dots, ±2σ checkered fringe, faint truth, mean.
-  function drawPosterior(G, box, lo, hi, mu, sd, truth) {
+  // GP-style posterior: ±1σ dots, ±2σ checkered fringe, mean.
+  function drawPosterior(G, box, lo, hi, mu, sd) {
     const dy = (hi - lo) / box.h;
     for (let j = 0; j < box.w; j++) {
       const c = box.c + j;
@@ -192,7 +192,6 @@
         else if (z <= 2 && (r + c) % 2 === 0) G.set(box.r + r, c, "·", "m");
       }
     }
-    if (truth) drawLine(G, box, lo, hi, truth, 0, "f", true);
     for (let j = 0; j < box.w; j++) {
       const rm = rowIn(box, lo, hi, mu[j]);
       // certainty shows as weight: ● where the band is thinner than a row
@@ -247,7 +246,7 @@
     const PH = { think: 1100, drop: 650, update: 900, done: 2600, reset: 700 };
 
     let cols = 0, rows = 0, xs = [], G;
-    let f, fx, fe, fBest, obs, prev, next, ei, query, phase, clock = 0, phaseT = 0, dissolve;
+    let f, fx, fBest, obs, prev, next, ei, query, phase, clock = 0, phaseT = 0, dissolve;
 
     function expectedImprovement(post, best) {
       return post.mu.map((mu, j) => {
@@ -268,7 +267,6 @@
       xs = centres(cols);
       if (f) {
         fx = xs.map(f);
-        fe = edges(cols, f);
         fBest = Math.max(...fx);
         prev = next = gpPosterior(obs, xs, kern, NOISE);
         plan();
@@ -279,7 +277,6 @@
     function newRun() {
       f = rff(ELL, 400).f;
       fx = xs.map(f);
-      fe = edges(cols, f);
       fBest = Math.max(...fx);
       obs = [];
       for (let i = 0; i < N_INIT; i++) {
@@ -332,7 +329,7 @@
       const sd = prev.sd.map((s, j) => s + (next.sd[j] - s) * tUpd);
 
       G.clear();
-      drawPosterior(G, box, Y_MIN, Y_MAX, mu, sd, fe);
+      drawPosterior(G, box, Y_MIN, Y_MAX, mu, sd);
       if (phase === "drop") {
         const target = Math.max(rowIn(box, Y_MIN, Y_MAX, fx[query]), 0);
         drawQuery(G, box, query, Math.round(Math.min(dt / PH.drop, 1) * target) + 1);
@@ -471,6 +468,9 @@
   // gets backspaced, then the cursor blinks. Types once, no delete.
   // ════════════════════════════════════════════════════════════
   const tw = document.querySelector("[data-typewriter]");
+  // the hero's opener stays out of sight until the tagline is done (at once without motion)
+  const reveal = () => { const n = document.querySelector(".notice.waiting"); if (n) n.classList.remove("waiting"); };
+  if (!(tw && motion)) reveal();
   if (tw && motion) {
     const ghost = tw.querySelector(".ghost"), typed = tw.querySelector(".typed");
     const phrase = ghost.textContent.replace("▌", "").trim();
@@ -516,7 +516,7 @@
       const t = (now - t0) / 1000;
       while (idx < events.length && events[idx][0] <= t) body.textContent = events[idx++][1];
       if (idx < events.length) requestAnimationFrame(frame);
-      else cursor.classList.add("blink");   // solid while keys land, blinking once it sits still
+      else { cursor.classList.add("blink"); reveal(); }   // solid while keys land, blinking once it sits still
     })(performance.now());
   }
 

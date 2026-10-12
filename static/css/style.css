@@ -9,15 +9,16 @@
   color-scheme: light;
 
   /* ── Warm paper palette ──
-     White page, white glass tiles. --bg-card must stay LIGHTER than
+     Cool grey page shared with the ASCII edition (ascii.css --bg and
+     --well), white glass tiles. --bg-card must stay LIGHTER than
      --bg-warm: the note pages' segmented switches use warm as the
      track and card as the selected thumb. --bg and --bg-warm are
      also read from JS to paint the visualization canvases. */
-  --bg:          #ffffff;   /* page */
+  --bg:          #f5f6f7;   /* page, same as the ASCII edition */
   --bg-card:     #ffffff;   /* opaque surface fallback */
   --bg-card-rgb: 255, 255, 255;
-  --bg-warm:     #f4f1ea;   /* subtle chips / wells / plot panels */
-  --bg-rgb:      255, 255, 255;
+  --bg-warm:     #eceef0;   /* subtle chips / wells / plot panels */
+  --bg-rgb:      245, 246, 247;
 
   --ink:         #1c1a17;   /* near-black, warm */
   --ink-rgb:     28, 26, 23;
@@ -113,11 +114,11 @@
      Surfaces stay near-neutral graphite — the palette's warmth lives
      in the ink, not the panels. A warm tint that reads as "paper" at
      high luminance just reads as brown across a large dark tile. */
-  --bg:          #0f0f0e;
-  --bg-card:     #1b1b19;
-  --bg-card-rgb: 27, 27, 25;
-  --bg-warm:     #232321;
-  --bg-rgb:      15, 15, 14;
+  --bg:          #131518;
+  --bg-card:     #1a1d21;
+  --bg-card-rgb: 26, 29, 33;
+  --bg-warm:     #22262b;
+  --bg-rgb:      19, 21, 24;
 
   --ink:         #f2eee6;
   --ink-rgb:     242, 238, 230;
