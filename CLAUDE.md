@@ -29,6 +29,7 @@ This is a minimal Flask personal academic website with these routes:
 - `/ascii/` — Monospace "ASCII edition" of the homepage (after ascii.rest), self-contained: `templates/ascii_base.html` (sidebar, top bar, footer) → `ascii.html`, `static/css/ascii.css`, `static/js/ascii.js`. Reached via the `>_ ascii` pill in the homepage hero.
 - `/ascii/publications/` — All publications in the ASCII style (`ascii_publications.html`; rows from `partials/ascii_pub.html`). The interactive notes have no ASCII version; the ASCII sidebar says so and links to the classic ones.
 - `/cv.pdf` — Serves `data/cv.pdf` directly
+- `/404.html` — ASCII-style 404 (`ascii_404.html`, `static/js/ascii-404.js`), also the Flask 404 handler; GitHub Pages serves it for every unknown path, so its URLs must stay root-absolute. It is a manual Bayesian optimization: the hero's GP posterior with the visitor as acquisition function (click or arrow keys + Enter to evaluate, `[reveal f]`, `[reset]`). `ascii-404.js` sets `window.asciiPage`, which `ascii.js` calls with the shared `kit`.
 
 **Biographical and publication content is defined in two places:**
 
@@ -37,7 +38,7 @@ This is a minimal Flask personal academic website with these routes:
    - `abbr` — Short venue name shown as a badge
    - `selected = {true}` — Whether to show on the homepage
    - `month` — Numeric publication, preprint, or conference month (1–12); both publication lists sort by year and month, newest first. Missing months sort last within their year; ties keep bibliography order.
-   - `preview` — Filename of the thumbnail image (stored in `static/img/publication_preview/`)
+   - `preview` — Filename of the original image in `data/publication_preview/` (not deployed). `python build_images.py` (needs Pillow) turns each original into `static/img/publication_preview/thumb/<name>.webp` for the card and `full/<name>.webp` for the lightbox; both are committed, so rerun it after adding or replacing an original.
    - `award_name` — Short award label shown as a badge
    - `arxiv` — arXiv ID (just the number, e.g. `2207.11120`) or full URL
    - `html` / `pdf` — Link URLs for the card buttons
@@ -55,11 +56,12 @@ Interactive-note copy and structure live in the visualization templates; their d
 - `templates/base.html` — Nav and footer wrapper; all pages extend this
 - `templates/index.html` / `templates/publications.html` — Page content
 - `templates/visualizations.html` — Visualization gallery; `gaussian_splatting.html`, `flow_matching.html`, `optimization.html`, `stein_variational.html`, and `pareto.html` are the individual entries
-- `templates/partials/pub_card.html` — Reusable publication card included in both pages
+- `templates/partials/pub_card.html` — Reusable publication card included in both pages. Its thumbnail is a button that opens the full image in the `<dialog class="lightbox">` from `base.html` (wired in `static/js/ui.js`).
+- `templates/partials/meta.html` — Meta description and Open Graph / Twitter tags, included by both `base.html` and `ascii_base.html`; reads `SITE["url"]` and `SITE["description"]`.
 
 The `parse_publications()` function in `app.py` reads the BibTeX on every request (no caching), strips LaTeX markup via `clean_latex()`, and sorts publications newest-first by year and month. The homepage filters this ordered list to selected papers.
 
-Equal-contribution authors are marked with `$*$` or `\\*` in the BibTeX author field and rendered with a superscript `*`. The `is_me()` helper in `app.py` identifies Paul Brunzema's name to apply the `author-me` CSS class.
+Equal-contribution authors are marked with `*`, `$*$` or `\\*` in the BibTeX author field and rendered with a superscript `*`. The `is_me()` helper in `app.py` identifies Paul Brunzema's name to apply the `author-me` CSS class.
 
 **Design system:**
 

@@ -49,6 +49,25 @@ document.querySelectorAll("[data-bibtex-copy]").forEach((button) => {
   });
 });
 
+/* Lightbox: a card thumbnail opens the full image in a <dialog>;
+   a click anywhere (or Esc) closes it. */
+(function () {
+  const box = document.querySelector(".lightbox");
+  if (!box || !box.showModal) return;
+  const img = box.querySelector(".lightbox-img");
+
+  document.querySelectorAll("[data-lightbox]").forEach((button) => {
+    button.addEventListener("click", () => {
+      img.src = button.dataset.lightbox;
+      img.alt = button.getAttribute("aria-label").replace(/^View the image for /, "Image for ");
+      box.showModal();
+    });
+  });
+
+  box.addEventListener("click", () => box.close());
+  box.addEventListener("close", () => img.removeAttribute("src"));
+})();
+
 /* ASCII easter egg: shortly after load the pill types its own label once,
    key by key, so the one moving thing in the hero invites a click. */
 (function () {

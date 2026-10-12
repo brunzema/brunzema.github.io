@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}{{ site.name }}{% endblock %}</title>
+  {% set page_title = self.title() %}
+  {% block meta %}{% include "partials/meta.html" %}{% endblock %}
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico', v=10) }}" sizes="16x16 32x32 48x48" />
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg', v=10) }}" sizes="any" />
 
@@ -17,7 +19,7 @@
       document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=5) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=6) }}" />
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -60,8 +62,16 @@
     </div>
   </footer>
 
+  <!-- Publication image, opened from a card thumbnail (ui.js) -->
+  <dialog class="lightbox" aria-label="Publication image">
+    <img class="lightbox-img" alt="" />
+    <button type="button" class="lightbox-close" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
+    </button>
+  </dialog>
+
   {% block scripts %}{% endblock %}
   <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/ui.js', v=2) }}" defer></script>
 </body>
 </html>

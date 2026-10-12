@@ -20,6 +20,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 SITE = {
     "name": "Paul Brunzema",
+    "url": "https://brunzema.github.io",
+    "description": (
+        "PhD student at RWTH Aachen University working on uncertainty quantification "
+        "and sequential decision-making: Gaussian processes, Bayesian neural networks, "
+        "and Bayesian optimization."
+    ),
     "title": "PhD Student",
     "affiliation": "Institute for Data Science in Mechanical Engineering (DSME), RWTH Aachen University",
     "supervisor": "Sebastian Trimpe",
@@ -134,7 +140,7 @@ def clean_latex(text: str) -> str:
 def parse_authors(author_str: str) -> list[dict]:
     """
     Parse BibTeX author string into a list of dicts with name and equal_contribution flag.
-    Handles formats: 'Last, First' and 'First Last', with optional '$*$' for equal contrib.
+    Handles formats: 'Last, First' and 'First Last', with optional '*', '$*$' or '\\*' for equal contrib.
     """
     if not author_str:
         return []
@@ -142,9 +148,9 @@ def parse_authors(author_str: str) -> list[dict]:
     authors = []
     for raw in author_str.split(" and "):
         raw = raw.strip()
-        equal = "$*$" in raw or "\\*" in raw
+        equal = "*" in raw
         # Remove equal-contribution markers
-        raw = raw.replace("$*$", "").replace("\\*", "").strip()
+        raw = raw.replace("$*$", "").replace("\\*", "").replace("*", "").strip()
 
         if "," in raw:
             parts = raw.split(",", 1)
@@ -226,7 +232,8 @@ def parse_publications() -> list[dict]:
             "arxiv": arxiv_url,
             "html": entry.get("html", "").strip(),
             "pdf": entry.get("pdf", "").strip(),
-            "preview": entry.get("preview", "").strip(),
+            # Originals are in data/publication_preview/; build_images.py makes the WebP pair.
+            "preview": os.path.splitext(entry.get("preview", "").strip())[0],
             "selected": entry.get("selected", "").strip().lower() == "true",
             "award_name": clean_latex(entry.get("award_name", "")),
         }
@@ -321,13 +328,25 @@ def pareto_page():
     return render_template("pareto.html", site=SITE)
 
 
-# ─────────────────────────────────────────────
-# MAIN
-# ─────────────────────────────────────────────
-
 @app.route("/cv.pdf")
 def cv_pdf():
     return send_from_directory(os.path.join(BASE_DIR, "data"), "cv.pdf")
+
+
+# GitHub Pages serves /404.html for every unknown path.
+@app.route("/404.html")
+def not_found_page():
+    return render_template("ascii_404.html", site=SITE)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return not_found_page(), 404
+
+
+# ─────────────────────────────────────────────
+# MAIN
+# ─────────────────────────────────────────────
 
 
 if __name__ == "__main__":

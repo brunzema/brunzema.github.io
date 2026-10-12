@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}{{ site.name | lower }} — ascii{% endblock %}</title>
+  {% set page_title = self.title() %}
+  {% block meta %}{% include "partials/meta.html" %}{% endblock %}
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico', v=10) }}" sizes="16x16 32x32 48x48" />
   <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg', v=10) }}" sizes="any" />
 
@@ -19,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/ascii.css', v=1) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ascii.css', v=2) }}" />
 </head>
 <body>
 <div class="frame">
@@ -75,6 +77,7 @@
 </div>
 <!-- Hero variants register themselves before ascii.js runs. -->
 <script src="{{ url_for('static', filename='js/ascii-hero-agentic.js', v=1) }}" defer></script>
-<script src="{{ url_for('static', filename='js/ascii.js', v=1) }}" defer></script>
+{% block page_scripts %}{% endblock %}
+<script src="{{ url_for('static', filename='js/ascii.js', v=2) }}" defer></script>
 </body>
 </html>

@@ -710,7 +710,20 @@ main { padding-top: var(--nav-h); }
 
 /* Thumbnail */
 .pub-thumb { display: flex; }
-.pub-thumb a { display: block; width: 100%; }
+.pub-thumb-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: var(--r-md);
+  cursor: zoom-in;
+}
+
+.pub-thumb-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 .pub-img {
   width: 100%;
@@ -725,6 +738,66 @@ main { padding-top: var(--nav-h); }
 .pub-card:hover .pub-img {
   transform: scale(1.02);
   box-shadow: var(--e2), var(--ring);
+}
+
+/* Lightbox — the full image, opened from a thumbnail */
+.lightbox {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--s-5);
+  border: 0;
+  background: rgba(var(--bg-rgb), 0.82);
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
+  cursor: zoom-out;
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+  animation: lightbox-in var(--dur) var(--ease);
+}
+
+.lightbox::backdrop { background: none; }
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  border-radius: var(--r-lg);
+  box-shadow: var(--e2), var(--ring);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: var(--s-4);
+  right: var(--s-4);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--fill-2);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.lightbox-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@keyframes lightbox-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox[open] { animation: none; }
 }
 
 .pub-img-placeholder {

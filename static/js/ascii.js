@@ -406,6 +406,10 @@
     gpPosterior, cholesky, forward, backward, rowIn, drawLine, drawPosterior, drawObs,
     drawBars, drawQuery, rule, rightText, heroSize, reduced,
   };
+  // Standalone pages (the 404) take the same toolkit: window.asciiPage = (kit) => { … },
+  // set by a script loaded before this file.
+  if (window.asciiPage) window.asciiPage(kit);
+
   const HEROES = Object.assign({ ei: heroScene }, window.asciiHeroes || {});
 
   // The hero opens on a still and waits for [▶ play], so the tagline and the

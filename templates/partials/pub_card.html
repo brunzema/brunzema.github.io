@@ -4,19 +4,14 @@
   <!-- Thumbnail -->
   <div class="pub-thumb">
     {% if pub.preview %}
-      {% set thumb %}
+      <button type="button" class="pub-thumb-btn" data-lightbox="{{ url_for('static', filename='img/publication_preview/full/' + pub.preview + '.webp') }}" aria-label="View the image for {{ pub.title }}">
         <img
-          src="{{ url_for('static', filename='img/publication_preview/' + pub.preview) }}"
-          alt="{{ pub.title }} preview"
+          src="{{ url_for('static', filename='img/publication_preview/thumb/' + pub.preview + '.webp') }}"
+          alt=""
           class="pub-img"
           loading="lazy"
         />
-      {% endset %}
-      {% if primary %}
-        <a href="{{ primary }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">{{ thumb }}</a>
-      {% else %}
-        {{ thumb }}
-      {% endif %}
+      </button>
     {% else %}
       <div class="pub-img-placeholder">
         <span>{{ pub.abbr or pub.year }}</span>

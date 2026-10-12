@@ -153,6 +153,11 @@ pre.art {
 
 .hero { margin: 2rem 0 0; }
 
+/* 404: the posterior is the input — click (or arrow keys + Enter) to evaluate. */
+.hero-bar .tools { display: flex; gap: 2ch; margin-left: auto; }
+#bo404 { cursor: crosshair; touch-action: manipulation; }
+#bo404:focus-visible { outline: 1px dotted var(--ink); outline-offset: 6px; }
+
 /* Variant switch: the selected tab wears brackets (after ascii.rest). */
 .hero-bar { display: flex; align-items: baseline; gap: 3ch; margin-bottom: .5rem; }
 .hero-bar [data-playpause] { margin-left: auto; }

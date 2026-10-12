@@ -1,0 +1,29 @@
+{% extends "ascii_base.html" %}
+{% set page = "404" %}
+{% block title %}404 — {{ site.name | lower }} — ascii{% endblock %}
+{% block meta %}<meta name="robots" content="noindex" />{% endblock %}
+{% block heading %}404{% endblock %}
+{% block content %}
+    <p class="lede muted">page not found · this url is outside the feasible set</p>
+
+    <p class="tagline">The page is gone, but the function below still has a maximum nobody has found. You are the acquisition function: click to evaluate.</p>
+
+    <figure class="hero">
+      <div class="hero-bar">
+        <span class="muted">manual BO</span>
+        <span class="tools">
+          <button class="button" type="button" data-reveal aria-pressed="false"><span>[reveal f]</span></button>
+          <button class="button" type="button" data-reset><span>[reset]</span></button>
+        </span>
+      </div>
+      <div class="well">
+        <pre class="art" id="bo404" tabindex="0" aria-label="A Gaussian process posterior over a hidden one-dimensional function. Click a location, or use the arrow keys and Enter, to evaluate the function there."></pre>
+      </div>
+      <figcaption class="facts" id="bo404-facts" aria-live="polite"></figcaption>
+    </figure>
+
+    <p class="pitch">Or give up on exploration and exploit a known link: <a href="/">home</a>, <a href="/publications/">publications</a>, <a href="/visualizations/">interactive notes</a>.</p>
+{% endblock %}
+{% block page_scripts %}
+<script src="{{ url_for('static', filename='js/ascii-404.js', v=1) }}" defer></script>
+{% endblock %}
