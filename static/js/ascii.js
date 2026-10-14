@@ -513,7 +513,7 @@
     let t0 = null, idx = 0;
     (function frame(now) {
       if (t0 === null) t0 = now;
-      const t = (now - t0) / 1000;
+      const t = (now - t0) / 1000 * 1.25;   // play the laid-out performance 25% faster
       while (idx < events.length && events[idx][0] <= t) body.textContent = events[idx++][1];
       if (idx < events.length) requestAnimationFrame(frame);
       else { cursor.classList.add("blink"); reveal(); }   // solid while keys land, blinking once it sits still
