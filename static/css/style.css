@@ -365,33 +365,6 @@ main { padding-top: var(--nav-h); }
 
 .hero-inner { position: relative; z-index: 2; }
 
-/* Pause control for the ambient field (gp.js); hidden when motion is reduced */
-.hero-pause {
-  position: absolute;
-  /* right edge of the .container column (the icon's own inset aside) */
-  right: max(var(--pad), calc((100% - var(--max-w)) / 2 + var(--pad)));
-  bottom: var(--s-2);
-  z-index: 2;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.hero-pause .icon-play,
-.hero-pause[aria-pressed="true"] .icon-pause { display: none; }
-.hero-pause[aria-pressed="true"] .icon-play { display: block; }
-@media (hover: hover) {
-  .hero-pause:hover { color: var(--ink); background: var(--fill-1); }
-}
-@media (prefers-reduced-motion: reduce) { .hero-pause { display: none; } }
-
 /* Easter egg: a terminal-prompt pill in the hero's top-right corner, in the
    band above the intro (hero padding ≥ 3rem), leading to /ascii/. */
 .ascii-egg {
