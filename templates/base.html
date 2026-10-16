@@ -19,7 +19,7 @@
       document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=7) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=8) }}" />
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -37,7 +37,7 @@
           <li><a href="/publications/" class="{% if request.path == '/publications/' %}active{% endif %}">Publications</a></li>
           <li><a href="/visualizations/" class="{% if request.path.startswith('/visualizations/') %}active{% endif %}">Visualizations</a></li>
         </ul>
-        <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+        <button class="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false">
           <svg class="theme-icon theme-icon--sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
           <svg class="theme-icon theme-icon--moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.99 12.84A8.5 8.5 0 1 1 11.16 3a6.6 6.6 0 0 0 9.83 9.84Z"/></svg>
         </button>
@@ -65,13 +65,13 @@
   <!-- Publication image, opened from a card thumbnail (ui.js) -->
   <dialog class="lightbox" aria-label="Publication image">
     <img class="lightbox-img" alt="" />
-    <button type="button" class="lightbox-close" aria-label="Close">
+    <button type="button" class="lightbox-close" aria-label="Close image">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>
     </button>
   </dialog>
 
   {% block scripts %}{% endblock %}
   <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/ui.js', v=2) }}" defer></script>
+  <script src="{{ url_for('static', filename='js/ui.js', v=3) }}" defer></script>
 </body>
 </html>

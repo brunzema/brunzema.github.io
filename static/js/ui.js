@@ -40,7 +40,9 @@ document.querySelectorAll("[data-bibtex-copy]").forEach((button) => {
     const status = panel.querySelector(".pub-copy-status");
     try {
       await navigator.clipboard.writeText(citation.value);
-      status.textContent = "Copied!";
+      // Clear first so a repeated copy is announced again
+      status.textContent = "";
+      requestAnimationFrame(() => { status.textContent = "BibTeX copied"; });
     } catch {
       citation.focus();
       citation.select();

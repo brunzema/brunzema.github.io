@@ -313,18 +313,28 @@
     }, 150);
   });
   window.addEventListener("themechange", () => { syncThemeColors(); if (reduced) staticFrame(); });
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (raf) cancelAnimationFrame(raf);
-      raf = null;
-      pausedAt = performance.now();
-    } else if (!reduced && !raf) {
-      // Resume the clock where it paused instead of snapping the field back to t=0.
-      if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt;
-      pausedAt = null;
-      last = null;            // avoid a dt spike on the first resumed frame
-      raf = requestAnimationFrame(frame);
-    }
+  function pause() {
+    if (raf) cancelAnimationFrame(raf);
+    raf = null;
+    if (pausedAt === null) pausedAt = performance.now();
+  }
+  function resume() {
+    if (reduced || raf || userPaused) return;
+    // Resume the clock where it paused instead of snapping the field back to t=0.
+    if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt;
+    pausedAt = null;
+    last = null;            // avoid a dt spike on the first resumed frame
+    raf = requestAnimationFrame(frame);
+  }
+  document.addEventListener("visibilitychange", () => (document.hidden ? pause() : resume()));
+
+  // Visible pause control (WCAG 2.2.2): the field otherwise moves indefinitely.
+  let userPaused = false;
+  const pauseBtn = document.querySelector(".hero-pause");
+  if (pauseBtn) pauseBtn.addEventListener("click", () => {
+    userPaused = !userPaused;
+    pauseBtn.setAttribute("aria-pressed", String(userPaused));
+    if (userPaused) pause(); else resume();
   });
 
   start();
