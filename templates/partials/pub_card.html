@@ -7,6 +7,8 @@
       <button type="button" class="pub-thumb-btn" data-lightbox="{{ url_for('static', filename='img/publication_preview/full/' + pub.preview + '.webp') }}" aria-label="View the image for {{ pub.title }}">
         <img
           src="{{ url_for('static', filename='img/publication_preview/thumb/' + pub.preview + '.webp') }}"
+          srcset="{{ url_for('static', filename='img/publication_preview/thumb/' + pub.preview + '.webp') }} 640w, {{ url_for('static', filename='img/publication_preview/full/' + pub.preview + '.webp') }} 1200w"
+          sizes="(max-width: 48rem) 100vw, 46rem"
           alt=""
           class="pub-img"
           loading="lazy"

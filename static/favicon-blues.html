@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blue study · pb</title>
+<link id="preview-icon" rel="icon" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f5f7;color:#20242a;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1100px;margin:auto;padding:48px 24px 60px}h1{font-size:38px;letter-spacing:-1.3px;margin:8px 0}p{margin:0;color:#66707c}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#778391}.intro{max-width:680px}.controls{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:28px 0 20px;flex-wrap:wrap}.selected{font-weight:600}.hint{font-size:13px}button{font:inherit}.backdrop{padding:9px 14px;border:1px solid #cbd1d8;border-radius:24px;background:white;color:#20242a;cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{position:relative;text-align:left;padding:0;overflow:hidden;border:2px solid transparent;border-radius:18px;background:white;color:#20242a;cursor:pointer;box-shadow:0 3px 14px #16213708}.card:hover{border-color:#abb9ce}.card[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 18%,transparent)}button:focus-visible{outline:3px solid #2878b8;outline-offset:4px}.preview{height:152px;display:flex;align-items:center;justify-content:center;gap:26px;background:#e9edf1;transition:background .2s}.dark .preview{background:#292929}.hero{width:80px;height:80px}.sizes{display:flex;align-items:center;gap:14px}.copy{padding:17px 20px 20px}.title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:600;font-size:17px}.hex{font-family:ui-monospace,monospace;font-size:12px;font-weight:400;color:#74808d}.note{font-size:13px;margin-top:5px}.swatch{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;background:var(--blue)}footer{font-size:13px;color:#66707c;margin-top:24px}.number{position:absolute;left:14px;top:11px;font-size:11px;color:#6f7b8b}.dark .number{color:#a6adb7}@media(max-width:780px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){main{padding:28px 16px}.grid{grid-template-columns:1fr}h1{font-size:32px}}
+</style>
+</head>
+<body><main>
+<div class="intro"><div class="eyebrow">Paul Brunzema · Favicon study</div><h1>Find your blue.</h1><p>Twelve shades, one signature. Click a card to try its color in this browser tab. Each card shows the icon at 80, 16, 24, and 32 pixels.</p></div>
+<div class="controls"><div><div id="selection" class="selected" aria-live="polite"></div><p class="hint">Only this preview tab changes. Your website stays as it is.</p></div><button id="background" class="backdrop" aria-pressed="false">Use dark preview background</button></div>
+<div id="grid" class="grid"></div>
+<footer>All options use the same white tile, padding, and letter weight. Tell me the name or number of your favorite.</footer>
+</main>
+<script>
+const source="<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\">\n  <rect width=\"64\" height=\"64\" rx=\"12\" fill=\"#ffffff\"/>\n  <g fill=\"#5b91bd\" stroke=\"#5b91bd\" stroke-width=\"14\" stroke-linejoin=\"round\" transform=\"translate(5.76 5.76) scale(0.82)\">\n    <g transform=\"translate(11.91933 46.20738) scale(0.0655026 -0.0655026)\">\n      <path transform=\"translate(0 0)\" d=\"M209 4C247 27 284 75 314 141C351 223 373 312 325 363C282 408 223 380 179 342C180 359 178 374 173 387C168 399 159 401 149 388C86 304 -82 -13 -112 -110C-131 -171 -126 -199 -111 -220C-105 -229 -98 -227 -94 -218C-46 -107 5 -5 52 81C55 56 65 33 86 14C121 -18 163 -27 227 -23C299 -18 367 15 405 84C422 115 420 141 418 150C416 160 405 164 399 150C367 82 307 10 209 4ZM108 181C120 202 131 220 142 238C189 315 251 365 275 353C300 341 289 258 250 178C203 82 138 9 106 35C78 58 83 118 108 181Z\"/>\n      <path transform=\"translate(389 0)\" d=\"M312 151C367 273 363 391 278 391C252 391 221 375 192 349C223 404 266 473 281 501C322 576 322 621 307 649C299 663 291 663 282 650C213 554 17 184 -10 101C-30 40 -20 11 -5 -9C1 -17 7 -16 11 -6C20 15 31 39 40 60C58 16 92 -11 145 -11C203 -11 265 46 312 151ZM263 350C286 348 298 287 241 174C183 58 137 28 102 36C75 42 62 74 60 103C97 180 145 263 190 310C220 341 242 352 263 350Z\"/>\n    </g>\n  </g>\n</svg>\n";
+const colors=[["Petrol", "#1f4e79", "Deep and understated"], ["Midnight", "#263c80", "An inky blue with a violet undertone"], ["Denim", "#356fa3", "Selected for the website"], ["Steel", "#5b91bd", "Soft and airy"], ["Slate", "#647f99", "Soft and muted"], ["Ocean", "#247a96", "A little teal, a little different"], ["Azure", "#2878b8", "Clear and lively"], ["Electric", "#1769e0", "Bright and crisp"], ["Cobalt", "#3155bc", "Rich and saturated"], ["Cornflower", "#617ed5", "Gentle with a violet tint"], ["Periwinkle", "#7779c9", "A softer blue-violet"], ["French blue", "#4778c2", "A balanced, slightly cool blue"]];
+const grid=document.querySelector('#grid');
+const icon=document.querySelector('#preview-icon');
+function choose(index){
+ const [name,hex]=colors[index];
+ const svg=source.replaceAll('#5b91bd',hex);
+ icon.href='data:image/svg+xml,'+encodeURIComponent(svg);
+ document.title=name+' · pb preview';
+ document.querySelector('#selection').textContent='Trying '+name+' · '+hex;
+ [...grid.children].forEach((card,i)=>card.setAttribute('aria-pressed',String(i===index)));
+}
+colors.forEach(([name,hex,note],index)=>{
+ const svg=source.replaceAll('#5b91bd',hex);
+ const src='data:image/svg+xml,'+encodeURIComponent(svg);
+ const card=document.createElement('button');
+ card.className='card';card.type='button';card.style.setProperty('--blue',hex);
+ card.setAttribute('aria-label','Try '+name+', '+hex);card.setAttribute('aria-pressed','false');
+ const number=document.createElement('span');number.className='number';number.textContent=String(index+1).padStart(2,'0');card.append(number);
+ const preview=document.createElement('div');preview.className='preview';
+ const big=document.createElement('img');big.src=src;big.alt='';big.className='hero';preview.append(big);
+ const sizes=document.createElement('div');sizes.className='sizes';
+ [16,24,32].forEach(size=>{const img=document.createElement('img');img.src=src;img.alt='';img.width=size;img.height=size;sizes.append(img)});
+ preview.append(sizes);card.append(preview);
+ const copy=document.createElement('div');copy.className='copy';
+ const title=document.createElement('div');title.className='title';
+ const label=document.createElement('span');const swatch=document.createElement('span');swatch.className='swatch';label.append(swatch,document.createTextNode(name));
+ const code=document.createElement('span');code.className='hex';code.textContent=hex;title.append(label,code);
+ const description=document.createElement('p');description.className='note';description.textContent=note;copy.append(title,description);card.append(copy);
+ card.addEventListener('click',()=>choose(index));grid.append(card);
+});
+document.querySelector('#background').addEventListener('click',event=>{const dark=document.body.classList.toggle('dark');event.currentTarget.setAttribute('aria-pressed',String(dark));event.currentTarget.textContent=dark?'Use light preview background':'Use dark preview background'});
+choose(2);
+</script>
+</body></html>

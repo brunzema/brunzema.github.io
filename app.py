@@ -27,7 +27,7 @@ SITE = {
         "and Bayesian optimization."
     ),
     "title": "PhD Student",
-    "affiliation": "Institute for Data Science in Mechanical Engineering (DSME), RWTH Aachen University",
+    "affiliation": "DSME, RWTH Aachen University",
     "supervisor": "Sebastian Trimpe",
     "email": "brunzema@dsme.rwth-aachen.de",
     "bio": [

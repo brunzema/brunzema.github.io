@@ -115,7 +115,7 @@
   --max-w:       960px;
   --measure:     66ch;
   --letter:      35rem;     /* the reading column */
-  --media:       46rem;     /* the wider column media rails start from */
+  --media:       46rem;     /* the wider column media tiles sit in */
   --pad:         2rem;
 
   --ease:        cubic-bezier(0.22, 1, 0.36, 1);
@@ -399,7 +399,7 @@ main { padding-top: var(--nav-h); }
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(var(--bg-rgb),0) calc(var(--gp-h) * 0.62), var(--bg) var(--gp-h)),
-    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 20%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 80%, rgba(var(--bg-rgb),0.2) 100%);
+    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 32%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 68%, rgba(var(--bg-rgb),0.2) 100%);
 }
 
 .hero-inner { position: relative; z-index: 2; }
@@ -436,17 +436,14 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   text-align: center;
   gap: var(--s-5);
-  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: clamp(3rem, 7vw, 4.5rem);
 }
 
-/* Bio ("abstract") beside the compact CV, so both sit above the fold */
+/* Bio ("abstract"), then the compact CV, down one column */
 .hero-cols {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 17.5rem;
-  gap: clamp(2.5rem, 6vw, 4.5rem);
-  align-items: start;
+  gap: clamp(3rem, 6vw, 4rem);
 }
-.hero-text { max-width: var(--letter); }
 
 .hero-photo { flex-shrink: 0; }
 
@@ -562,12 +559,6 @@ main { padding-top: var(--nav-h); }
   line-height: 1.15;
 }
 
-.section-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--s-4);
-}
-
 .section-link {
   font-size: var(--t-callout);
   color: var(--ink);
@@ -576,25 +567,6 @@ main { padding-top: var(--nav-h); }
   transition: opacity var(--dur) var(--ease);
 }
 .section-link:hover { opacity: 0.6; text-decoration: none; }
-
-/* Round grey buttons, like the sheet's close button */
-.rail-nav { display: flex; gap: var(--s-2); }
-
-.rail-btn {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--fill-1);
-  color: var(--ink);
-  cursor: pointer;
-  transition: background var(--dur) var(--ease), opacity var(--dur) var(--ease);
-}
-.rail-btn:disabled { opacity: 0.35; cursor: default; }
-@media (hover: hover) { .rail-btn:not(:disabled):hover { background: var(--fill-2); } }
 
 /* Small grouped-list header, Apple settings style */
 .group-label {
@@ -673,8 +645,8 @@ main { padding-top: var(--nav-h); }
 ══════════════════════ */
 .exp-title {
   display: block;
-  margin: 0 0 var(--s-2);
-  font-size: var(--t-title-3);
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-title-2);
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
@@ -779,7 +751,7 @@ main { padding-top: var(--nav-h); }
    PUBLICATIONS
 ══════════════════════ */
 /* Every publication is a bare media tile with its caption underneath:
-   strung along a rail on the homepage, two up on the publications page */
+   stacked one per row on the homepage and the publications page */
 .pub-card {
   display: flex;
   flex-direction: column;
@@ -788,36 +760,17 @@ main { padding-top: var(--nav-h); }
 }
 .pub-content { padding-inline: 2px; }
 
-/* ── Breakout rail (homepage) ──
-   Starts at the container's content edge and runs off the right of the
-   viewport; tiles snap to that edge. Padding top and bottom leaves room
-   for the hover lift, which overflow-x would otherwise clip. */
-.pub-rail {
-  --rail-start: max(var(--pad), (100% - var(--max-w)) / 2 + var(--pad));
-  --tile-w: clamp(264px, 78vw, 356px);
-  display: flex;
-  gap: var(--s-4);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--rail-start);
-  padding: var(--s-4) var(--rail-start) var(--s-7);
-  scrollbar-width: none;
-}
-.pub-rail::-webkit-scrollbar { display: none; }
-.pub-rail:focus-visible { outline-offset: -2px; border-radius: 0; }
-.pub-rail .pub-card { flex: 0 0 var(--tile-w); scroll-snap-align: start; }
-
-/* ── Grid (publications page), in the media column ── */
+/* ── Stack: one tile per row in the media column, on the homepage
+   and the publications page ── */
 .media {
   width: min(var(--media), 100% - 2 * var(--pad));
   margin-inline: auto;
 }
 
-.pub-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(2.5rem, 5vw, 3.5rem) var(--s-5);
+.pub-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 4.5rem);
   margin-top: var(--s-5);
 }
 
@@ -1105,12 +1058,14 @@ main { padding-top: var(--nav-h); }
 
 .viz-index-section { padding: 0 0 var(--s-6); animation-delay: 90ms; }
 
-/* Newest note as a wide feature tile, the rest two up. Each card is a
-   bare media tile with its caption underneath. */
+/* One note per row in the media column, each a bare media tile with
+   its caption underneath */
 .viz-index-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(2.5rem, 5vw, 3.5rem) var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 6vw, 4.5rem);
+  max-width: var(--media);
+  margin-inline: auto;
 }
 
 .viz-index-card {
@@ -1120,11 +1075,10 @@ main { padding-top: var(--nav-h); }
   color: var(--ink);
   text-decoration: none;
 }
-.viz-index-card:first-child { grid-column: 1 / -1; }
 
 .viz-index-preview {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
   border-radius: var(--r-lg);
   background: var(--bg-warm);
@@ -1132,7 +1086,6 @@ main { padding-top: var(--nav-h); }
   transition: transform var(--dur-spring) var(--spring),
               filter var(--dur-spring) var(--spring);
 }
-.viz-index-card:first-child .viz-index-preview { aspect-ratio: 2 / 1; }
 
 @media (hover: hover) {
   .viz-index-card:hover { text-decoration: none; }
@@ -1184,11 +1137,10 @@ main { padding-top: var(--nav-h); }
 
 .viz-index-card-body h2 {
   margin-bottom: var(--s-2);
-  font-size: var(--t-title-3);
-  line-height: 1.25;
-  letter-spacing: -0.018em;
+  font-size: var(--t-title-2);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
 }
-.viz-index-card:first-child h2 { font-size: var(--t-title-2); line-height: 1.14; }
 
 .viz-index-card-body > p {
   max-width: 56ch;
@@ -3794,8 +3746,6 @@ footer {
     height: 30px;
   }
 
-  .hero-cols { grid-template-columns: 1fr; }
-
   /* On narrow screens the art sits behind everything, kept faint by the veil */
   .hero-veil {
     background:
@@ -3811,11 +3761,8 @@ footer {
     margin-top: 0.15rem;
   }
 
-  .pub-grid { grid-template-columns: 1fr; }
 
-  .viz-index-list { grid-template-columns: 1fr; }
-  .viz-index-card:first-child .viz-index-preview { aspect-ratio: 4 / 3; }
-  .viz-index-card:first-child h2 { font-size: var(--t-title-3); line-height: 1.25; }
+  .viz-index-preview { aspect-ratio: 4 / 3; }
 
   .viz-page-header { padding: 2.8rem 0 1.5rem; }
 

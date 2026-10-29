@@ -22,7 +22,7 @@
       <div class="year-group">
         <h2 class="year-label">{{ year }}</h2>
 
-        <div class="pub-grid">
+        <div class="pub-stack">
           {% for pub in pubs_by_year[year] %}
             {% include "partials/pub_card.html" %}
           {% endfor %}

@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <!-- Body: bio ("abstract") beside the compact CV, both above the fold -->
-    <div class="hero-cols">
+    <!-- Body: bio ("abstract") and compact CV in one narrow letter column -->
+    <div class="letter hero-cols">
       <div class="hero-text">
 
         <div class="hero-bio">
@@ -91,27 +91,18 @@
 </section>
 
 <!-- ── SELECTED PUBLICATIONS ── -->
-<section class="section section--rail">
-  <div class="container section-header">
-    <h2 class="section-title">Selected publications</h2>
-    <div class="section-actions">
+<section class="section">
+  <div class="media">
+    <div class="section-header">
+      <h2 class="section-title">Selected publications</h2>
       <a href="/publications/" class="section-link">All publications →</a>
-      <div class="rail-nav">
-        <button type="button" class="rail-btn" data-rail-prev aria-controls="pub-rail" aria-label="Previous publications">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button type="button" class="rail-btn" data-rail-next aria-controls="pub-rail" aria-label="Next publications">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- Breakout rail: starts at the page's content edge, bleeds off the right -->
-  <div class="pub-rail" id="pub-rail" role="region" aria-label="Selected publications" tabindex="0">
-    {% for pub in selected_publications %}
-      {% include "partials/pub_card.html" %}
-    {% endfor %}
+    <div class="pub-stack">
+      {% for pub in selected_publications %}
+        {% include "partials/pub_card.html" %}
+      {% endfor %}
+    </div>
   </div>
 </section>
 

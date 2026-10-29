@@ -83,29 +83,3 @@ document.querySelectorAll("[data-bibtex-copy]").forEach((button) => {
     if (i < text.length) setTimeout(type, 55 + Math.random() * 70);
   }, 900);
 })();
-
-/* Breakout rail: the arrow buttons page by one tile; each disables
-   at its end of the scroll range. Touch and trackpads scroll natively. */
-document.querySelectorAll("[data-rail-prev]").forEach((prev) => {
-  const rail = document.getElementById(prev.getAttribute("aria-controls"));
-  const next = document.querySelector(`[data-rail-next][aria-controls="${rail.id}"]`);
-  if (!rail || !next) return;
-
-  const step = () => {
-    const tile = rail.firstElementChild;
-    const gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
-    return tile ? tile.getBoundingClientRect().width + gap : rail.clientWidth;
-  };
-
-  function sync() {
-    const max = rail.scrollWidth - rail.clientWidth - 1;
-    prev.disabled = rail.scrollLeft <= 1;
-    next.disabled = rail.scrollLeft >= max;
-  }
-
-  prev.addEventListener("click", () => rail.scrollBy({ left: -step(), behavior: "smooth" }));
-  next.addEventListener("click", () => rail.scrollBy({ left: step(), behavior: "smooth" }));
-  rail.addEventListener("scroll", sync, { passive: true });
-  window.addEventListener("resize", sync);
-  sync();
-});
