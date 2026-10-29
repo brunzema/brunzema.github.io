@@ -17,9 +17,14 @@
       const saved = localStorage.getItem("theme");
       const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
       document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
+      // The entrance animation greets a visit, not every click within it
+      try {
+        if (sessionStorage.getItem("visited")) document.documentElement.classList.add("no-intro");
+        else sessionStorage.setItem("visited", "1");
+      } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=10) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=11) }}" />
   {% block head %}{% endblock %}
 </head>
 <body>

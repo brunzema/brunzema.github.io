@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <!-- Body: bio ("abstract") and compact CV in one narrow letter column -->
-    <div class="letter hero-cols">
+    <!-- Body: bio ("abstract") beside the compact CV, both above the fold -->
+    <div class="hero-cols">
       <div class="hero-text">
 
         <div class="hero-bio">
@@ -92,7 +92,7 @@
 
 <!-- ── SELECTED PUBLICATIONS ── -->
 <section class="section section--rail">
-  <div class="letter section-header">
+  <div class="container section-header">
     <h2 class="section-title">Selected publications</h2>
     <div class="section-actions">
       <a href="/publications/" class="section-link">All publications →</a>
@@ -107,7 +107,7 @@
     </div>
   </div>
 
-  <!-- Breakout rail: starts at the media column's left edge, bleeds off the right -->
+  <!-- Breakout rail: starts at the page's content edge, bleeds off the right -->
   <div class="pub-rail" id="pub-rail" role="region" aria-label="Selected publications" tabindex="0">
     {% for pub in selected_publications %}
       {% include "partials/pub_card.html" %}

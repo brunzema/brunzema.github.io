@@ -121,14 +121,15 @@
   --ease:        cubic-bezier(0.22, 1, 0.36, 1);
   --dur:         200ms;
 
-  /* Critically damped spring, 1 − (1 + ωt)·e^(−ωt) with ω = 9.4,
-     sampled for linear(). Pair with --dur-spring. */
-  --spring: linear(0, 0.0236 2.5%, 0.0812 5%, 0.1575 7.5%, 0.2422 10%,
-                   0.3283 12.5%, 0.4116 15%, 0.4895 17.5%, 0.5605 20%,
-                   0.6805 25%, 0.7723 30%, 0.8402 35%, 0.8892 40%,
-                   0.9239 45%, 0.9482 50%, 0.9649 55%, 0.9764 60%,
-                   0.9842 65%, 0.9895 70%, 0.9930 75%, 0.9970 85%, 1);
-  --dur-spring:  650ms;
+  /* Overdamped spring released with velocity, (1 − e^(−6t)) / (1 − e^(−6)),
+     sampled for linear(): it moves at once and settles softly. (A spring
+     starting from rest, as on molly.studio, reads as hover lag.) Pair
+     with --dur-spring. */
+  --spring: linear(0, 0.1396 2.5%, 0.2598 5%, 0.3633 7.5%, 0.4523 10%,
+                   0.5949 15%, 0.7005 20%, 0.7788 25%, 0.8368 30%,
+                   0.8797 35%, 0.9115 40%, 0.9526 50%, 0.9751 60%,
+                   0.9875 70%, 0.9942 80%, 0.9980 90%, 1);
+  --dur-spring:  500ms;
 }
 
 [data-theme="dark"] {
@@ -398,7 +399,7 @@ main { padding-top: var(--nav-h); }
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(var(--bg-rgb),0) calc(var(--gp-h) * 0.62), var(--bg) var(--gp-h)),
-    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 32%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 68%, rgba(var(--bg-rgb),0.2) 100%);
+    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 20%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 80%, rgba(var(--bg-rgb),0.2) 100%);
 }
 
 .hero-inner { position: relative; z-index: 2; }
@@ -435,14 +436,17 @@ main { padding-top: var(--nav-h); }
   align-items: center;
   text-align: center;
   gap: var(--s-5);
-  margin-bottom: clamp(3rem, 7vw, 4.5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
 }
 
-/* Bio ("abstract"), then the compact CV, down one column */
+/* Bio ("abstract") beside the compact CV, so both sit above the fold */
 .hero-cols {
   display: grid;
-  gap: clamp(3rem, 6vw, 4rem);
+  grid-template-columns: minmax(0, 1fr) 17.5rem;
+  gap: clamp(2.5rem, 6vw, 4.5rem);
+  align-items: start;
 }
+.hero-text { max-width: var(--letter); }
 
 .hero-photo { flex-shrink: 0; }
 
@@ -669,8 +673,8 @@ main { padding-top: var(--nav-h); }
 ══════════════════════ */
 .exp-title {
   display: block;
-  margin: 0 0 var(--s-3);
-  font-size: var(--t-title-2);
+  margin: 0 0 var(--s-2);
+  font-size: var(--t-title-3);
   letter-spacing: -0.02em;
   line-height: 1.15;
 }
@@ -785,11 +789,11 @@ main { padding-top: var(--nav-h); }
 .pub-content { padding-inline: 2px; }
 
 /* ── Breakout rail (homepage) ──
-   Starts at the media column's left edge and runs off the right of the
+   Starts at the container's content edge and runs off the right of the
    viewport; tiles snap to that edge. Padding top and bottom leaves room
    for the hover lift, which overflow-x would otherwise clip. */
 .pub-rail {
-  --rail-start: max(var(--pad), (100% - var(--media)) / 2);
+  --rail-start: max(var(--pad), (100% - var(--max-w)) / 2 + var(--pad));
   --tile-w: clamp(264px, 78vw, 356px);
   display: flex;
   gap: var(--s-4);
@@ -3633,6 +3637,7 @@ footer {
 }
 
 .animate-in { animation: fadeUp 0.6s var(--ease) both; }
+.no-intro .animate-in { animation: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-in { animation: none; }
@@ -3788,6 +3793,8 @@ footer {
     width: 30px;
     height: 30px;
   }
+
+  .hero-cols { grid-template-columns: 1fr; }
 
   /* On narrow screens the art sits behind everything, kept faint by the veil */
   .hero-veil {
