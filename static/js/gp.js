@@ -11,6 +11,12 @@
    two research themes, in one calm, slow-moving background.
 
    Aspect-aware, low-contrast, no dependencies.
+
+   The cloud is painted at field resolution into its own small canvas
+   that CSS stretches to full size: the compositor's bilinear upscale is
+   nearly free, whereas drawImage-upscaling it into the full-resolution
+   canvas every frame capped the animation at ~48 fps. One ~6 px grid
+   feeds both the cloud and the contours.
    ─────────────────────────────────────────────────────────── */
 (function () {
   const canvas = document.getElementById("gp");
@@ -28,12 +34,15 @@
   syncThemeColors();
 
   // ── geometry / world domain ──
+  const CELL = 6;                         // grid spacing in CSS px
   let W = 0, H = 0, dpr = 1, DX = 1;
   let Nx = 1, Ny = 70;
-  let Cx = 1, Cy = 80;
-  let field, cgrid, img;
-  const off = document.createElement("canvas");
-  const octx = off.getContext("2d");
+  let field, img;
+  const cloud = document.createElement("canvas");
+  cloud.className = canvas.className;
+  cloud.setAttribute("aria-hidden", "true");
+  canvas.before(cloud);
+  const octx = cloud.getContext("2d");
 
   // ── belief: drifting Gaussian mixture ──
   let bumps = [];
@@ -85,23 +94,40 @@
   function buildWalkers() { walkers = []; for (let i = 0; i < NW; i++) walkers.push(newWalker()); }
   let bestX = 0.5, bestY = 0.5;
 
+  // Each bump is axis-aligned, so exp(−½(dx² + dy²)) = exp(−½dx²)·exp(−½dy²):
+  // one row and one column of exponentials per bump, then the grid is
+  // filled with multiplies alone.
   let fmax = 1;
+  let ex = new Float32Array(0), ey = new Float32Array(0);
   function computeFields(t) {
     positions(t);
-    fmax = 1e-6; let bi = 0, bj = 0;
-    for (let j = 0; j < Ny; j++) {
-      const y = j / (Ny - 1);
+    const K = bumps.length;
+    if (ex.length !== K * Nx) ex = new Float32Array(K * Nx);
+    if (ey.length !== K * Ny) ey = new Float32Array(K * Ny);
+    for (let k = 0; k < K; k++) {
+      const b = bumps[k];
       for (let i = 0; i < Nx; i++) {
-        const v = density((i / (Nx - 1)) * DX, y);
-        field[j * Nx + i] = v;
-        if (v > fmax) { fmax = v; bi = i; bj = j; }
+        const dx = ((i / (Nx - 1)) * DX - b.cx) / b._sx;
+        ex[k * Nx + i] = b.w * Math.exp(-0.5 * dx * dx);
+      }
+      for (let j = 0; j < Ny; j++) {
+        const dy = (j / (Ny - 1) - b.cy) / b._sy;
+        ey[k * Ny + j] = Math.exp(-0.5 * dy * dy);
       }
     }
-    bestX = (bi / (Nx - 1)) * DX; bestY = bj / (Ny - 1);
-    for (let j = 0; j < Cy; j++) {
-      const y = j / (Cy - 1);
-      for (let i = 0; i < Cx; i++) cgrid[j * Cx + i] = density((i / (Cx - 1)) * DX, y);
+    field.fill(0);
+    for (let k = 0; k < K; k++) {
+      const xo = k * Nx, yo = k * Ny;
+      for (let j = 0; j < Ny; j++) {
+        const fy = ey[yo + j];
+        if (fy < 1e-5) continue;          // this row is outside the bump
+        const row = j * Nx;
+        for (let i = 0; i < Nx; i++) field[row + i] += ex[xo + i] * fy;
+      }
     }
+    fmax = 1e-6; let best = 0;
+    for (let p = 0; p < field.length; p++) if (field[p] > fmax) { fmax = field[p]; best = p; }
+    bestX = ((best % Nx) / (Nx - 1)) * DX; bestY = Math.floor(best / Nx) / (Ny - 1);
   }
 
   function drawCloud() {
@@ -112,12 +138,10 @@
       data[o] = A.r; data[o + 1] = A.g; data[o + 2] = A.b; data[o + 3] = a;
     }
     octx.putImageData(img, 0, 0);
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(off, 0, 0, W, H);
   }
 
   function drawContour(level, alpha, width) {
+    const cgrid = field, Cx = Nx, Cy = Ny;
     const sx = W / (Cx - 1), sy = H / (Cy - 1);
     ctx.beginPath();
     for (let j = 0; j < Cy - 1; j++) {
@@ -260,11 +284,10 @@
     canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     DX = Math.max(0.6, W / H);
+    Ny = Math.max(40, Math.min(200, Math.round(H / CELL)));
     Nx = Math.max(2, Math.round(Ny * DX));
-    Cx = Math.max(2, Math.round(Cy * DX));
     field = new Float32Array(Nx * Ny);
-    cgrid = new Float32Array(Cx * Cy);
-    off.width = Nx; off.height = Ny;
+    cloud.width = Nx; cloud.height = Ny;
     img = octx.createImageData(Nx, Ny);
     buildBumps(); buildWalkers();
   }
