@@ -74,7 +74,8 @@ Quiet, letter-like layout after molly.studio, on the cool grey page shared with 
 - **One tile per row**: homepage selected publications and each year on the publications page are a `.pub-stack` in the wider `.media` column; the gallery lists its notes the same way, one 16:10 preview tile per row.
 - **Page glow**: the publications page opens with a tall centred title whose bottom glows with the newest paper's thumbnail, blurred (`.page-header--glow` / `.page-glow`), multiplied in light mode so only the pigment tints the page (`--glow-opacity` / `--glow-blend` per theme).
 - The lightbox is a 24px-radius sheet over a page-coloured dimmer; the footer is a centred `pb` monogram.
-- The glass tokens (`--glass`, `--card-elev`) now only serve the interactive notes. They were built on an earlier editorial chrome; an additive **"INTERACTIVE NOTES — design language"** layer near the end of the stylesheet restyles their surfaces, controls, and radii. It wins by cascade order, so keep it last and add note-chrome overrides there.
+- Glass (`--glass`, `--glass-filter`, `--card-elev`) is reserved for layers that float over content: the note info popovers and the lightbox dimmer.
+- The interactive notes were built on an earlier editorial chrome; an additive **"INTERACTIVE NOTES — design language"** layer near the end of the stylesheet brings them onto this system without touching their layout grids: titles at 400, kickers and chapter numbers in grey sentence case (the number floats in front of its kicker), a centred post header, chapter heads and the closing through-line in the `--media` column, and labs as flat `--bg-card` surfaces with a `--ring` hairline. It wins by cascade order, so keep it last and add note-chrome overrides there.
 
 `static/js/ui.js` toggles `nav.is-scrolled`, which reveals the nav's bottom hairline only once the page scrolls.
 

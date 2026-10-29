@@ -628,19 +628,6 @@ main { padding-top: var(--nav-h); }
 }
 
 /* ══════════════════════
-   GROUPED SURFACE
-   One card, rows inside, separators inset to the content edge.
-══════════════════════ */
-.group-card {
-  background: var(--glass);
-  backdrop-filter: var(--glass-filter);
-  -webkit-backdrop-filter: var(--glass-filter);
-  border-radius: var(--r-xl);
-  box-shadow: var(--card-elev);
-  padding: var(--s-2);
-}
-
-/* ══════════════════════
    EXPERIENCE (Short CV)
 ══════════════════════ */
 .exp-title {
@@ -3317,7 +3304,7 @@ main { padding-top: var(--nav-h); }
    the layout grids the simulations depend on.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── Display type: SF wants semibold where Fraunces wanted book ── */
+/* ── Display type: one weight, as on the rest of the site ── */
 .viz-post-title,
 .optimizer-chapter-header h2,
 .optimizer-panel h3,
@@ -3331,11 +3318,11 @@ main { padding-top: var(--nav-h); }
 .flow-panel h3, .flow-regression-notes h3,
 .flow-image-notes h3,
 .splat-chapter-header h2,
-.splat-notes h3 { font-weight: 600; letter-spacing: -0.022em; }
+.splat-notes h3 { font-weight: 400; letter-spacing: -0.02em; }
 
-.viz-post-title { letter-spacing: -0.032em; }
+.viz-post-title { letter-spacing: -0.03em; }
 
-/* ── Lab containers become glass tiles ── */
+/* ── Lab containers are flat surfaces: a hairline ring, no glass ── */
 .optimizer-demo,
 .pareto-demo,
 .highdim-demo,
@@ -3351,11 +3338,9 @@ main { padding-top: var(--nav-h); }
 .splat-fit,
 .splat-scene {
   border: 0;
-  border-radius: var(--r-xl);
-  background: var(--glass);
-  backdrop-filter: var(--glass-filter);
-  -webkit-backdrop-filter: var(--glass-filter);
-  box-shadow: var(--card-elev);
+  border-radius: var(--r-2xl);
+  background: var(--bg-card);
+  box-shadow: var(--ring);
   padding: var(--s-2) var(--s-5) var(--s-5);
 }
 
@@ -3548,6 +3533,56 @@ main { padding-top: var(--nav-h); }
 .flow-regression-toolbar, .flow-image-toolbar,
 .stein-identity-toolbar, .stein-density-toolbar { border-color: var(--line); }
 
+/* ── Openings and chapter heads follow the site's letter layout ──
+   The post opens centred, like every other page. Chapter heads and the
+   closing through-line sit in the centred media column; the chapter
+   number floats in front of its kicker instead of hanging in a gutter. */
+.viz-entry-nav { text-align: center; }
+.viz-post-header { text-align: center; }
+.viz-post-header .viz-post-meta { justify-content: center; }
+.viz-post-deck { margin-inline: auto; }
+
+.viz-post-meta {
+  font-size: var(--t-foot);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.splat-chapter-header, .flow-chapter-header,
+.stein-chapter-header, .optimizer-chapter-header {
+  display: flow-root;
+  max-width: var(--media);
+  margin-inline: auto;
+}
+
+.splat-chapter-number, .flow-chapter-number,
+.stein-chapter-number, .optimizer-chapter-number {
+  float: left;
+  margin-right: 0.6em;
+  padding-top: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.splat-kicker, .flow-kicker, .stein-kicker, .optimizer-kicker,
+.splat-chapter-number, .flow-chapter-number,
+.stein-chapter-number, .optimizer-chapter-number {
+  color: var(--subtle);
+  font-size: var(--t-foot);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.splat-takeaway, .flow-takeaway, .stein-takeaway, .optimizer-takeaway {
+  display: block;
+  max-width: var(--media);
+  margin-inline: auto;
+  border-block-color: var(--line);
+}
+.splat-takeaway > * + *, .flow-takeaway > * + *,
+.stein-takeaway > * + *, .optimizer-takeaway > * + * { margin-top: var(--s-4); }
+
 /* ══════════════════════
    FOOTER
 ══════════════════════ */
@@ -3682,7 +3717,8 @@ footer {
   .flow-regression-toolbar,
   .flow-image-toolbar { align-items: flex-start; flex-direction: column; }
   .flow-actions { width: 100%; flex-wrap: wrap; }
-  .flow-switch { flex: 1; flex-wrap: wrap; }
+  /* The dataset switch takes its own row; the buttons wrap beneath it */
+  .flow-switch { flex: 1 1 100%; flex-wrap: wrap; }
   .flow-switch button { flex: 1; }
   .flow-tabs { grid-template-columns: repeat(2, 1fr); }
   .flow-tab:nth-child(2) { border-right: 0; }
@@ -3708,7 +3744,7 @@ footer {
   .stein-identity-toolbar,
   .stein-density-toolbar { align-items: flex-start; flex-direction: column; }
   .stein-actions { width: 100%; flex-wrap: wrap; }
-  .stein-switch { flex: 1; }
+  .stein-switch { flex: 1 1 100%; }
   .stein-switch button { flex: 1; }
   .stein-tabs { grid-template-columns: repeat(2, 1fr); }
   .stein-tab:nth-child(2) { border-right: 0; }
