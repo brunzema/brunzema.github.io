@@ -19,7 +19,7 @@
       document.documentElement.dataset.theme = saved || (dark ? "dark" : "light");
     })();
   </script>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=8) }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=9) }}" />
   {% block head %}{% endblock %}
 </head>
 <body>
@@ -54,6 +54,7 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
+        <a href="/" class="footer-mark" aria-label="{{ site.name }}, home"></a>
         <span class="footer-copy">© {{ site.name }} 2026</span>
         {% if not request.path.startswith('/visualizations/') %}
           <span class="footer-note">Publication images generated with Nano Banana and GPT Images</span>
@@ -72,6 +73,6 @@
 
   {% block scripts %}{% endblock %}
   <script src="{{ url_for('static', filename='js/theme.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/ui.js', v=3) }}" defer></script>
+  <script src="{{ url_for('static', filename='js/ui.js', v=4) }}" defer></script>
 </body>
 </html>

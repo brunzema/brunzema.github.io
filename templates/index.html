@@ -16,7 +16,7 @@
     <!-- Easter egg (top right): the monospace edition of this page -->
     <a class="ascii-egg" href="/ascii/" aria-label="View as ASCII"><span class="ascii-egg-prompt" aria-hidden="true">&gt;_</span><span class="ascii-egg-label" aria-hidden="true">view as ascii</span><span class="ascii-egg-cursor" aria-hidden="true">▌</span></a>
 
-    <!-- Intro: photo + name/title side by side -->
+    <!-- Intro: photo over a centred name and title -->
     <div class="hero-intro">
       <div class="hero-photo">
         <img
@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <!-- Body: bio ("abstract") on the left, compact CV on the right -->
-    <div class="hero-cols">
+    <!-- Body: bio ("abstract") and compact CV in one narrow letter column -->
+    <div class="letter hero-cols">
       <div class="hero-text">
 
         <div class="hero-bio">
@@ -90,23 +90,28 @@
   </div>
 </section>
 
-<div class="section-divider"></div>
-
 <!-- ── SELECTED PUBLICATIONS ── -->
-<section class="section">
-  <div class="container">
-
-    <div class="section-header">
-      <h2 class="section-title">Selected publications</h2>
+<section class="section section--rail">
+  <div class="letter section-header">
+    <h2 class="section-title">Selected publications</h2>
+    <div class="section-actions">
       <a href="/publications/" class="section-link">All publications →</a>
+      <div class="rail-nav">
+        <button type="button" class="rail-btn" data-rail-prev aria-controls="pub-rail" aria-label="Previous publications">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="rail-btn" data-rail-next aria-controls="pub-rail" aria-label="Next publications">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
     </div>
+  </div>
 
-    <div class="pub-list">
-      {% for pub in selected_publications %}
-        {% include "partials/pub_card.html" %}
-      {% endfor %}
-    </div>
-
+  <!-- Breakout rail: starts at the media column's left edge, bleeds off the right -->
+  <div class="pub-rail" id="pub-rail" role="region" aria-label="Selected publications" tabindex="0">
+    {% for pub in selected_publications %}
+      {% include "partials/pub_card.html" %}
+    {% endfor %}
   </div>
 </section>
 

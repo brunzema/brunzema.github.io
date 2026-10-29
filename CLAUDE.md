@@ -65,13 +65,14 @@ Equal-contribution authors are marked with `*`, `$*$` or `\\*` in the BibTeX aut
 
 **Design system:**
 
-Apple-style clarity on a pure-white page. Everything is driven by tokens at the top of `static/css/style.css`: a 4pt spacing scale (`--s-1`…`--s-8`), a radius scale (`--r-xs`…`--r-xl`), a type scale (`--t-caption`…`--t-display`), and material tokens. Use the tokens rather than new literal values.
+Quiet, letter-like layout after molly.studio, on the cool grey page shared with the ASCII edition. Everything is driven by tokens at the top of `static/css/style.css`: a 4pt spacing scale (`--s-1`…`--s-8`), a radius scale (`--r-xs`…`--r-2xl`), a type scale (`--t-caption`…`--t-display`), column widths (`--letter` for text, `--media` for rails), and motion (`--spring` + `--dur-spring`, a critically damped spring as CSS `linear()`). Use the tokens rather than new literal values.
 
-- **Type is San Francisco** via the `-apple-system` stack (`--font-display` / `--font-body`) — the same stack apple.com ships. There are no webfonts to load. Display type is weight **600**; body is 17px/1.47 at −0.022em.
-- **Surfaces are glass tiles**: `--glass` fill + `--glass-filter` backdrop blur + `--card-elev` (a specular top edge, a hairline rim, and a wide soft shadow). White-on-white, so the edge and shadow do the separating. Applied to `.pub-list`, `.exp-list`, `.viz-index-card`, `.group-card`, and every note lab.
-- **Grouped lists**: rows live inside one tile, separated by hairlines inset to the content edge via `.row + .row::before`; the separators around a hovered row fade out.
-- Controls are pill-shaped with `--fill-1` backgrounds; the active state is a filled `--accent` pill.
-- The interactive notes were built on an earlier editorial chrome. Rather than rewrite their 2,500 lines of layout, an additive **"INTERACTIVE NOTES — design language"** layer near the end of the stylesheet restyles their surfaces, controls, and radii. It wins by cascade order, so keep it last and add note-chrome overrides there.
+- **Type is San Francisco** via the `-apple-system` stack (`--font-display` / `--font-body`); no webfonts. **One weight:** display type is 400, and hierarchy comes from ink vs. grey, not bold (500 at most for emphasis). Letter-column copy uses `--prose`; links in it are `--ink` with no underline at rest — `--prose` is chosen so ink links keep 3:1 against it (and 4.5:1 on the page) in both themes, so keep that pair if either changes.
+- **Centred openings**: the hero (photo, name, role) and page headers are centred; running text sits in the narrow `.letter` column.
+- **Media are bare rounded tiles**, no glass: publication thumbnails and gallery previews lift on hover (`scale(1.025)` + `--lift` drop-shadow on `--spring`). Lists (`.pub-list`, `.exp-list`) are bare rows separated by hairlines.
+- **Breakout rail**: homepage selected publications are a `.pub-rail` that starts at the `--media` column's left edge, bleeds off the right, and scroll-snaps; the round `.rail-btn` arrows are wired in `static/js/ui.js`. The gallery shows the newest note as a wide feature tile, the rest two up.
+- The lightbox is a 24px-radius sheet over a page-coloured dimmer; the footer is a centred `pb` monogram.
+- The glass tokens (`--glass`, `--card-elev`) now only serve the interactive notes. They were built on an earlier editorial chrome; an additive **"INTERACTIVE NOTES — design language"** layer near the end of the stylesheet restyles their surfaces, controls, and radii. It wins by cascade order, so keep it last and add note-chrome overrides there.
 
 `static/js/ui.js` toggles `nav.is-scrolled`, which reveals the nav's bottom hairline only once the page scrolls.
 
