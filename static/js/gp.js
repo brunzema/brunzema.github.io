@@ -243,7 +243,6 @@
 
   const LEVELS_REL = [0.1, 0.22, 0.4, 0.62, 0.84];
   function render(t, dt) {
-    syncThemeColors();
     computeFields(t);
     ctx.clearRect(0, 0, W, H);
     drawCloud();
@@ -313,19 +312,28 @@
     }, 150);
   });
   window.addEventListener("themechange", () => { syncThemeColors(); if (reduced) staticFrame(); });
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (raf) cancelAnimationFrame(raf);
-      raf = null;
-      pausedAt = performance.now();
-    } else if (!reduced && !raf) {
-      // Resume the clock where it paused instead of snapping the field back to t=0.
-      if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt;
-      pausedAt = null;
-      last = null;            // avoid a dt spike on the first resumed frame
-      raf = requestAnimationFrame(frame);
-    }
-  });
+
+  // Only animate while the tab is visible and the field is on screen.
+  let onscreen = true;
+  function pause() {
+    if (!raf) return;
+    cancelAnimationFrame(raf);
+    raf = null;
+    pausedAt = performance.now();
+  }
+  function resume() {
+    if (reduced || raf || document.hidden || !onscreen || W === 0) return;
+    // Resume the clock where it paused instead of snapping the field back to t=0.
+    if (pausedAt !== null && t0 !== null) t0 += performance.now() - pausedAt;
+    pausedAt = null;
+    last = null;            // avoid a dt spike on the first resumed frame
+    raf = requestAnimationFrame(frame);
+  }
+  document.addEventListener("visibilitychange", () => (document.hidden ? pause() : resume()));
+  new IntersectionObserver(([entry]) => {
+    onscreen = entry.isIntersecting;
+    onscreen ? resume() : pause();
+  }).observe(canvas);
 
   start();
 

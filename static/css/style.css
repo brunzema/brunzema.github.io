@@ -78,6 +78,8 @@
   /* Hovered media tiles: a filter so the shadow follows the radius
      of whatever is scaled, image or canvas */
   --lift: drop-shadow(0 14px 18px rgba(var(--shadow-rgb), 0.16));
+  --glow-opacity: 0.55;
+  --glow-blend:   multiply;
 
   /* ── Type ── */
   /* San Francisco. Apple does not license SF as a webfont, but
@@ -194,6 +196,8 @@
         0 16px 40px rgba(var(--shadow-rgb), 0.40);
 
   --lift: drop-shadow(0 14px 18px rgba(var(--shadow-rgb), 0.55));
+  --glow-opacity: 0.2;
+  --glow-blend:   normal;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -364,6 +368,9 @@ main { padding-top: var(--nav-h); }
    HERO
 ══════════════════════ */
 .hero {
+  /* The field covers the first screen only: its cost is per pixel, and its
+     density/contour grids are sized for roughly that aspect */
+  --gp-h: min(100%, 100svh - var(--nav-h));
   position: relative;
   padding: clamp(3rem, 7vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
   overflow: hidden;
@@ -376,7 +383,7 @@ main { padding-top: var(--nav-h); }
   left: 50%;
   transform: translateX(-50%);
   width: 100vw;
-  height: 100%;
+  height: var(--gp-h);
   display: block;
   z-index: 0;
   pointer-events: none;
@@ -390,8 +397,8 @@ main { padding-top: var(--nav-h); }
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 32%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 68%, rgba(var(--bg-rgb),0.2) 100%),
-    linear-gradient(0deg, var(--bg) 0%, rgba(var(--bg-rgb),0) 22%);
+    linear-gradient(180deg, rgba(var(--bg-rgb),0) calc(var(--gp-h) * 0.62), var(--bg) var(--gp-h)),
+    linear-gradient(90deg, rgba(var(--bg-rgb),0.2) 0%, rgba(var(--bg-rgb),0.9) 32%, rgba(var(--bg-rgb),0.94) 50%, rgba(var(--bg-rgb),0.9) 68%, rgba(var(--bg-rgb),0.2) 100%);
 }
 
 .hero-inner { position: relative; z-index: 2; }
@@ -596,6 +603,37 @@ main { padding-top: var(--nav-h); }
   text-transform: uppercase;
 }
 
+/* ── PAGE GLOW ──
+   molly.studio's opening: a tall, centred title whose lower edge glows
+   with the first image below it, blurred, so the page hints at what
+   follows. Multiplied in light so the paper white of the watercolours
+   vanishes and only their pigment tints the page. */
+.page-header--glow {
+  position: relative;
+  min-height: clamp(18rem, 52svh, 30rem);
+  display: grid;
+  align-content: center;
+  overflow-x: clip;
+}
+.page-header--glow > .container { position: relative; z-index: 1; }
+/* The glow spills into the next section; keep that section's tiles above it */
+.page-header--glow + .section { position: relative; z-index: 1; }
+
+.page-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -14rem;
+  width: min(60rem, 130%);
+  height: 24rem;
+  transform: translateX(-50%);
+  background: var(--glow) center / cover no-repeat;
+  filter: blur(64px) saturate(1.3);
+  opacity: var(--glow-opacity);
+  mix-blend-mode: var(--glow-blend);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
 /* ── PAGE HEADERS ── centred, like the hero */
 .page-header { padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
 
@@ -736,30 +774,15 @@ main { padding-top: var(--nav-h); }
 /* ══════════════════════
    PUBLICATIONS
 ══════════════════════ */
-/* Bare rows on the page; only the thumbnails are surfaces */
-.pub-list {
+/* Every publication is a bare media tile with its caption underneath:
+   strung along a rail on the homepage, two up on the publications page */
+.pub-card {
   display: flex;
   flex-direction: column;
+  gap: var(--s-4);
+  min-width: 0;
 }
-
-.pub-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 168px minmax(0, 1fr);
-  gap: var(--s-6);
-  padding: var(--s-6) 0;
-  align-items: start;
-}
-
-.pub-card + .pub-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: calc(168px + var(--s-6));
-  right: 0;
-  height: 1px;
-  background: var(--line);
-}
+.pub-content { padding-inline: 2px; }
 
 /* ── Breakout rail (homepage) ──
    Starts at the media column's left edge and runs off the right of the
@@ -779,18 +802,20 @@ main { padding-top: var(--nav-h); }
 }
 .pub-rail::-webkit-scrollbar { display: none; }
 .pub-rail:focus-visible { outline-offset: -2px; border-radius: 0; }
+.pub-rail .pub-card { flex: 0 0 var(--tile-w); scroll-snap-align: start; }
 
-.pub-rail .pub-card {
-  flex: 0 0 var(--tile-w);
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-4);
-  padding: 0;
-  scroll-snap-align: start;
+/* ── Grid (publications page), in the media column ── */
+.media {
+  width: min(var(--media), 100% - 2 * var(--pad));
+  margin-inline: auto;
 }
-.pub-rail .pub-card + .pub-card::before { display: none; }
-.pub-rail .pub-content { padding-inline: 2px; }
-.pub-rail .pub-title { font-size: 1.125rem; }
+
+.pub-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2.5rem, 5vw, 3.5rem) var(--s-5);
+  margin-top: var(--s-5);
+}
 
 /* Thumbnail */
 .pub-thumb { display: flex; }
@@ -953,7 +978,7 @@ main { padding-top: var(--nav-h); }
 }
 
 .pub-title {
-  font-size: var(--t-title-3);
+  font-size: 1.125rem;
   line-height: 1.3;
   letter-spacing: -0.015em;
   margin-bottom: 0.4rem;
@@ -3767,7 +3792,7 @@ footer {
   /* On narrow screens the art sits behind everything, kept faint by the veil */
   .hero-veil {
     background:
-      linear-gradient(0deg, var(--bg) 0%, rgba(var(--bg-rgb),0.58) 45%, rgba(var(--bg-rgb),0.22) 100%);
+      linear-gradient(180deg, rgba(var(--bg-rgb),0.22) 0%, rgba(var(--bg-rgb),0.58) calc(var(--gp-h) * 0.55), var(--bg) var(--gp-h));
   }
 
   .exp-aside {
@@ -3779,16 +3804,7 @@ footer {
     margin-top: 0.15rem;
   }
 
-  .pub-card {
-    grid-template-columns: 1fr;
-    gap: var(--s-4);
-    padding: var(--s-5) 0;
-  }
-
-  /* Stacked rows: the separator spans the full row */
-  .pub-card + .pub-card::before { left: 0; }
-
-  .pub-list .pub-thumb { max-width: 240px; }
+  .pub-grid { grid-template-columns: 1fr; }
 
   .viz-index-list { grid-template-columns: 1fr; }
   .viz-index-card:first-child .viz-index-preview { aspect-ratio: 4 / 3; }

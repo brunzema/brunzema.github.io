@@ -4,21 +4,25 @@
 
 {% block content %}
 
-<section class="page-header animate-in">
+{% set newest = pubs_by_year[years[0]][0] if years else none %}
+<section class="page-header page-header--glow animate-in">
+  {% if newest and newest.preview %}
+    <div class="page-glow" aria-hidden="true" style="--glow: url('{{ url_for('static', filename='img/publication_preview/thumb/' + newest.preview + '.webp') }}')"></div>
+  {% endif %}
   <div class="container">
     <h1 class="page-title">Publications</h1>
   </div>
 </section>
 
 <section class="section section--flush">
-  <div class="container">
+  <div class="media">
 
     {% set hide_year = true %}
     {% for year in years %}
       <div class="year-group">
         <h2 class="year-label">{{ year }}</h2>
 
-        <div class="pub-list">
+        <div class="pub-grid">
           {% for pub in pubs_by_year[year] %}
             {% include "partials/pub_card.html" %}
           {% endfor %}
